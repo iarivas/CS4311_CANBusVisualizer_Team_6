@@ -22,12 +22,13 @@ class project():
     dbcFileName = None
     blackListFileName = None
     
-
+    # initializes object
     def __init__(self) -> None:
         pass
 
 
-    def idGenerator(id):
+    #if no custom id is given then a random id is generated
+    def idGenerator(id): 
         if id != None:
             project_id = id
         else:
