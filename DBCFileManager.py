@@ -49,9 +49,6 @@ class DBCFileManager:
 
     def createCanBusTopology(self):
         ...
-
-    def decodeRawPacket(self, rawPacket):
-        ...
     
     def identifyActiveNodes(self):
         ...
