@@ -11,7 +11,7 @@ class dataSaver:
         ...
 
     #i assume the save project responsibility saves it to the database
-    def save(self, project):
+    def save(self, projectConfig, canBusNodes, savedPackets):
         import pymongo
         myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
         mydb = myclient["TestDB"]

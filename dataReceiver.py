@@ -4,12 +4,12 @@ class dataReceiver:
         ...
     
     #functions
-    def receiveTraffic(something):
+    def receiveTraffic(self, something):
         ...
     
-    def decodePackets(packet):
+    def decodePackets(self, packet):
         ...
         
-    def createTempFile(something):
+    def createTempFile(self, something):
         ...
 
