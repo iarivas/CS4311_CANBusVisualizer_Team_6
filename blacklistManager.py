@@ -7,6 +7,9 @@ class blacklistManager:
     def setListOfBlacklistedNodes():
         return
         #TODO: finish this thang
+        
+    def getListOfBlacklistedNodes():
+        return self._listOfBlacklistedNodes
     
     def checkIfNodeIsBlacklisted():
         return
