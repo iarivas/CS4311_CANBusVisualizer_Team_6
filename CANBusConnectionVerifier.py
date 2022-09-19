@@ -1,4 +1,4 @@
-class CANBusConnectionVerifier:
+class canBusConnectionVerifier:
     def __init__(self, connectionStatus):
         self.connectionStatus = connectionStatus
 

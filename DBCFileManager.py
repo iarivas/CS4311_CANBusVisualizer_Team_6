@@ -1,4 +1,4 @@
-class DBCFileManager:
+class dbcFileManager:
     def __init__(self, dbcFileName, dbcMessageSyntax, dbcSignalSyntax, decodePacketInstructions, identifyActiveNodesIntructions):
         self.dbcFileName = dbcFileName
         self.dbcMessageSyntax = dbcMessageSyntax
