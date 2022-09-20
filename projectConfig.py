@@ -23,22 +23,22 @@ class project():
     blackListFileName = None
     
     # initializes object
-    def __init__(self) -> None:
-        pass
-
     def __init__(self, baudRate, analystInitials, eventName = None, dbcFileName = None, blackListFileName = None) -> None:
         self.baudRate = baudRate
         self.analystInitials = analystInitials
         self.eventName = eventName
         self.dbcFileName = dbcFileName
         self.blackListFileName = blackListFileName
+        self.projectId = idGenerator(eventName)
         
 
     #if no custom id is given then a random id is generated
     def idGenerator(id): 
         if id != None:
             project_id = id
+            return project_id
         else:
             letters = string.ascii_lowercase
             project_id = ''.join(random.choice(letters) for i in range(10))
+            return project_id
         
