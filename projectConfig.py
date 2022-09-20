@@ -26,6 +26,13 @@ class project():
     def __init__(self) -> None:
         pass
 
+    def __init__(self, baudRate, analystInitials, eventName = None, dbcFileName = None, blackListFileName = None) -> None:
+        self.baudRate = baudRate
+        self.analystInitials = analystInitials
+        self.eventName = eventName
+        self.dbcFileName = dbcFileName
+        self.blackListFileName = blackListFileName
+        
 
     #if no custom id is given then a random id is generated
     def idGenerator(id): 
