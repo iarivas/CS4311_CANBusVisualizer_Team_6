@@ -39,7 +39,7 @@ class projectManager():
     def archiveProject():
         return
 
-    @app.post("/create_project/")
+    @app.post("/projects/")
     def createProject(project_info: Project_Info):
         currentProject = projectConfig.project(project_info.baud_rate, project_info.initials, project_info.name, project_info.dbc_file, project_info.blacklist_file)
         # TODO: use db to save the newly created project
