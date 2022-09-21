@@ -1,3 +1,4 @@
+import pymongo
 class dataReceiver:
 
     def __init__(self):
@@ -14,12 +15,11 @@ class dataReceiver:
         ...
 
     def retrieveProject(projectID):
-        import pymongo
-        myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        mydb = myclient["TestDB"]
-        mycol = mydb["TestCol"]
+        _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _mydb = _myclient["TestDB"]
+        _mycol = _mydb["TestCol"]
 
-        x = mycol.find_one({
+        x = _mycol.find_one({
             "_id": projectID
         })
 
