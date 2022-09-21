@@ -29,11 +29,11 @@ class project():
         self.eventName = eventName
         self.dbcFileName = dbcFileName
         self.blackListFileName = blackListFileName
-        self.projectId = idGenerator(eventName)
+        self.projectId = self.idGenerator(eventName)
         
 
     #if no custom id is given then a random id is generated
-    def idGenerator(id): 
+    def idGenerator(self, id): 
         if id != None:
             project_id = id
             return project_id

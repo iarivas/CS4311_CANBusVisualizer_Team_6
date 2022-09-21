@@ -12,7 +12,7 @@ API endpoint call
 import projectConfig
 from fastapi import FastAPI
 from pydantic import BaseModel
-from dataSaver import createInitialProject
+from dataSaver import *
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -52,5 +52,5 @@ class projectManager():
     def createProject(project_info: Project_Info):
         currentProject = projectConfig.project(project_info.baud_rate, project_info.initials, project_info.name, project_info.dbc_file, project_info.blacklist_file)
         # createInitialPoject is the mongoDB saving definition from dataSaver.py 
-        createInitialProject(currentProject.projectId, currentProject.baudRate, currentProject.analystInitials, currentProject.eventName, currentProject.dbcFileName, currentProject.blackListFileName)
+        dataSaver.createInitialProject(currentProject.projectId, currentProject.baudRate, currentProject.analystInitials, currentProject.eventName, currentProject.dbcFileName, currentProject.blackListFileName)
         return currentProject
