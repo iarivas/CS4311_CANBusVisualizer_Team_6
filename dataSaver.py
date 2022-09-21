@@ -10,17 +10,51 @@ class dataSaver:
     def saveCANLocal(self, canBus):
         ...
 
-    #i assume the save project responsibility saves it to the database
-    def save(projectConfig, canBusNodes, savedPackets):
+    def update(projectID, baudRate, initials, name, dbcFile, blacklistFile):
         import pymongo
         myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
         mydb = myclient["TestDB"]
         mycol = mydb["TestCol"]
 
-        doc = {"name": "Test", "project": "Test"}
+        olddoc = {
+            "_id": projectID
+        }
 
-        x = mycol.insert_one(doc)
+        newdoc = {
+            "$set": {
+            "baudRate": baudRate,
+            "initials": initials,
+            "name": name,
+            "dbcFile": dbcFile,
+            "blacklistFile": blacklistFile
+            }
+        }
 
-        print(x.inserted_id)
+        x = mycol.update_one(olddoc, newdoc)
 
+    def createInitialProject(projectID, baudRate, initials, name, dbcFile, blacklistFile):
+        import pymongo
+        myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        mydb = myclient["TestDB"]
+        mycol = mydb["TestCol"]
+
+        if baudRate != None and initials != None:
+
+            doc = {
+                "_id": projectID,
+                "baudRate": baudRate,
+                "initials": initials,
+                "name": name,
+                "dbcFile": dbcFile,
+                "blacklistFile": blacklistFile
+            }
+
+            x = mycol.insert_one(doc)
+
+            print(x.inserted_id)
+
+            return
         
+        else:
+            print("baud rate or initials are null")
+    
