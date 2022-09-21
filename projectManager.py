@@ -17,11 +17,11 @@ from dataSaver import createInitialProject
 app = FastAPI()
 
 class Project_Info(BaseModel):
-    baudRate: int
-    Initials: str
-    Name: str = None
-    dbcFile: str = None
-    blacklistFile: str = None
+    baud_rate: int
+    initials: str
+    name: str = None
+    dbc_file: str = None
+    blacklist_file: str = None
 
 class projectManager():
 
@@ -39,7 +39,7 @@ class projectManager():
 
     @app.post("/projects/")
     def createProject(project_info: Project_Info):
-        currentProject = projectConfig.project(project_info.baudRate, project_info.Initials, project_info.Name, project_info.dbcFile, project_info.blacklistFile)
+        currentProject = projectConfig.project(project_info.baud_rate, project_info.initials, project_info.name, project_info.dbc_file, project_info.blacklist_file)
         # createInitialPoject is the mongoDB saving definition from dataSaver.py 
         createInitialProject(currentProject.projectId, currentProject.baudRate, currentProject.analystInitials, currentProject.eventName, currentProject.dbcFileName, currentProject.blackListFileName)
         return currentProject
