@@ -9,8 +9,9 @@ skeleton containing definitions but no logic.
 Currently creates new project on createProject 
 API endpoint call
 '''
+from urllib import response
 import projectConfig
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile, status
 from pydantic import BaseModel
 from dataSaver import *
 from fastapi.middleware.cors import CORSMiddleware
@@ -48,8 +49,10 @@ class projectManager():
     def archiveProject():
         return
 
-    @app.post("/projects/")
+    @app.post("/projects/", status_code=201)
     def createProject(project_info: Project_Info):
+        if len(project_info.initials) == 0:
+            response.status_code = status.HTTP_406_NOT_ACCEPTABLE
         currentProject = projectConfig.project(project_info.baud_rate, project_info.initials, project_info.name, project_info.dbc_file, project_info.blacklist_file)
         # createInitialPoject is the mongoDB saving definition from dataSaver.py 
         dataSaver.createInitialProject(currentProject.projectId, currentProject.baudRate, currentProject.analystInitials, currentProject.eventName, currentProject.dbcFileName, currentProject.blackListFileName)
