@@ -1,3 +1,4 @@
+import pymongo
 class dataSaver:
     
     def __init__(self):
@@ -11,10 +12,9 @@ class dataSaver:
         ...
 
     def update(projectID, baudRate, initials, name, dbcFile, blacklistFile):
-        import pymongo
-        myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        mydb = myclient["TestDB"]
-        mycol = mydb["TestCol"]
+        _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _mydb = _myclient["TestDB"]
+        _mycol = _mydb["TestCol"]
 
         olddoc = {
             "_id": projectID
@@ -30,13 +30,12 @@ class dataSaver:
             }
         }
 
-        x = mycol.update_one(olddoc, newdoc)
+        x = _mycol.update_one(olddoc, newdoc)
 
     def createInitialProject(projectID, baudRate, initials, name, dbcFile, blacklistFile):
-        import pymongo
-        myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        mydb = myclient["TestDB"]
-        mycol = mydb["TestCol"]
+        _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _mydb = _myclient["TestDB"]
+        _mycol = _mydb["TestCol"]
 
         if baudRate != None and initials != None:
 
@@ -49,7 +48,7 @@ class dataSaver:
                 "blacklistFile": blacklistFile
             }
 
-            x = mycol.insert_one(doc)
+            x = _mycol.insert_one(doc)
 
             print(x.inserted_id)
 
