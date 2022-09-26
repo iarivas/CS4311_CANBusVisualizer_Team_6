@@ -29,12 +29,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class Project_Info(BaseModel):
-    baud_rate: int
+class ProjectInfo(BaseModel):
+    baudRate: int
     initials: str
-    name: str = None
-    dbc_file: str = None
-    blacklist_file: str = None
+    eventName: str
+    dbcFile: str = None
+    blacklistFile: str = None
 
 class projectManager():
 
@@ -51,18 +51,23 @@ class projectManager():
         return
 
     @app.post("/projects/")
-    def createProject(project_info: Project_Info):
-        if len(project_info.initials) == 0:
+    def createProject(projectInfo: ProjectInfo):
+        if len(projectInfo.initials) == 0:
             raise HTTPException(
-                status_code = status.HTTP_406_NOT_ACCEPTABLE,
+                status_code = status.HTTP_400_BAD_REQUEST,
                 detail = "Analyst initials were not provided"
             )
-        '''if len(project_info.baud_rate) == 0:
+        if len(projectInfo.baudRate) == 0:
             raise HTTPException(
-                status_code = status.HTTP_406_NOT_ACCEPTABLE,
+                status_code = status.HTTP_400_BAD_REQUEST,
                 detail = "Baud rate was not provided"
-            )'''
-        currentProject = projectConfig.project(project_info.baud_rate, project_info.initials, project_info.name, project_info.dbc_file, project_info.blacklist_file)
+            )
+        if len(projectInfo.eventName) == 0:
+            raise HTTPException(
+                status_code = status.HTTP_400_BAD_REQUEST,
+                detail = "Project name was not provided"
+            )
+        currentProject = projectConfig.project(projectInfo.baudRate, projectInfo.initials, projectInfo.eventName, projectInfo.dbcFile, projectInfo.blacklistFile)
         # createInitialPoject is the mongoDB saving definition from dataSaver.py 
         dataSaver.createInitialProject(currentProject.projectId, currentProject.baudRate, currentProject.analystInitials, currentProject.eventName, currentProject.dbcFileName, currentProject.blackListFileName)
         return currentProject
