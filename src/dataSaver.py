@@ -1,4 +1,8 @@
 import pymongo
+from typing import Final
+
+localDB: Final[str] = "mongodb://localhost:27017"
+
 class dataSaver:
     
     def __init__(self):
@@ -12,7 +16,7 @@ class dataSaver:
         ...
 
     def update(projectID, baudRate, initials, eventName, dbcFile, blacklistFile):
-        _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myclient = pymongo.MongoClient(localDB)
         _mydb = _myclient["TestDB"]
         _mycol = _mydb["TestCol"]
 
@@ -33,11 +37,9 @@ class dataSaver:
         x = _mycol.update_one(olddoc, newdoc)
 
     def createInitialProject(projectID, baudRate, initials, eventName, dbcFile, blacklistFile):
-        _myclient = pymongo.MongoClient("mongodb://localhost:27017")
+        _myclient = pymongo.MongoClient(localDB)
         _mydb = _myclient["TestDB"]
         _mycol = _mydb["TestCol"]
-
-        baudRate = 12
 
         doc = {
             "_id": projectID,
@@ -47,7 +49,7 @@ class dataSaver:
             "dbcFile": dbcFile,
             "blacklistFile": blacklistFile
         }
-
+        
         x = _mycol.insert_one(doc)
 
         print(x.inserted_id)

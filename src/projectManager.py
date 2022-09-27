@@ -57,7 +57,7 @@ class projectManager():
                 status_code = status.HTTP_400_BAD_REQUEST,
                 detail = "Analyst initials were not provided"
             )
-        if len(projectInfo.baudRate) == 0:
+        if baudrate is None:
             raise HTTPException(
                 status_code = status.HTTP_400_BAD_REQUEST,
                 detail = "Baud rate was not provided"
