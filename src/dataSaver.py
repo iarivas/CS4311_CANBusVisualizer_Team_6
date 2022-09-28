@@ -11,7 +11,7 @@ class dataSaver:
     def saveCANLocal(self, canBus):
         ...
 
-    def update(projectID, baudRate, initials, name, dbcFile, blacklistFile):
+    def update(projectID, baudRate, initials, name, dbcFile, blacklistFile, packets, archive):
         _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
         _mydb = _myclient["TestDB"]
         _mycol = _mydb["TestCol"]
@@ -26,7 +26,9 @@ class dataSaver:
             "initials": initials,
             "name": name,
             "dbcFile": dbcFile,
-            "blacklistFile": blacklistFile
+            "blacklistFile": blacklistFile,
+            "packets": packets,
+            "archive": archive
             }
         }
 
@@ -45,7 +47,9 @@ class dataSaver:
                 "initials": initials,
                 "name": name,
                 "dbcFile": dbcFile,
-                "blacklistFile": blacklistFile
+                "blacklistFile": blacklistFile,
+                "packets": None,
+                "archive": False
             }
 
             x = _mycol.insert_one(doc)

@@ -13,6 +13,10 @@ from dataReceiver import *
 # dataReceiver.retrieveDBCFile("TestingLocal")
 # dataReceiver.retrieveInitials("Project 2")
 # dataReceiver.retrieveProjects("Project 2")
+# dataReceiver.retrievePackets("Project 1")
+
+archived = dataReceiver.retrieveArchivedProjects()
+print("Archived Projects: ", archived)
 
 projects = dataReceiver.retrieveAllProjects()
-print(projects)
+print("All projects in database: ", projects)
