@@ -1,4 +1,8 @@
 import pymongo
+from typing import Final
+
+localDB: Final[str] = "mongodb://localhost:27017"
+
 class dataSaver:
     
     def __init__(self):
@@ -11,8 +15,8 @@ class dataSaver:
     def saveCANLocal(self, canBus):
         ...
 
-    def update(projectID, baudRate, initials, name, dbcFile, blacklistFile):
-        _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+    def update(projectID, baudRate, initials, eventName, dbcFile, blacklistFile):
+        _myclient = pymongo.MongoClient(localDB)
         _mydb = _myclient["TestDB"]
         _mycol = _mydb["TestCol"]
 
@@ -24,7 +28,7 @@ class dataSaver:
             "$set": {
             "baudRate": baudRate,
             "initials": initials,
-            "name": name,
+            "eventName": eventName,
             "dbcFile": dbcFile,
             "blacklistFile": blacklistFile
             }
@@ -32,28 +36,21 @@ class dataSaver:
 
         x = _mycol.update_one(olddoc, newdoc)
 
-    def createInitialProject(projectID, baudRate, initials, name, dbcFile, blacklistFile):
-        _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+    def createInitialProject(projectID, baudRate, initials, eventName, dbcFile, blacklistFile):
+        _myclient = pymongo.MongoClient(localDB)
         _mydb = _myclient["TestDB"]
         _mycol = _mydb["TestCol"]
 
-        if baudRate != None and initials != None:
-
-            doc = {
-                "_id": projectID,
-                "baudRate": baudRate,
-                "initials": initials,
-                "name": name,
-                "dbcFile": dbcFile,
-                "blacklistFile": blacklistFile
-            }
-
-            x = _mycol.insert_one(doc)
-
-            print(x.inserted_id)
-
-            return
+        doc = {
+            "_id": projectID,
+            "baudRate": baudRate,                
+            "initials": initials,
+            "eventName": eventName,
+            "dbcFile": dbcFile,
+            "blacklistFile": blacklistFile
+        }
         
-        else:
-            print("baud rate or initials are null")
+        x = _mycol.insert_one(doc)
+
+        print(x.inserted_id)
     
