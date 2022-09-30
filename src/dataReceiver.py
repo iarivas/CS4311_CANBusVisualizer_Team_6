@@ -16,24 +16,24 @@ class dataReceiver:
 
     #return all projects in db
     def retrieveAllProjects():
-        _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        _mydb = _myclient["TestDB"]
-        _mycol = _mydb["TestCol"]
+        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
 
         store = []
 
-        for x in _mycol.find({} , {"_id": 1, "eventName": 1}):
+        for x in _myCol.find({} , {"_id": 1, "eventName": 1}):
             store.append(x)
         
         return store
 
     #return project matching projectID
     def retrieveProject(projectID):
-        _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        _mydb = _myclient["TestDB"]
-        _mycol = _mydb["TestCol"]
+        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
 
-        x = _mycol.find_one({
+        x = _myCol.find_one({
             "_id": projectID
         })
 
@@ -41,13 +41,13 @@ class dataReceiver:
 
     #return name of project matching projectID
     def retrieveName(projectID):
-        _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        _mydb = _myclient["TestDB"]
-        _mycol = _mydb["TestCol"]
+        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
 
         name
 
-        for x in _mycol.find({"_id": projectID}, {"_id": 0, "eventName": 1}):
+        for x in _myCol.find({"_id": projectID}, {"_id": 0, "eventName": 1}):
             print(x)
             name = x
         
@@ -55,13 +55,13 @@ class dataReceiver:
 
     #return baudRate of project matching projectID
     def retrieveBaudRate(projectID):
-        _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        _mydb = _myclient["TestDB"]
-        _mycol = _mydb["TestCol"]
+        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
 
         baudRate
 
-        for x in _mycol.find({"_id": projectID}, {"_id": 0, "baudRate": 1}):
+        for x in _myCol.find({"_id": projectID}, {"_id": 0, "baudRate": 1}):
             print(x)
             baudRate = x
         
@@ -69,13 +69,13 @@ class dataReceiver:
     
     #return dbcFile of project matching projectID
     def retrieveDBCFile(projectID):
-        _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        _mydb = _myclient["TestDB"]
-        _mycol = _mydb["TestCol"]
+        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
 
         dbcFile
 
-        for x in _mycol.find({"_id": projectID}, {"_id": 0, "dbcFile": 1}):
+        for x in _myCol.find({"_id": projectID}, {"_id": 0, "dbcFile": 1}):
             print(x)
             dbcFile = x
         
@@ -83,13 +83,13 @@ class dataReceiver:
 
     #return blacklistFile of project matching projectID
     def retrieveBlacklistFile(projectID):
-        _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        _mydb = _myclient["TestDB"]
-        _mycol = _mydb["TestCol"]
+        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
 
         blacklistFile
 
-        for x in _mycol.find({"_id": projectID}, {"_id": 0, "blacklistFile": 1}):
+        for x in _myCol.find({"_id": projectID}, {"_id": 0, "blacklistFile": 1}):
             print(x)
             blacklistFile = x
         
@@ -97,13 +97,13 @@ class dataReceiver:
     
     #return initials of project matching projectID
     def retrieveInitials(projectID):
-        _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        _mydb = _myclient["TestDB"]
-        _mycol = _mydb["TestCol"]
+        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
 
         initials
 
-        for x in _mycol.find({"_id": projectID}, {"_id": 0, "initials": 1}):
+        for x in _myCol.find({"_id": projectID}, {"_id": 0, "initials": 1}):
             print(x)
             initials = x
         
@@ -111,13 +111,13 @@ class dataReceiver:
 
     ##return packets of project matching projectID
     def retrievePackets(projectID):
-        _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        _mydb = _myclient["TestDB"]
-        _mycol = _mydb["TestCol"]
+        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
 
         packets
 
-        for x in _mycol.find({"_id": projectID}, {"_id": 0, "packets": 1}):
+        for x in _myCol.find({"_id": projectID}, {"_id": 0, "packets": 1}):
             print(x)
             packets = x
         
@@ -125,26 +125,26 @@ class dataReceiver:
     
     #return archived projects
     def retrieveArchivedProjects():
-        _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        _mydb = _myclient["TestDB"]
-        _mycol = _mydb["TestCol"]
+        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
 
         store = []
 
-        for x in _mycol.find({"archive": True}):
+        for x in _myCol.find({"archive": True}):
             store.append(x)
         
         return store
     
     #return projects matching eventName
     def retrieveProjects(eventName):
-        _myclient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        _mydb = _myclient["TestDB"]
-        _mycol = _mydb["TestCol"]
+        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
 
         store = []
 
-        for x in _mycol.find({"eventName": eventName}):
+        for x in _myCol.find({"eventName": eventName}):
             print(x)
             store.append(x)
         

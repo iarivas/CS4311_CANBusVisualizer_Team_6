@@ -15,16 +15,16 @@ class dataSaver:
     def saveCANLocal(self, canBus):
         ...
 
-    def update(projectID, baudRate, initials, name, dbcFile, blacklistFile, packets, archive):
-        _myclient = pymongo.MongoClient(localDB)
-        _mydb = _myclient["TestDB"]
-        _mycol = _mydb["TestCol"]
+    def update(projectID, baudRate, initials, eventName, dbcFile, blacklistFile, packets, archive):
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
 
-        olddoc = {
+        oldDoc = {
             "_id": projectID
         }
 
-        newdoc = {
+        newDoc = {
             "$set": {
             "baudRate": baudRate,
             "initials": initials,
@@ -36,12 +36,12 @@ class dataSaver:
             }
         }
 
-        x = _mycol.update_one(olddoc, newdoc)
+        x = _myCol.update_one(oldDoc, newDoc)
 
     def createInitialProject(projectID, baudRate, initials, eventName, dbcFile, blacklistFile):
-        _myclient = pymongo.MongoClient(localDB)
-        _mydb = _myclient["TestDB"]
-        _mycol = _mydb["TestCol"]
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
 
         doc = {
             "_id": projectID,
@@ -54,7 +54,15 @@ class dataSaver:
             "archive": False
         }
         
-        x = _mycol.insert_one(doc)
+        x = _myCol.insert_one(doc)
 
         print(x.inserted_id)
     
+    # TEST THIS FUNCTION WITH LOCAL DB TO SEE HOW MUCH SPACE PACKETS WILL TAKE PLACE
+    # CHANGE DB AND COLLECTION REFERENCES AS NEEDED
+    def storePackets(projectID, packets):
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
+        _myCol = _myDB["TestCol"]
+
+        _myCol.insert_many(packets)
