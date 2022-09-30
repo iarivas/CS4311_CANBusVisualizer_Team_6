@@ -66,3 +66,11 @@ class dataSaver:
         _myCol = _myDB["TestCol"]
 
         _myCol.insert_many(packets)
+
+    #Deletes all packets in collection that have a matching projectID
+    def deleteAllPackets(projectID):
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
+        _myCol = _myDB["TestCol"]
+
+        _myCol.delete_many(projectID)

@@ -22,3 +22,8 @@ from dataSaver import *
 #     list.append(doc)
 
 # dataSaver.storePackets(test, list)
+
+# # USE TO TEST MASS DELETING PACKETS
+# myquery = {"projectID": "test"}
+
+# dataSaver.deleteAllPackets(myquery)
