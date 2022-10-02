@@ -73,7 +73,7 @@ class dataSaver:
         _myDB = _myClient["TestPDB"]
         _myCol = _myDB["TestCol"]
 
-        _myCol.delete_many({'ProjectID': projectID})
+        _myCol.delete_many({'projectId': projectID})
 
     def deleteAll():
         _myClient = pymongo.MongoClient(localDB)
@@ -88,22 +88,22 @@ class dataSaver:
         _myCol = _myDB["TestCol"]
 
         if sort == "timeAsc":
-            field = "Timestamp"
+            field = "timestamp"
             sortType = pymongo.ASCENDING
         elif sort == "timeDesc":
-            field = "Timestamp"
+            field = "timestamp"
             sortType = pymongo.DESCENDING
         elif sort == "idAsc":
-            field = "ID"
+            field = "nodeId"
             sortType = pymongo.ASCENDING
         else:
-            field = "ID"
+            field = "nodeId"
             sortType = pymongo.DESCENDING
 
         if node is not None:
-            findQuery = {'ProjectID': projectID, 'ID': node}
+            findQuery = {'projectId': projectID, 'nodeId': node}
         else:
-            findQuery = {'ProjectID': projectID}
+            findQuery = {'projectId': projectID}
 
         packetList = []
 
@@ -112,3 +112,9 @@ class dataSaver:
             packetList.append(packet)
         
         return packetList
+
+def main():
+    dataSaver.deleteAll()
+
+if __name__ == "__main__":
+    main()

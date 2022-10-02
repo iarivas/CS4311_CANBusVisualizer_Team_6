@@ -27,7 +27,7 @@ class packetManager():
         with open('packets.txt', 'r') as f:
             for line in f:
                 fields = line.strip().split(';')
-                packet = {'ProjectID': projectId, 'Timestamp': fields[0], 'Type': fields[1], 'ID': fields[2], 'Data': fields[3]}
+                packet = {'projectId': projectId, 'timestamp': fields[0], 'type': fields[1], 'nodeId': fields[2], 'data': fields[3]}
                 self.packetList.append(packet)
         dataSaver.storePackets(self.packetList)
 
