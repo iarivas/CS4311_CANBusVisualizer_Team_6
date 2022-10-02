@@ -26,7 +26,6 @@ class packetManager():
     def populatePacketList(self, projectId):
         with open('packets.txt', 'r') as f:
             for line in f:
-                line = f.readline().strip()
                 fields = line.strip().split(';')
                 packet = {'ProjectID': projectId, 'Timestamp': fields[0], 'Type': fields[1], 'ID': fields[2], 'Data': fields[3]}
                 self.packetList.append(packet)
