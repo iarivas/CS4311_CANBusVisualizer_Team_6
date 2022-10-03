@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import project, packets
+from routers import projectManager, packetManager
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -14,8 +14,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(project.router)
-app.include_router(packets.router)
+app.include_router(projectManager.router)
+app.include_router(packetManager.router)
 
 @app.get("/")
 async def root():

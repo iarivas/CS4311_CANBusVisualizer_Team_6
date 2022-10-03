@@ -1,5 +1,9 @@
 import pymongo
-class dataReceiver:
+from typing import Final
+
+localDB: Final[str] = "mongodb://localhost:27017"
+
+class dataGetter:
 
     def __init__(self):
         ...
@@ -110,18 +114,36 @@ class dataReceiver:
         return initials
 
     ##return packets of project matching projectID
-    def retrievePackets(projectID):
-        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        _myDB = _myClient["TestDB"]
+    def getPackets(projectID: str, size: int, sort: str, node=None, before=None, after=None):
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
         _myCol = _myDB["TestCol"]
 
-        packets
+        if sort == "timeAsc":
+            field = "timestamp"
+            sortType = pymongo.ASCENDING
+        elif sort == "timeDesc":
+            field = "timestamp"
+            sortType = pymongo.DESCENDING
+        elif sort == "idAsc":
+            field = "nodeId"
+            sortType = pymongo.ASCENDING
+        else:
+            field = "nodeId"
+            sortType = pymongo.DESCENDING
 
-        for x in _myCol.find({"_id": projectID}, {"_id": 0, "packets": 1}):
-            print(x)
-            packets = x
+        if node is not None:
+            findQuery = {'projectId': projectID, 'nodeId': node}
+        else:
+            findQuery = {'projectId': projectID}
+
+        packetList = []
+
+        for packet in _myCol.find(findQuery).sort(field, sortType).limit(size):
+            packet['_id'] = str(packet['_id'])
+            packetList.append(packet)
         
-        return packets
+        return packetList
     
     #return archived projects
     def retrieveArchivedProjects():
