@@ -81,3 +81,12 @@ class dataSaver:
         _myCol = _myDB["TestCol"]
 
         _myCol.delete_many({})
+
+# This is meant for testing purposes only, in order to allow the quick and
+# easy deletiong of all packets from the db, uncomment as needed
+'''def main():
+    dataSaver.deleteAll() # deletes all packets from the packets db only
+
+if __name__ == "__main__":
+    main()
+'''
