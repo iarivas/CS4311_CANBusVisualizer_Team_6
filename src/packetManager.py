@@ -1,7 +1,12 @@
-class packetManager:
+from dataSaver import dataSaver
+from fastapi import APIRouter
+
+router = APIRouter()
+
+class packetManager():
     
-    def __init__(self, packetList):
-        self.packetList = packetList
+    def __init__(self, packetList=[]):
+        self.packetList: list = packetList
 
     #SETTERS
 
@@ -15,6 +20,16 @@ class packetManager:
 
 
     ##FUNCITONS
+
+    # this is hardcoded to read from the packets.txt file provided by the cutsomer for now, 
+    # until we can read the packets from the CAN Bus
+    def populatePacketList(self, projectId):
+        with open('packets.txt', 'r') as f:
+            for line in f:
+                fields = line.strip().split(';')
+                packet = {'projectId': projectId, 'timestamp': fields[0], 'type': fields[1], 'nodeId': fields[2], 'data': fields[3]}
+                self.packetList.append(packet)
+        dataSaver.storePackets(self.packetList)
 
     def savePacket(self, packet):
         return #ideally a status code to confirm it was saved, customer said memory will fill out fast

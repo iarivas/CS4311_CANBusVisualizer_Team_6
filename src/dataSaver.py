@@ -60,7 +60,7 @@ class dataSaver:
     
     # TEST THIS FUNCTION WITH LOCAL DB TO SEE HOW MUCH SPACE PACKETS WILL TAKE PLACE
     # CHANGE DB AND COLLECTION REFERENCES AS NEEDED
-    def storePackets(projectID, packets):
+    def storePackets(packets):
         _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestPDB"]
         _myCol = _myDB["TestCol"]
@@ -73,4 +73,48 @@ class dataSaver:
         _myDB = _myClient["TestPDB"]
         _myCol = _myDB["TestCol"]
 
-        _myCol.delete_many(projectID)
+        _myCol.delete_many({'projectId': projectID})
+
+    def deleteAll():
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
+        _myCol = _myDB["TestCol"]
+
+        _myCol.delete_many({})
+
+    def getPackets(projectID: str, size: int, sort: str, node=None, before=None, after=None):
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
+        _myCol = _myDB["TestCol"]
+
+        if sort == "timeAsc":
+            field = "timestamp"
+            sortType = pymongo.ASCENDING
+        elif sort == "timeDesc":
+            field = "timestamp"
+            sortType = pymongo.DESCENDING
+        elif sort == "idAsc":
+            field = "nodeId"
+            sortType = pymongo.ASCENDING
+        else:
+            field = "nodeId"
+            sortType = pymongo.DESCENDING
+
+        if node is not None:
+            findQuery = {'projectId': projectID, 'nodeId': node}
+        else:
+            findQuery = {'projectId': projectID}
+
+        packetList = []
+
+        for packet in _myCol.find(findQuery).sort(field, sortType).limit(size):
+            packet['_id'] = str(packet['_id'])
+            packetList.append(packet)
+        
+        return packetList
+
+def main():
+    dataSaver.deleteAll()
+
+if __name__ == "__main__":
+    main()

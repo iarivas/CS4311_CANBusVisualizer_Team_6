@@ -1,5 +1,5 @@
 '''
-Last Updated 9/14/2022 by justus
+Last Updated 10/02/2022 by Montse
 
 Current state of project object class is
 basic information and initializtion deffinition.
@@ -7,7 +7,7 @@ information currently is set to None by default,
 but will change to values once test data is given
 '''
 
-from random import random
+import random
 import string
 
 
@@ -29,16 +29,15 @@ class project():
         self.eventName = eventName
         self.dbcFileName = dbcFileName
         self.blackListFileName = blackListFileName
-        self.projectId = self.idGenerator(eventName)
+        self.projectId = self.idGenerator()
         
 
     #if no custom id is given then a random id is generated
-    def idGenerator(self, id): 
+    def idGenerator(self, id=None): 
         if id != None:
             project_id = id
             return project_id
         else:
-            letters = string.ascii_lowercase
-            project_id = ''.join(random.choice(letters) for i in range(10))
+            project_id = ''.join(random.choice(string.ascii_lowercase) for i in range(10))
             return project_id
         
