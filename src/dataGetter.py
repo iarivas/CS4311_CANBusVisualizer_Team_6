@@ -24,9 +24,8 @@ class dataGetter:
         # print(msg.dlc)                    type: int
         # print(msg.data, "\n")             type: bytearray
         # packets.append[packet]
-        packet = {'projectId': projectId, 'timestamp': str(msg.timestamp), 'type': msg.dlc, 
-            'nodeId': msg.arbitration_id, 'data': str(msg.data)}
-        print(packet)
+        packet = {'projectId': projectId, 'timestamp': str(msg.timestamp), 'type': str(msg.dlc), 
+            'nodeId': str(msg.arbitration_id), 'data': str(msg.data)}
         dataSaver.storePackets([packet])
         return
 
