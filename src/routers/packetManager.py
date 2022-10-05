@@ -1,7 +1,14 @@
+<<<<<<< HEAD:src/packetManager.py
+from dataReceiver import dataReceiver
+# from dataSaver import dataSaver
+from fastapi import APIRouter
+import can
+=======
 from dataSaver import dataSaver
 from dataGetter import dataGetter
 from fastapi import APIRouter
 from typing import Union
+>>>>>>> d89143a1509a4a5b4d57df8b54a2a898657f3c69:src/routers/packetManager.py
 
 router = APIRouter()
 
@@ -23,6 +30,38 @@ class packetManager():
 
     ##FUNCITONS
 
+<<<<<<< HEAD:src/packetManager.py
+    def populatePacketList(self, projectId):
+
+        # this is hardcoded to read from the packets.txt file provided by the cutsomer for now, 
+        # until we can read the packets from the CAN Bus
+
+        # with open('packets.txt', 'r') as f:
+        #     for line in f:
+        #         fields = line.strip().split(';')
+        #         packet = {'projectId': projectId, 'timestamp': fields[0], 'type': fields[1],
+        #            'nodeId': fields[2], 'data': fields[3]}
+        #         self.packetList.append(packet)
+        
+        #semi Hardcoded for demos sake until discussed how we would rearrange threading 
+        #dataReceiver.receiveTraffic(projectId)
+
+        # for p in packets:
+        #     packet = {'projectId': projectId, 'timestamp': p[0], 'type': p[2], 
+        #         'nodeId': p[1], 'data': p[3]}
+        #     self.packetList.append(packet)
+        # dataSaver.storePackets(self.packetList)
+        return
+
+    #needs to be updated to get packet from DB and modified before being sent
+    #https://python-can.readthedocs.io/en/master/message.html?highlight=message
+    def sendPackets():
+        bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
+        msg = can.Message(arbitration_id=100, data=bytearray([1, 2, 3]), is_extended_id=False)
+        bus.send(msg)
+
+=======
+>>>>>>> d89143a1509a4a5b4d57df8b54a2a898657f3c69:src/routers/packetManager.py
     def savePacket(self, packet):
         return #ideally a status code to confirm it was saved, customer said memory will fill out fast
     

@@ -1,16 +1,39 @@
+from dataSaver import dataSaver
 import pymongo
+<<<<<<< HEAD:src/dataReceiver.py
+import can
+
+class dataReceiver:
+=======
 from typing import Final
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
 class dataGetter:
+>>>>>>> d89143a1509a4a5b4d57df8b54a2a898657f3c69:src/dataGetter.py
 
     def __init__(self):
         ...
     
     #functions
-    def receiveTraffic(self, something):
-        ...
+    def receiveTraffic(self, projectId):
+        
+        # for vcan0 socket in Kali
+        bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
+
+        msg = bus.recv()
+        # packet = [msg.timestamp, msg.arbitration_id, msg.dlc, msg.data]
+        # print(msg.timestamp)              type: float
+        # print(msg.arbitration_id)         type: int
+        # print(msg.channel)                type: str or int or None
+        # print(msg.dlc)                    type: int
+        # print(msg.data, "\n")             type: bytearray
+        # packets.append[packet]
+        packet = {'projectId': projectId, 'timestamp': msg.timestamp, 'type': msg.dlc, 
+            'nodeId': msg.arbitration_id, 'data': msg.data}
+        dataSaver.storePackets(packet)
+        return
+
     
     def decodePackets(self, packet):
         ...
