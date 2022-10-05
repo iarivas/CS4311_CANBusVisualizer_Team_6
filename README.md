@@ -20,7 +20,7 @@ Before you begin, ensure you have met the following requirements:
 ## To start The Backend API server without application launcher, follow these steps:
 >1. Open command terminal
 >2. Navigate to src directory in project directory
->3. Run comand `uvicorn projectManager:app --reload`
+>3. Run comand `uvicorn main:app --reload`
 
 ## How to access the Backend API:
 >The Backend API is only acesable through api calls useing the
