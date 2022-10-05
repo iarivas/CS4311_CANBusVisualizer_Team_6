@@ -1,5 +1,5 @@
 from dataReceiver import dataReceiver
-from dataSaver import dataSaver
+# from dataSaver import dataSaver
 from fastapi import APIRouter
 import can
 
@@ -36,12 +36,14 @@ class packetManager():
         #         self.packetList.append(packet)
         
         #semi Hardcoded for demos sake until discussed how we would rearrange threading 
-        packets = dataReceiver.receiveTraffic()
-        for p in packets:
-            packet = {'projectId': projectId, 'timestamp': p[0], 'type': p[2], 
-                'nodeId': p[1], 'data': p[3]}
-            self.packetList.append(packet)
-        dataSaver.storePackets(self.packetList)
+        #dataReceiver.receiveTraffic(projectId)
+
+        # for p in packets:
+        #     packet = {'projectId': projectId, 'timestamp': p[0], 'type': p[2], 
+        #         'nodeId': p[1], 'data': p[3]}
+        #     self.packetList.append(packet)
+        # dataSaver.storePackets(self.packetList)
+        return
 
     #needs to be updated to get packet from DB and modified before being sent
     #https://python-can.readthedocs.io/en/master/message.html?highlight=message
