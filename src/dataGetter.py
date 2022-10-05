@@ -1,7 +1,7 @@
 from dataSaver import dataSaver
 import pymongo
 import can
-from typing import Finals
+from typing import Final
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
