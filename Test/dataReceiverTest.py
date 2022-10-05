@@ -3,7 +3,7 @@ import sys
 # setting path
 sys.path.append('../src')
 
-from dataReceiver import *
+from dataGetter import *
 
 # dataReceiver.retrieveProject(2)
 

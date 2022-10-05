@@ -1,7 +1,14 @@
+<<<<<<< HEAD:src/packetManager.py
 from dataReceiver import dataReceiver
 # from dataSaver import dataSaver
 from fastapi import APIRouter
 import can
+=======
+from dataSaver import dataSaver
+from dataGetter import dataGetter
+from fastapi import APIRouter
+from typing import Union
+>>>>>>> d89143a1509a4a5b4d57df8b54a2a898657f3c69:src/routers/packetManager.py
 
 router = APIRouter()
 
@@ -23,6 +30,7 @@ class packetManager():
 
     ##FUNCITONS
 
+<<<<<<< HEAD:src/packetManager.py
     def populatePacketList(self, projectId):
 
         # this is hardcoded to read from the packets.txt file provided by the cutsomer for now, 
@@ -52,6 +60,8 @@ class packetManager():
         msg = can.Message(arbitration_id=100, data=bytearray([1, 2, 3]), is_extended_id=False)
         bus.send(msg)
 
+=======
+>>>>>>> d89143a1509a4a5b4d57df8b54a2a898657f3c69:src/routers/packetManager.py
     def savePacket(self, packet):
         return #ideally a status code to confirm it was saved, customer said memory will fill out fast
     
@@ -79,3 +89,19 @@ class packetManager():
     
     def generatePacket(self, listOfAttributes):
         ...
+
+    @router.get("/projects/{projectId}/packets", tags=["packets"])
+    def getPacketsFromProject(projectId: str, size: int, sort: str, node: Union[str, None] = None, before: Union[str, None] = None, after: Union[str, None] = None):
+        populatePacketList(projectId)
+        return dataGetter.getPackets(projectId, size, sort, node, before, after)
+
+# this is hardcoded to read from the packets.txt file provided by the cutsomer for now, 
+# until we can read the packets from the CAN Bus
+def populatePacketList(projectId):
+    packetList = []
+    with open('packets.txt', 'r') as f:
+        for line in f:
+            fields = line.strip().split(';')
+            packet = {'projectId': projectId, 'timestamp': fields[0], 'type': fields[1], 'nodeId': fields[2], 'data': fields[3]}
+            packetList.append(packet)
+    dataSaver.storePackets(packetList)

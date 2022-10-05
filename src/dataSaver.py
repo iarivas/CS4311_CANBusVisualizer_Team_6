@@ -82,39 +82,11 @@ class dataSaver:
 
         _myCol.delete_many({})
 
-    def getPackets(projectID: str, size: int, sort: str, node=None, before=None, after=None):
-        _myClient = pymongo.MongoClient(localDB)
-        _myDB = _myClient["TestPDB"]
-        _myCol = _myDB["TestCol"]
-
-        if sort == "timeAsc":
-            field = "timestamp"
-            sortType = pymongo.ASCENDING
-        elif sort == "timeDesc":
-            field = "timestamp"
-            sortType = pymongo.DESCENDING
-        elif sort == "idAsc":
-            field = "nodeId"
-            sortType = pymongo.ASCENDING
-        else:
-            field = "nodeId"
-            sortType = pymongo.DESCENDING
-
-        if node is not None:
-            findQuery = {'projectId': projectID, 'nodeId': node}
-        else:
-            findQuery = {'projectId': projectID}
-
-        packetList = []
-
-        for packet in _myCol.find(findQuery).sort(field, sortType).limit(size):
-            packet['_id'] = str(packet['_id'])
-            packetList.append(packet)
-        
-        return packetList
-
-def main():
-    dataSaver.deleteAll()
+# This is meant for testing purposes only, in order to allow the quick and
+# easy deletiong of all packets from the db, uncomment as needed
+'''def main():
+    dataSaver.deleteAll() # deletes all packets from the packets db only
 
 if __name__ == "__main__":
     main()
+'''
