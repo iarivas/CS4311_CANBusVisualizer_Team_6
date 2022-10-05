@@ -11,7 +11,7 @@ class dataGetter:
         ...
     
     #functions
-    def receiveTraffic(self, projectId):
+    def receiveTraffic(projectId):
         
         # for vcan0 socket in Kali
         bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
@@ -24,9 +24,10 @@ class dataGetter:
         # print(msg.dlc)                    type: int
         # print(msg.data, "\n")             type: bytearray
         # packets.append[packet]
-        packet = {'projectId': projectId, 'timestamp': msg.timestamp, 'type': msg.dlc, 
-            'nodeId': msg.arbitration_id, 'data': msg.data}
-        dataSaver.storePackets(packet)
+        packet = {'projectId': projectId, 'timestamp': str(msg.timestamp), 'type': msg.dlc, 
+            'nodeId': msg.arbitration_id, 'data': str(msg.data)}
+        print(packet)
+        dataSaver.storePackets([packet])
         return
 
     
