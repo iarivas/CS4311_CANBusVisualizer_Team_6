@@ -1,16 +1,11 @@
 from dataSaver import dataSaver
 import pymongo
-<<<<<<< HEAD:src/dataReceiver.py
 import can
-
-class dataReceiver:
-=======
 from typing import Final
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
 class dataGetter:
->>>>>>> d89143a1509a4a5b4d57df8b54a2a898657f3c69:src/dataGetter.py
 
     def __init__(self):
         ...
