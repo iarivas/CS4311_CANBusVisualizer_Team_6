@@ -1,0 +1,32 @@
+div.visualizer {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    display: flex;
+    flex-flow: column;
+    height: 100vh;
+}
+
+div.packet-container {
+    flex: 1 0 auto;
+}
+
+h1.visualizer-title {
+    flex: 0 0 auto;
+    padding-left: 30px;
+}
+
+div.visualizer-content {
+    display: flex;
+    flex: 1 0 auto;
+}
+
+div.packet-container-content {
+    display: flex;
+    flex: 0 0 auto;
+}
+
+div.node-map-container-content {
+    display: flex;
+    flex: 1 0 auto;
+}

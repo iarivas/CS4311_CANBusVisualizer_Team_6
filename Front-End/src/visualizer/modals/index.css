@@ -1,0 +1,20 @@
+.edit-packet-modal .modal-content{
+    background-color: #17161b;
+}
+
+.edit-packet-modal .form-control {
+    background-color: rgba(0, 0, 0, 0);
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #edeff3;
+}
+
+.packet-view-modal .modal-content, .mb-3{
+    background-color: #17161b;
+}
+
+
+.packet-filter .form-control, .packet-sort .form-select{
+    background-color: rgba(0, 0, 0, 0);
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #edeff3;
+}

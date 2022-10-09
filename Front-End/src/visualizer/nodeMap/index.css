@@ -1,0 +1,11 @@
+.node-map-container-content {
+    padding-left: 30px;
+}
+
+.node-map-container {
+    flex: 1 0 auto;
+    padding: 15px;
+    border-color: rgba(255, 255, 255, 0.2);
+    border-width: 1px;
+    border-style: solid;
+}

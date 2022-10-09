@@ -1,0 +1,71 @@
+h1.oops {
+    margin: 20px 40px;
+    font-size: 800%;
+}
+
+h1.not-found {
+    margin: 0px 40px;
+    
+}
+
+p.error-reason{
+    margin: 0px 40px;
+    font-size: 200%;
+}
+
+p.error404{
+    margin: 0px 40px;
+    color: rgb(183,90,91);
+    font-weight: bold;
+}
+
+p.links{
+    margin: 0px 40px;
+    
+}
+
+img{
+    width: 100px;
+    height: auto;
+    margin: 0px 350px;
+}
+
+div.space {
+    width: 20px;
+    height: auto;
+    display: inline-block;
+    
+}
+
+li.link{
+    margin: 0px 40px;
+    color: rgb(214, 206, 206);
+    
+}
+
+li.link:hover{
+    display: inline-block;
+    position: relative;
+    color: #0087ca;
+
+}
+
+li.link:after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #0087ca;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+
+}
+
+li.link:hover::after{
+    transform: scaleX(1);
+  transform-origin: bottom left;
+}
+

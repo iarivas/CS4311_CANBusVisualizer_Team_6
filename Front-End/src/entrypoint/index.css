@@ -1,0 +1,58 @@
+.page {
+    background-image: url('../type/tankImage.png');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+
+.content {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    
+}
+
+.task-title {
+    text-align: center;
+    position: relative;
+    top: 30%;
+    
+}
+
+.task-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    height: 94%;
+    width: 100%;
+    
+}
+
+.task-buttons .btn-primary, .task-buttons .btn-primary:hover, .task-buttons.btn-primary:active, .task-buttons .btn-primary:visited {
+    /* background-color:#1c7e92  !important;     */
+    color: white !important;
+    /* border-color: #1c7e92 !important; */
+    padding: 20px;
+    font-size: 35px;
+    margin: 4px 2px;
+    width:30%;
+    border-radius: 50px;    
+}
+
+
+.task-buttons .space {
+    width: 30px;
+    height: auto;
+    display: inline-block;
+}
+
+.fa.fa-folder, .fa.fa-refresh, .fa.fa-car{
+    padding-right: 10px;
+}
+
+
+
+
+
+
