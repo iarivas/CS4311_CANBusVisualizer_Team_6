@@ -1,0 +1,57 @@
+.packet-container {
+    display: flex;
+    flex-direction: column;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    width: 480px;
+}
+
+.packet-table {
+    flex: 1 0 auto;
+    overflow-x: scroll;
+    height: 0;
+}
+
+.packet-table th {
+    position: sticky;
+    top: 0;
+}
+
+.packet-time {
+    width: 120px;
+}
+
+.packet-id {
+    width: 85px;
+}
+
+.packet-type {
+    width: 50px;
+}
+
+.packet-data {
+    width: 170px;
+}
+
+.packet-table table * {
+    background-color: #17161b;
+    color: #edeff3bd;
+}
+
+.packet-container-inner {
+    padding: 0px 0px 15px 0px;
+}
+
+.packet-container-inner h3, .packet-container-inner * {
+    display: inline;
+}
+
+.packet-action-buttons {
+    float: right;
+}
+
+.packet-action-buttons button{
+    width: 80px;
+}

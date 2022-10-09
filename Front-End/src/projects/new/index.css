@@ -1,0 +1,22 @@
+div.new-project {
+    display: table;
+    padding: 10px;
+    width: 50%;
+    margin: 0 auto;
+}
+
+div.new-project-fields .mb-3 {
+    width: 800px;
+}
+
+div.new-project-fields .mb-3 .form-control{
+    background-color: rgba(0, 0, 0, 0);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #edeff3;
+}
+
+div.new-project-buttons .space {
+    width: 20px;
+    height: auto;
+    display: inline-block;
+}

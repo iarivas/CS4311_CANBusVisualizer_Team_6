@@ -1,0 +1,55 @@
+.body {
+    margin: 30px;
+  
+}
+
+.br{
+    height: auto;
+}
+
+.side-bar{
+    margin-top: 20px;
+}
+
+.side-buttons{
+    display: block;
+    width: 150px;
+    height: 50px;
+    background-color: #00c28a !important ;
+    border-color:#00c28a !important; 
+}
+
+.project-space{
+    margin: 30px;
+    display: flexbox;
+}
+
+
+.container{
+    padding: 20px;
+    margin: 20px;
+}
+
+.project-options{
+    margin: 5px;
+    position: center;
+    width: 100px;
+}
+
+.mock-project{
+    margin: 20px;
+}
+
+.inside-mock{
+    width: 200px;
+
+}
+
+.projectHeader3{
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.tabColumn{
+    margin-top: 13px;
+}
