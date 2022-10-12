@@ -3,9 +3,18 @@
 }
 
 .node-map-container {
+    display: flex;
+    flex-direction: column;
     flex: 1 0 auto;
     padding: 15px;
     border-color: rgba(255, 255, 255, 0.2);
     border-width: 1px;
     border-style: solid;
+}
+
+.node-map {
+    flex: 1 0 auto;
+    min-width: 700px;
+    min-height: 350px;
+    background-color: rgb(119, 79, 119);
 }

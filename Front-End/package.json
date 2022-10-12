@@ -14,6 +14,8 @@
     "axios": "^0.27.2",
     "bootstrap": "^5.2.1",
     "font-awesome": "^4.7.0",
+    "gojs": "^2.2.16",
+    "gojs-react": "^1.1.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-bootstrap-icons": "^1.9.1",
