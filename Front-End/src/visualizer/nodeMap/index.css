@@ -18,3 +18,9 @@
     min-height: 350px;
     background-color: rgb(119, 79, 119);
 }
+
+.diagram-component {
+    min-width: 700px;
+    min-height: 350px;
+    background-color: rgb(119, 79, 119);
+}
