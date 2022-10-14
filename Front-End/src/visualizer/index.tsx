@@ -1,5 +1,9 @@
 import {useParams} from 'react-router-dom'
 import { useState } from 'react'
+import {
+    useNodesState,
+    useEdgesState,
+} from 'react-flow-renderer';
 import PacketContainer from './packetContainer'
 import NodeMap from './nodeMap'
 import { PacketSortOptions as PacketSort, PACKET_PAGE_SIZE} from '../common/Constants'
@@ -93,6 +97,21 @@ function Visualizer() {
         api.gatherTraffic(play, projectId)
     }
 
+    // Node map
+    const initialNodes = [
+        { id: '1', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
+        { id: '2', data: { label: 'Node 2' }, position: { x: 400, y: 100 } },
+        { id: '3', data: { label: 'Node 3' }, position: { x: 150, y: 100 } },
+        { id: '4', data: { label: 'Node 4' }, position: { x: 0, y: 200 } },
+
+    ];
+
+    const initialEdges = [
+        {id: 'e1-2', source: '1', target: '2'}
+    ]
+
+    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     
     // Other stuff
     
@@ -120,7 +139,12 @@ function Visualizer() {
                     />
                 </div>
                 <div className='node-map-container-content'>
-                    <NodeMap></NodeMap>
+                    <NodeMap
+                        nodes={nodes}
+                        edges={edges}
+                        onNodesChange={onNodesChange}
+                        onEdgesChange={onEdgesChange}
+                    />
                 </div>
             </div>
         </div>
