@@ -18,8 +18,7 @@
     min-height: 350px;
 }
 
-.diagram-component {
-    min-width: 700px;
-    min-height: 350px;
-    background-color: rgb(119, 79, 119);
+.custom-node__header {
+    padding: 8px 10px;
+    border-bottom: 1px solid #e2e8f0;
 }
