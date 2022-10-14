@@ -6,6 +6,8 @@ from fastapi import APIRouter
 from typing import Union
 from pydantic import BaseModel
 
+router = APIRouter()
+
 class Play(BaseModel):
     play: bool
 
@@ -87,12 +89,12 @@ class packetManager():
 
     @router.get("/projects/{projectId}/packets", tags=["packets"])
     def getPacketsFromProject(projectId: str, size: int, sort: str, node: Union[str, None] = None, before: Union[str, None] = None, after: Union[str, None] = None):
-        dataGetter.populatePacketList(projectId)
         return dataGetter.getPackets(projectId, size, sort, node, before, after)
 
     @router.put("/projects/{projectId}/play", tags=["play"])
     def getLivePackets(projectId: str, play: Play):
-        i = 0
-        while(play or i <= 5000):
+        i = 1
+        while(play and i <= 10):
             dataGetter.receiveTraffic(projectId)
+            i += 1
         return 
