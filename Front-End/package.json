@@ -19,6 +19,7 @@
     "react-bootstrap-icons": "^1.9.1",
     "react-dinosaur-game": "^1.0.0",
     "react-dom": "^18.2.0",
+    "react-flow-renderer": "^10.3.17",
     "react-infinite-scroller": "^1.2.6",
     "react-native-vector-icons": "^9.2.0",
     "react-router-dom": "^6.4.0",

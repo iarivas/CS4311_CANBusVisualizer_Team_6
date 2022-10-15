@@ -4,8 +4,22 @@
 
 .node-map-container {
     flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
     padding: 15px;
     border-color: rgba(255, 255, 255, 0.2);
     border-width: 1px;
     border-style: solid;
+}
+
+.react-flow {
+    flex: 1 0 auto;
+    min-width: 700px;
+    min-height: 400px;
+    background-color: rgb(168, 92, 168);
+}
+
+.map-flow {
+    flex: 1 0 auto;
+    flex-direction: column;
 }
