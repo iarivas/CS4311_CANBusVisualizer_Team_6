@@ -1,7 +1,5 @@
 from dataSaver import dataSaver
 import pymongo
-import cantools
-import can
 from typing import Final
 from datetime import datetime
 
@@ -14,20 +12,14 @@ class dataGetter:
         ...
     
     #functions
-    def receiveTraffic(projectId):
-        
-        # for vcan0 socket in Kali
-        db = cantools.database.load_file('../../dbcFile.dbc')
-        bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
+    def receiveTraffic(projectId, dbc, bus):
 
         msg = bus.recv()
         packet =    {'projectId': projectId,
                     'timestamp': str(datetime.fromtimestamp(msg.timestamp))[:-3],
                     'type': str(msg.dlc),
-                    'nodeId': str(db.get_message_by_frame_id(msg.arbitration_id).comment),
-                    'data': str(db.decode_message(msg.arbitration_id, msg.data))}
-                    
-        #print("packet", packet)
+                    'nodeId': str(dbc.get_message_by_frame_id(msg.arbitration_id).comment),
+                    'data': str(dbc.decode_message(msg.arbitration_id, msg.data))}
         dataSaver.storePackets([packet])
         return
 
