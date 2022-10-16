@@ -1,5 +1,4 @@
 import ReactFlow, {
-    MiniMap,
     Controls
 } from 'react-flow-renderer';
 import './index.css'

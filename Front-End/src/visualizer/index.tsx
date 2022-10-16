@@ -1,5 +1,5 @@
 import {useParams} from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
     useNodesState,
     useEdgesState,
@@ -12,6 +12,7 @@ import PacketViewSettingsState from './modals/PacketViewSettingsState'
 import Menubar from '../components/Menubar';
 import APIUtil from '../utilities/APIutils'
 import PacketState from './packetContainer/PacketState'
+import NodeUtils from '../utilities/NodeUtils';
 import './index.css'
 import './modals/index.css'
 
@@ -19,6 +20,7 @@ function Visualizer() {
     const projectId = useParams().projectId!
 
     const api = new APIUtil()
+    const nodeUtils = new NodeUtils()
 
     // Modal for changing packet view settings
     let [isShownPacketsModal, setIsShownPacketsModal] = useState(false)
@@ -112,6 +114,22 @@ function Visualizer() {
 
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+    useEffect(() => {
+        api.getNodes(projectId)
+            .then(response => {
+                const newNodesData = response.data
+                const newParsedData = nodeUtils.parseNodesData(newNodesData)
+                const newNodes = newParsedData.nodes
+                const newEdges = newParsedData.edges
+                // console.log(nodes)
+                setNodes(nodes.concat(newNodes))
+                setEdges(edges.concat(newEdges))
+                // console.log('New nodes')
+            })
+            .catch(error => console.log(error))
+    }, [])
+
     
     // Other stuff
     
