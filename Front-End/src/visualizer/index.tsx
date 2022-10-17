@@ -131,6 +131,22 @@ function Visualizer() {
                 const newParsedData = nodeUtils.parseNodesData(newNodesData)
                 const newNodes = newParsedData.nodes
                 const newEdges = newParsedData.edges
+                // Add default values to nodes with no position or data
+                newNodes.forEach((node, idx) => {
+                    if (!node.data) {
+                        node.data = {
+                            'label': node.id,
+                        }
+                    }
+
+                    if (!node.position) {
+                        node.position = {
+                            x: idx * 200,
+                            y: 0
+                        }
+                    }
+                })
+
                 setNodes(nodes.concat(newNodes))
                 setEdges(edges.concat(newEdges))
             })
