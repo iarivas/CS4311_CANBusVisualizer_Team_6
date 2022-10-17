@@ -1,97 +1,87 @@
+import React, { useState, useCallback } from 'react';
 import ReactFlow, {
-  MiniMap,
-  Controls,
+  ReactFlowProvider,
   useNodesState,
   useEdgesState,
+  addEdge,
+  useReactFlow,
+  Controls,
 } from 'react-flow-renderer';
 import './index.css'
 
-import React, { useCallback, useState, useRef } from "react";
+const flowKey = 'example-flow';
+
+const getNodeId = () => `randomnode_${+new Date()}`;
 
 const initialNodes = [
-{ id: '1', type: "input", data: { label: 'Node 1' }, position: { x: 100, y: 0 } },
-{ id: '2', data: { label: 'Node 2' }, position: { x: 400, y: 100 } },
-{ id: '3', data: { label: 'Node 3' }, position: { x: 150, y: 100 } },
-{ id: '4', data: { label: 'Node 4' }, position: { x: 0, y: 200 } },
+  { id: '1', data: { label: 'Node 1' }, position: { x: 100, y: 100 } },
+  { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 200 } },
 ];
 
-const initialEdges = [
-{id: 'e1-2', source: '1', target: '2'}
-]
+const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
 
 
 function NodeMap({
  
   }) {
-  const [els, setEls] = useState(initialNodes);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const yPos = useRef(0);
-
-  // setNodes(nodes.concat())
-
-  const addNode = useCallback(() => {
-      // yPos.current += 50;
-      // setEls((els) => {
-      //   console.log(els);
-      //   return [
-      //     ...els,
-      //     {
-      //       id: Math.random().toString(),
-      //       position: { x: 100, y: 0 },
-      //       data: { label: "yo" }
-      //     }
-      //   ];
-      // });
-      console.log('HERE')
-      setNodes(nodes.concat(
-        {
-          id: Math.random().toString(),
-          position: {x: 100, y: 0},
-          data: {label: 'test'}
+    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const [rfInstance, setRfInstance] = useState(null);
+    const { setViewport } = useReactFlow();
+  
+    const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+    const onSave = useCallback(() => {
+      if (rfInstance) {
+        const flow = rfInstance.toObject();
+        localStorage.setItem(flowKey, JSON.stringify(flow));
+      }
+    }, [rfInstance]);
+  
+    const onRestore = useCallback(() => {
+      const restoreFlow = async () => {
+        const flow = JSON.parse(localStorage.getItem(flowKey));
+  
+        if (flow) {
+          const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+          setNodes(flow.nodes || []);
+          setEdges(flow.edges || []);
+          setViewport({ x, y, zoom });
         }
-      ))
-    }, []);
-
-    const addEdge = useCallback(({ source, target }) => {
-      setEls((els) => {
-        console.log(source, target);
-        return [
-          ...els,
-          {
-            id: Math.random().toString(),
-            source,
-            target
-          }
-        ];
-      });
-    }, []);
-
-  return (
-      <div className='node-map-container rounded'>
-          <div className='node-map-container-inner'>
-              <h3>CAN Bus Map</h3>
-          </div>
-          <div className='map-flow' style={{ height: 300 }}>
-              <ReactFlow
-                  elements={els} onConnect={addEdge}
-                  nodes={nodes} 
-                  edges={edges}
-                  onNodesChange= {onNodesChange}
-                  onEdgesChange={onEdgesChange}
-                  
-              >
-              
-                  <Controls>  <button onClick={addNode}>Add</button> </Controls>
-                  
-              </ReactFlow>
-              
-              
-          </div>
-          
-      </div>
-  );
+      };
+  
+      restoreFlow();
+    }, [setNodes, setViewport]);
+  
+    const onAdd = useCallback(() => {
+      const newNode = {
+        id: getNodeId(),
+        data: { label: 'Added node' },
+        position: {
+          x: Math.random() * window.innerWidth - 100,
+          y: Math.random() * window.innerHeight,
+        },
+      };
+      setNodes((nds) => nds.concat(newNode));
+    }, [setNodes]);
+  
+    return (
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        onInit={setRfInstance}
+      >
+        <div className="save__controls">
+          <button onClick={onSave}>save</button>
+          <button onClick={onRestore}>restore</button>
+          <button onClick={onAdd}>add node</button>
+        </div>
+        <Controls/>
+      </ReactFlow>
+    );
 }
 
 export default NodeMap

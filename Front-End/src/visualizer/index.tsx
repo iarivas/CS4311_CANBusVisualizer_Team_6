@@ -4,6 +4,12 @@ import {
     useNodesState,
     useEdgesState,
 } from 'react-flow-renderer';
+import ReactFlow, {
+    ReactFlowProvider,
+    
+    addEdge,
+    useReactFlow,
+} from 'react-flow-renderer';
 import PacketContainer from './packetContainer'
 import NodeMap from './nodeMap'
 import { PacketSortOptions as PacketSort, PACKET_PAGE_SIZE} from '../common/Constants'
@@ -140,8 +146,10 @@ function Visualizer() {
                     />
                 </div>
                 <div className='node-map-container-content'>
+                    <ReactFlowProvider>
                     <NodeMap
                     />
+                    </ReactFlowProvider>
                 </div>
             </div>
         </div>
