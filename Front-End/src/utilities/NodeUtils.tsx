@@ -1,3 +1,5 @@
+import { Position } from "react-flow-renderer"
+
 class NodeUtils {
     // Returns an object containing:
     // {nodes: [node, ...], edges: [edge, ...]}
@@ -21,18 +23,37 @@ class NodeUtils {
     private _parseNodeData(nodeData: any) {
         return {
             node: {
-                id: nodeData._id,
+                id: nodeData.id,
                 data: nodeData.data,
                 position: nodeData.position
             },
             edges: nodeData.relationships.map((target: string) => {
                 return {
-                    id: nodeData._id + '->' + target,
-                    source: nodeData._id,
+                    id: nodeData.id + '->' + target,
+                    source: nodeData.id,
                     target: target
                 }
             })
         }
+    }
+
+    parseToData(nodes: any, edges: any) {
+        // Find all the edges corresponding to nodes
+        const nodeEdges: any = {}
+        nodes.forEach((node: any) => nodeEdges[node.id] = [])
+        edges.forEach((edge: any) => nodeEdges[edge.source].push(edge.target))
+        
+        // Final parse
+        const nodesData = nodes.map((node: any) => {
+            return {
+                'id': node.id,
+                data: node.data,
+                position: node.position,
+                relationships: nodeEdges[node.id]
+            }
+        })
+
+        return nodesData
     }
 }
 

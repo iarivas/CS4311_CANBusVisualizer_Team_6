@@ -100,36 +100,50 @@ function Visualizer() {
     }
 
     // Node map
-    const initialNodes = [
-        { id: '1', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
-        { id: '2', data: { label: 'Node 2' }, position: { x: 400, y: 100 } },
-        { id: '3', data: { label: 'Node 3' }, position: { x: 150, y: 100 } },
-        { id: '4', data: { label: 'Node 4' }, position: { x: 0, y: 200 } },
-
+    const initialNodes: any[] = [
+        // { id: '1', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
+        // { id: '2', data: { label: 'Node 2' }, position: { x: 400, y: 100 } },
+        // { id: '3', data: { label: 'Node 3' }, position: { x: 150, y: 100 } },
+        // { id: '4', data: { label: 'Node 4' }, position: { x: 0, y: 200 } },
     ];
 
-    const initialEdges = [
-        {id: 'e1-2', source: '1', target: '2'}
+    const initialEdges: any[] = [
+        // {id: 'e1-2', source: '1', target: '2'}
     ]
 
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
+    const saveNodes = () => {
+        const data = nodeUtils.parseToData(nodes, edges)
+        console.log('JSON sent:')
+        console.log(data)
+        api.updateNodes(projectId, data)
+            .then((response) => console.log(response))
+            .catch((error) => console.log(error))
+    }
+
     useEffect(() => {
         api.getNodes(projectId)
             .then(response => {
                 const newNodesData = response.data
+                console.log(newNodesData)
                 const newParsedData = nodeUtils.parseNodesData(newNodesData)
                 const newNodes = newParsedData.nodes
                 const newEdges = newParsedData.edges
-                // console.log(nodes)
                 setNodes(nodes.concat(newNodes))
                 setEdges(edges.concat(newEdges))
-                // console.log('New nodes')
             })
             .catch(error => console.log(error))
     }, [])
 
+    useEffect(() => {
+        const saveInterval = setTimeout(() => {
+            saveNodes()
+        }, 500)
+
+        return () => clearInterval(saveInterval)
+    }, [nodes])
     
     // Other stuff
     

@@ -51,6 +51,10 @@ class APIUtil {
     getNodes(projectId: string) {
         return axios.get(this.url + '/projects/' + projectId + '/nodes')
     }
+
+    updateNodes(projectId: string, nodes: any) {
+        return axios.put(this.url + '/projects/' + projectId + '/nodes', nodes)
+    }
 }
 
 export default APIUtil
