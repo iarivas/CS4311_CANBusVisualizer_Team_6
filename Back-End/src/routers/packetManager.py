@@ -1,10 +1,14 @@
 from fastapi import APIRouter
+from pydantic import BaseModel
 import can
+import cantools
 from dataSaver import dataSaver
 from dataGetter import dataGetter
-from fastapi import APIRouter
 from typing import Union
-from pydantic import BaseModel
+
+bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
+dbc = cantools.database.load_file('/home/cbvs/Desktop/dbcFile.dbc')
+router = APIRouter()
 
 class Play(BaseModel):
     play: bool
@@ -52,9 +56,9 @@ class packetManager():
 
     #needs to be updated to get packet from DB and modified before being sent
     #https://python-can.readthedocs.io/en/master/message.html?highlight=message
-    def sendPackets():
-        bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
-        msg = can.Message(arbitration_id=100, data=bytearray([1, 2, 3]), is_extended_id=False)
+    def sendPackets(arbitrationID, data):
+        msg = dbc.get_message_by_frame_id(arbitrationID)
+        msg = can.Message(arbitration_id=arbitrationID, data = msg.encode(data), is_extended_id = False)
         bus.send(msg)
 
     def savePacket(self, packet):
@@ -87,12 +91,12 @@ class packetManager():
 
     @router.get("/projects/{projectId}/packets", tags=["packets"])
     def getPacketsFromProject(projectId: str, size: int, sort: str, node: Union[str, None] = None, before: Union[str, None] = None, after: Union[str, None] = None):
-        dataGetter.populatePacketList(projectId)
         return dataGetter.getPackets(projectId, size, sort, node, before, after)
 
     @router.put("/projects/{projectId}/play", tags=["play"])
     def getLivePackets(projectId: str, play: Play):
-        i = 0
-        while(play or i <= 5000):
-            dataGetter.receiveTraffic(projectId)
+        i = 1
+        while(play and i <= 10):
+            dataGetter.receiveTraffic(projectId, dbc, bus)
+            i += 1
         return 
