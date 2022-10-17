@@ -1,5 +1,3 @@
-import { Position } from "react-flow-renderer"
-
 class NodeUtils {
     // Returns an object containing:
     // {nodes: [node, ...], edges: [edge, ...]}
@@ -23,14 +21,14 @@ class NodeUtils {
     private _parseNodeData(nodeData: any) {
         return {
             node: {
-                id: nodeData.id,
+                id: nodeData.nodeId,
                 data: nodeData.data,
                 position: nodeData.position
             },
             edges: nodeData.relationships.map((target: string) => {
                 return {
-                    id: nodeData.id + '->' + target,
-                    source: nodeData.id,
+                    id: nodeData.nodeId + '->' + target,
+                    source: nodeData.nodeId,
                     target: target
                 }
             })
@@ -46,7 +44,7 @@ class NodeUtils {
         // Final parse
         const nodesData = nodes.map((node: any) => {
             return {
-                'id': node.id,
+                nodeId: node.id,
                 data: node.data,
                 position: node.position,
                 relationships: nodeEdges[node.id]
