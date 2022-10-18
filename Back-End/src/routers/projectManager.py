@@ -13,7 +13,6 @@ import projectConfig
 from fastapi import status, HTTPException, APIRouter
 from dataSaver import *
 from pydantic import BaseModel
-from Node import Node
 
 router = APIRouter()
 
@@ -23,7 +22,6 @@ class ProjectInfo(BaseModel):
     eventName: str
     dbcFile: str = None
     blacklistFile: str = None
-
 
 class projectManager():
 
