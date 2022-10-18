@@ -14,12 +14,30 @@ class dataGetter:
     #functions
     def receiveTraffic(projectId, dbc, bus):
 
-        msg = bus.recv()
+        _msg = bus.recv()
+        _msgInfo = (dbc.get_message_by_frame_id(_msg.arbitration_id))
+        _msgData = str(dbc.decode_message(_msg.arbitration_id, _msg.data))
+
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
+        _myCol = _myDB["TestColNodes"]
+
+        # Checks if node is in testCol_Nodes
+        if _myCol.find_one({'nodeID': str(_msg.arbitration_id)}) == None:
+            node =    {'projectId': projectId,
+                    'nodeID': str(_msg.arbitration_id),
+                    'name': str(_msgInfo.comment),
+                    'data': None,
+                    'position': None,
+                    'relationships': []}
+
+            dataSaver.storeNodes([node])
+
         packet =    {'projectId': projectId,
-                    'timestamp': str(datetime.fromtimestamp(msg.timestamp))[:-3],
-                    'type': str(msg.dlc),
-                    'nodeId': str(dbc.get_message_by_frame_id(msg.arbitration_id).comment),
-                    'data': str(dbc.decode_message(msg.arbitration_id, msg.data))}
+                    'timestamp': str(datetime.fromtimestamp(_msg.timestamp))[:-3],
+                    'type': str(_msg.dlc),
+                    'nodeId': str(_msgInfo.comment),
+                    'data': _msgData} 
         dataSaver.storePackets([packet])
         return
 
