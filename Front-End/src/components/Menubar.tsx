@@ -31,8 +31,6 @@ export default function Menubar({
             <NavDropdown title="Packets" id="basic-nav-dropdown" >
               <NavDropdown.Item id="action" href="#action/3.1"> Edit Packets</NavDropdown.Item>
               <NavDropdown.Item id="action" href="#action/3.2"> Replay Packets </NavDropdown.Item>
-              <NavDropdown.Item id="action" href="#action/3.1"> Save Packets </NavDropdown.Item>
-              <NavDropdown.Item id="action" href="#action/3.2"> Annotate Packets </NavDropdown.Item>
               <NavDropdown.Item id='action' onClick={showPacketViewSettingsModal}>Filter and Sort</NavDropdown.Item>
               
             </NavDropdown>
@@ -46,9 +44,7 @@ export default function Menubar({
             </NavDropdown>
 
             <NavDropdown title="Node" id="basic-nav-dropdown" >
-              <NavDropdown.Item id="action" href="#action/3.1"> Drag Nodes</NavDropdown.Item>
               <NavDropdown.Item id="action" href="#action/3.2"> Add Relationship  </NavDropdown.Item>
-              <NavDropdown.Item id="action" href="#action/3.1"> Search Node </NavDropdown.Item>
               <NavDropdown.Item id="action" href="#action/3.1"> Select All </NavDropdown.Item>
               
               
