@@ -128,9 +128,8 @@ function Visualizer() {
             .then(response => {
                 const newNodesData = response.data
                 console.log(newNodesData)
-                const newParsedData = nodeUtils.parseNodesData(newNodesData)
-                const newNodes = newParsedData.nodes
-                const newEdges = newParsedData.edges
+                const [newNodes, newEdges] = nodeUtils.parseNodesData(newNodesData)
+                
                 // Add default values to nodes with no position or data
                 newNodes.forEach((node, idx) => {
                     if (!node.data) {
