@@ -1,6 +1,5 @@
 import pymongo
 from typing import Final
-from Node import Node
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
