@@ -1,38 +1,38 @@
+import NodeData from "./NodeData"
+
 class NodeUtils {
-    // Returns an object containing:
-    // {nodes: [node, ...], edges: [edge, ...]}
-    parseNodesData(nodesData: any) {
+    // Returns a list containing:
+    // [newNodes, newEdges]
+    parseNodesData(nodesData: NodeData[]) {
         const nodes: any[] = []
         const edges: any[] = []
 
-        nodesData.forEach((nodeData: any) => {
-            const parsedData: any = this._parseNodeData(nodeData)
-            const newNode = parsedData.node
-            const newEdges = parsedData.edges
+        nodesData.forEach((nodeData: NodeData) => {
+            const [newNode, newEdges]: any = this._parseNodeData(nodeData)
             nodes.push(newNode)
-            newEdges.map((newEdge: any) => edges.push(newEdge))            
+            newEdges.forEach((newEdge: any) => edges.push(newEdge))            
         })
 
-        return {nodes, edges}
+        return [nodes, edges]
     }
 
     // Returns a list containing:
-    // {node: node, edges: [edge1, edge2, ...]}
-    private _parseNodeData(nodeData: any) {
-        return {
-            node: {
+    // [newNode, newEdges[]]
+    private _parseNodeData(nodeData: NodeData) {
+        return [
+            {
                 id: nodeData.nodeId,
                 data: nodeData.data,
                 position: nodeData.position
             },
-            edges: nodeData.relationships.map((target: string) => {
+            nodeData.relationships.map((target: string) => {
                 return {
                     id: nodeData.nodeId + '->' + target,
                     source: nodeData.nodeId,
                     target: target
                 }
             })
-        }
+        ]
     }
 
     parseToData(nodes: any, edges: any) {
@@ -42,7 +42,7 @@ class NodeUtils {
         edges.forEach((edge: any) => nodeEdges[edge.source].push(edge.target))
         
         // Final parse
-        const nodesData = nodes.map((node: any) => {
+        const nodesData: NodeData[] = nodes.map((node: any): NodeData => {
             return {
                 nodeId: node.id,
                 data: node.data,
