@@ -20,13 +20,12 @@ class dataGetter:
 
         _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestPDB"]
-        _myCol = _myDB["TestCol_Nodes"]
-        #print("########", _myCol.count_documents({}))
-        lst = _myCol.find({}, { "nodeID": 1})
-        print(lst)
-        if str(_msg.arbitration_id) not in lst:
+        _myCol = _myDB["TestColNodes"]
+
+        # Checks if node is in testCol_Nodes
+        if _myCol.find_one({'nodeID': str(_msg.arbitration_id)}) == None:
             node =    {'projectId': projectId,
-                    'nodeId': str(_msg.arbitration_id),
+                    'nodeID': str(_msg.arbitration_id),
                     'name': str(_msgInfo.comment),
                     'data': None,
                     'position': None,

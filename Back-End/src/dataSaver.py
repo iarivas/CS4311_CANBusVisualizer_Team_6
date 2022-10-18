@@ -84,7 +84,7 @@ class dataSaver:
     def storeNodes(node):
         _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestPDB"]
-        _myCol = _myDB["TestCol_Nodes"]
+        _myCol = _myDB["TestColNodes"]
 
         _myCol.insert_many(node)
 
