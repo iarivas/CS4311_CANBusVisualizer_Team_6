@@ -1,5 +1,6 @@
 import pymongo
 from typing import Final
+from Node import Node
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
@@ -15,7 +16,7 @@ class dataSaver:
     def saveCANLocal(self, canBus):
         ...
 
-    def update(projectID, baudRate, initials, eventName, dbcFile, blacklistFile, packets, archive):
+    def update(projectID, baudRate, initials, eventName, dbcFile, blacklistFile, archive):
         _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestDB"]
         _myCol = _myDB["TestCol"]
@@ -31,7 +32,6 @@ class dataSaver:
             "eventName": eventName,
             "dbcFile": dbcFile,
             "blacklistFile": blacklistFile,
-            "packets": packets,
             "archive": archive
             }
         }
@@ -50,7 +50,6 @@ class dataSaver:
             "eventName": eventName,
             "dbcFile": dbcFile,
             "blacklistFile": blacklistFile,
-            "packets": None,
             "archive": False
         }
         
@@ -81,6 +80,14 @@ class dataSaver:
         _myCol = _myDB["TestCol"]
 
         _myCol.delete_many({})
+
+    def storeNodes(node):
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
+        _myCol = _myDB["TestCol_Nodes"]
+
+        _myCol.insert_many(node)
+
 
 # This is meant for testing purposes only, in order to allow the quick and
 # easy deletiong of all packets from the db, uncomment as needed

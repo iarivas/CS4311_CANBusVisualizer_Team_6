@@ -13,6 +13,7 @@ import projectConfig
 from fastapi import status, HTTPException, APIRouter
 from dataSaver import *
 from pydantic import BaseModel
+from Node import Node
 
 router = APIRouter()
 
@@ -22,6 +23,7 @@ class ProjectInfo(BaseModel):
     eventName: str
     dbcFile: str = None
     blacklistFile: str = None
+
 
 class projectManager():
 
@@ -56,5 +58,10 @@ class projectManager():
             )
         currentProject = projectConfig.project(projectInfo.baudRate, projectInfo.initials, projectInfo.eventName, projectInfo.dbcFile, projectInfo.blacklistFile)
         # createInitialPoject is the mongoDB saving definition from dataSaver.py 
-        dataSaver.createInitialProject(currentProject.projectId, currentProject.baudRate, currentProject.analystInitials, currentProject.eventName, currentProject.dbcFileName, currentProject.blackListFileName)
+        dataSaver.createInitialProject(currentProject.projectId,
+                                    currentProject.baudRate,
+                                    currentProject.analystInitials,
+                                    currentProject.eventName,
+                                    currentProject.dbcFileName,
+                                    currentProject.blackListFileName)
         return currentProject

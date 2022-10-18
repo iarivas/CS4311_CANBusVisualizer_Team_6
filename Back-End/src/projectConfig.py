@@ -21,15 +21,17 @@ class project():
     eventDate = None
     dbcFileName = None
     blackListFileName = None
+    nodeList: dict()
     
     # initializes object
-    def __init__(self, baudRate, analystInitials, eventName = None, dbcFileName = None, blackListFileName = None) -> None:
+    def __init__(self, baudRate, analystInitials, eventName = None, dbcFileName = None, blackListFileName = None, nodeList = None) -> None:
+        self.projectId = self.idGenerator()
         self.baudRate = baudRate
         self.analystInitials = analystInitials
         self.eventName = eventName
         self.dbcFileName = dbcFileName
         self.blackListFileName = blackListFileName
-        self.projectId = self.idGenerator()
+        self.nodeList = nodeList
         
 
     #if no custom id is given then a random id is generated
