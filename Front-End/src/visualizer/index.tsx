@@ -122,8 +122,8 @@ function Visualizer() {
             .then((response) => console.log(response))
             .catch((error) => console.log(error))
     }
-
-    useEffect(() => {
+    
+    const getNodes = () => {
         api.getNodes(projectId)
             .then(response => {
                 const newNodesData = response.data
@@ -147,10 +147,14 @@ function Visualizer() {
                     }
                 })
 
-                setNodes(nodes.concat(newNodes))
-                setEdges(edges.concat(newEdges))
+                setNodes(newNodes)
+                setEdges(newEdges)
             })
             .catch(error => console.log(error))
+    }
+
+    useEffect(() => {
+        getNodes()
     }, [])
 
     useEffect(() => {
