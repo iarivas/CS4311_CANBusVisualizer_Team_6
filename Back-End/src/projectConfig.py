@@ -21,7 +21,6 @@ class project():
     eventDate = None
     dbcFileName = None
     blackListFileName = None
-    nodeList: dict()
     
     # initializes object
     def __init__(self, baudRate, analystInitials, eventName = None, dbcFileName = None, blackListFileName = None) -> None:
