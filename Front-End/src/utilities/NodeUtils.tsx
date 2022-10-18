@@ -22,7 +22,7 @@ class NodeUtils {
         return [
             {
                 id: nodeData.nodeId,
-                data: nodeData.data,
+                data: nodeData.data ? nodeData.data : {label: nodeData.name},
                 position: nodeData.position
             },
             nodeData.relationships.map((target: string) => {
@@ -45,6 +45,7 @@ class NodeUtils {
         const nodesData: NodeData[] = nodes.map((node: any): NodeData => {
             return {
                 nodeId: node.id,
+                name: node.data.label,
                 data: node.data,
                 position: node.position,
                 relationships: nodeEdges[node.id]

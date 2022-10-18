@@ -5,6 +5,7 @@ interface NodePosition {
 
 interface NodeData {
     nodeId: string,
+    name: string
     data: any,
     position: NodePosition | null,
     relationships: string[]

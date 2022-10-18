@@ -132,12 +132,6 @@ function Visualizer() {
                 
                 // Add default values to nodes with no position or data
                 newNodes.forEach((node, idx) => {
-                    if (!node.data) {
-                        node.data = {
-                            'label': node.id,
-                        }
-                    }
-
                     if (!node.position) {
                         node.position = {
                             x: idx * 200,
