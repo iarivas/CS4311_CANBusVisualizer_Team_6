@@ -2,7 +2,6 @@ import Container from 'react-bootstrap/Container';
 import './index.css';
 
 import {Navbar, Nav, NavDropdown, Form, FormControl} from 'react-bootstrap'
-
 export default function Menubar({
       showPacketViewSettingsModal,
       hidePacketViewSettingsModal
@@ -47,7 +46,6 @@ export default function Menubar({
             </NavDropdown>
 
             <NavDropdown title="Node" id="basic-nav-dropdown" >
-            ` 
               <NavDropdown.Item id="action" href="#action/3.1"> Drag Nodes</NavDropdown.Item>
               <NavDropdown.Item id="action" href="#action/3.2"> Add Relationship  </NavDropdown.Item>
               <NavDropdown.Item id="action" href="#action/3.1"> Search Node </NavDropdown.Item>
