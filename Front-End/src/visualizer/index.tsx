@@ -1,5 +1,5 @@
 import {useParams} from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
     useNodesState,
     useEdgesState,
@@ -15,6 +15,7 @@ import PacketState from './packetContainer/PacketState'
 import NodeUtils from '../utilities/NodeUtils';
 import './index.css'
 import './modals/index.css'
+import NodeData from '../utilities/NodeData';
 
 function Visualizer() {
     const projectId = useParams().projectId!
@@ -111,8 +112,12 @@ function Visualizer() {
         // {id: 'e1-2', source: '1', target: '2'}
     ]
 
+    const [nodeDict, setNodeDict] = useState<any>({})
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const nodesRef = useRef(nodes)
+    const edgesRef = useRef(edges)
+    const nodeDictRef = useRef(nodeDict)
 
     const saveNodes = () => {
         const data = nodeUtils.parseToData(nodes, edges)
@@ -132,6 +137,8 @@ function Visualizer() {
                 
                 // Add default values to nodes with no position or data
                 newNodes.forEach((node, idx) => {
+                    nodeDictRef.current[node.id] = true
+                    setNodeDict(nodeDictRef.current)
                     if (!node.position) {
                         node.position = {
                             x: idx * 200,
@@ -146,10 +153,56 @@ function Visualizer() {
             .catch(error => console.log(error))
     }
 
+    const getNewNodes = () => {
+        api.getNodes(projectId)
+            .then(response => {
+                let newNodesData = response.data
+                newNodesData = newNodesData.filter((newNode: NodeData) => !(newNode.nodeId in nodeDictRef.current))
+
+                const [newNodes, newEdges] = nodeUtils.parseNodesData(newNodesData)
+                console.log(nodeDictRef.current)
+
+                newNodes.forEach((node, idx) => {
+                    nodeDictRef.current[node.id] = true
+                    setNodeDict(nodeDictRef.current)
+                    node.position = {
+                        x: (idx + nodesRef.current.length) * 200,
+                        y: 0
+                    }
+                })
+
+                if (newNodes.length > 0) {
+                    setNodes(nodesRef.current.concat(newNodes))
+                }
+
+                if (newEdges.length > 0) {
+                    setEdges(edgesRef.current.concat(newEdges))
+                }
+            })
+            .catch(error => console.log(error))
+    }
+
+    useEffect(() => {nodesRef.current = nodes}, [nodes])
+    useEffect(() => {edgesRef.current = edges}, [edges])
+    useEffect(() => {nodeDictRef.current = nodeDict}, [nodeDict])
+
+    // This will call the API once to get the list of nodes
+    // once when going to this screen. Afterwards, it will
+    // add new nodes found every 1.5 seconds
     useEffect(() => {
+        console.log('This will run once');
         getNodes()
+
+        const interval = setInterval(() => {
+            getNewNodes()
+          }, 1500);
+          return () => clearInterval(interval);
     }, [])
 
+    // This will call the API to update the node 0.5 seconds
+    // after a node is updated. This guarantees that updates
+    // to nodes on the backend will not happen more then twice
+    // every second.
     useEffect(() => {
         const saveInterval = setTimeout(() => {
             saveNodes()
