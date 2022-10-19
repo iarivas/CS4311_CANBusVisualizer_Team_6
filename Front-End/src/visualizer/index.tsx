@@ -3,6 +3,7 @@ import { useState } from 'react'
 import {
     useNodesState,
     useEdgesState,
+    addEdge
 } from 'react-flow-renderer';
 import PacketContainer from './packetContainer'
 import NodeMap from './nodeMap'
@@ -113,6 +114,9 @@ function Visualizer() {
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     
+    const onConnect = (params: any) => {
+        setEdges((eds) => addEdge(params, eds))
+    }
     // Other stuff
     
     return (
@@ -144,6 +148,7 @@ function Visualizer() {
                         edges={edges}
                         onNodesChange={onNodesChange}
                         onEdgesChange={onEdgesChange}
+                        onConnect={onConnect}
                     />
                 </div>
             </div>

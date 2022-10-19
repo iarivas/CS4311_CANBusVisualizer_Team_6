@@ -1,6 +1,6 @@
 import ReactFlow, {
     MiniMap,
-    Controls
+    Controls,
 } from 'react-flow-renderer';
 import './index.css'
 
@@ -9,6 +9,7 @@ function NodeMap({
     nodes,
     onNodesChange,
     onEdgesChange,
+    onConnect,
     }: any) {
       
     return (
@@ -23,6 +24,7 @@ function NodeMap({
                     nodes={nodes}
                     onNodesChange={onNodesChange}
                     onEdgesChange={onEdgesChange}
+                    onConnect={onConnect}
                 >
                     <Controls/>
                 </ReactFlow>
