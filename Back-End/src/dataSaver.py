@@ -127,7 +127,6 @@ class dataSaver:
         for node in updatedNodeList:
             if node not in dbNodeList:
                 _myCol.update_one({"nodeId": node["nodeId"]}, {"$set": {"data": node["data"], "name": node["name"], "position": node["position"], "relationship": node["relationship"]}})
-                break
 
 
 # This is meant for testing purposes only, in order to allow the quick and
