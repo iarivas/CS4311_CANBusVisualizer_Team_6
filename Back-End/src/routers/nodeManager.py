@@ -65,8 +65,8 @@ class nodeManager:
 
     @router.get("/projects/{projectId}/nodes", tags=["nodes"])
     def getNodesFromProject(projectId: str):
-        nm = nodeManager()
-        nm.populateNodeList(projectId)
+        # nm = nodeManager() # harcoded stuff Montse needs to be able to test locally!
+        # nm.populateNodeList(projectId)
         return dataGetter.getNodes(projectId)
 
     @router.put("/projects/{projectId}/nodes", tags=["nodes"])
