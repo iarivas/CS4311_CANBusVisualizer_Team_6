@@ -1,5 +1,5 @@
 import {useParams} from 'react-router-dom'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import {
     useNodesState,
     useEdgesState,
@@ -113,6 +113,7 @@ function Visualizer() {
     ]
 
     const [nodeDict, setNodeDict] = useState<any>({})
+    
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const nodesRef = useRef(nodes)
@@ -211,6 +212,26 @@ function Visualizer() {
         return () => clearInterval(saveInterval)
     }, [nodes])
     
+    
+    
+
+    
+
+
+    const addNode = () => {
+        
+        console.log('HERE')
+        setNodes(nodes.concat(
+          {
+            id: Math.random().toString(),
+            position: {x: 100, y: 0},
+            data: {label: 'test'}
+          }
+        ))
+      };
+
+      
+    
     // Other stuff
     
     return (
@@ -225,6 +246,7 @@ function Visualizer() {
             <Menubar
                 showPacketViewSettingsModal={showPacketViewSettingsModal}
                 hidePacketViewSettingsModal={hidePacketViewSettingsModal}
+                onAddNode={addNode}
             />
             <div className='visualizer-content'>
                 <div className='packet-container-content'>
@@ -238,11 +260,13 @@ function Visualizer() {
                 </div>
                 <div className='node-map-container-content'>
                     <NodeMap
+                        
                         nodes={nodes}
                         edges={edges}
                         onNodesChange={onNodesChange}
                         onEdgesChange={onEdgesChange}
                     />
+                    
                 </div>
             </div>
         </div>
