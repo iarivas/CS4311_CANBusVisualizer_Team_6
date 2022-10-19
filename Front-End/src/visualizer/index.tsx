@@ -98,7 +98,6 @@ function Visualizer() {
     }
 
     // Node map
-    /*
     const initialNodes = [
         { id: '1', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
         { id: '2', data: { label: 'Node 2' }, position: { x: 400, y: 100 } },
@@ -112,7 +111,7 @@ function Visualizer() {
     ]
 
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges); */
+    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     
     // Other stuff
     
@@ -140,7 +139,12 @@ function Visualizer() {
                     />
                 </div>
                 <div className='node-map-container-content'>
-                    <NodeMap/>
+                    <NodeMap
+                        nodes={nodes}
+                        edges={edges}
+                        onNodesChange={onNodesChange}
+                        onEdgesChange={onEdgesChange}
+                    />
                 </div>
             </div>
         </div>
