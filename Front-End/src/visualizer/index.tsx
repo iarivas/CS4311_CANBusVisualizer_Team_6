@@ -1,5 +1,5 @@
 import {useParams} from 'react-router-dom'
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState} from 'react'
 import {
     useNodesState,
     useEdgesState,
@@ -211,12 +211,6 @@ function Visualizer() {
 
         return () => clearInterval(saveInterval)
     }, [nodes])
-    
-    
-    
-
-    
-
 
     const addNode = () => {
         
@@ -229,8 +223,6 @@ function Visualizer() {
           }
         ))
       };
-
-      
     
     // Other stuff
     
