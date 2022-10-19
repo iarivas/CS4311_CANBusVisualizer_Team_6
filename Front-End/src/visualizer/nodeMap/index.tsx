@@ -10,6 +10,7 @@ function NodeMap({
     nodes,
     onNodesChange,
     onEdgesChange,
+    onNodeContextMenu
     }: any) {
         
        
@@ -26,6 +27,7 @@ function NodeMap({
                     nodes={nodes}
                     onNodesChange={onNodesChange}
                     onEdgesChange={onEdgesChange}
+                    onNodeContextMenu={onNodeContextMenu}
                 >
                     <Controls>   </Controls>
                 </ReactFlow>
