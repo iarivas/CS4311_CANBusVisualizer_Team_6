@@ -27,7 +27,7 @@ class nodeManager:
         pass
         #TODO
 
-    # This is hardcoded for testing purposes (Montse can't run this on her laptop so she needs this :)
+    #This is hardcoded for testing purposes (Montse can't run this on her laptop so she needs this :)
     # def populateNodeList(self, projectId):
     #     nodes = [
     #         ['1234', None, 'some-name', None,[]],
@@ -65,8 +65,8 @@ class nodeManager:
 
     @router.get("/projects/{projectId}/nodes", tags=["nodes"])
     def getNodesFromProject(projectId: str):
-        # nm = nodeManager() # harcoded stuff Montse needs to be able to test locally!
-        # nm.populateNodeList(projectId)
+        nm = nodeManager() # harcoded stuff Montse needs to be able to test locally!
+        nm.populateNodeList(projectId)
         return dataGetter.getNodes(projectId)
 
     @router.put("/projects/{projectId}/nodes", tags=["nodes"])

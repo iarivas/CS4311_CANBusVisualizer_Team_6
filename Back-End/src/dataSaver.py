@@ -1,6 +1,5 @@
 import pymongo
 from typing import Final
-from dataGetter import dataGetter
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
@@ -31,7 +30,7 @@ class dataSaver:
             node =    {'projectId': projectId,
                     'nodeID': str(_msg.arbitration_id),
                     'name': str(_msgInfo.comment),
-                    'data': Any,
+                    'data': None,
                     'position': None,
                     'relationships': []}
 
@@ -122,11 +121,8 @@ class dataSaver:
         _myDB = _myClient["TestDB"]
         _myCol = _myDB["TestColNodes"]
 
-        dbNodeList = dataGetter.getNodes(projectID)
-
         for node in updatedNodeList:
-            if node not in dbNodeList:
-                _myCol.update_one({"nodeId": node["nodeId"]}, {"$set": {"data": node["data"], "name": node["name"], "position": node["position"], "relationship": node["relationship"]}})
+            _myCol.update_one({"projectId": projectID, "nodeId": node["nodeId"]}, {"$set": {"data": node["data"], "name": node["name"], "position": node["position"], "relationship": node["relationship"]}})
 
 
 # This is meant for testing purposes only, in order to allow the quick and
