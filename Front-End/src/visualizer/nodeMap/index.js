@@ -7,6 +7,8 @@ import ReactFlow, {
 import './index.css'
 
 import React, { useCallback, useState, useRef } from "react";
+import { render } from '@testing-library/react';
+import { Tooltip } from 'react-bootstrap';
 
 const initialNodes = [
   { id: '1', type: "input", data: { label: 'Node 1' }, position: { x: 100, y: 0 } },
@@ -24,9 +26,15 @@ const initialEdges = [
 function NodeMap({
    
     }) {
+    const [position, setPosition] = useState({x: 0, y: 0});
     const [els, setEls] = useState(initialNodes);
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const onNodeClick = (event, node) => {
+      event.preventDefault();
+      setPosition({x: event.clientx, y: event.clienty});
+      console.log("clicked")
+    }
     const yPos = useRef(0);
 
     // setNodes(nodes.concat())
@@ -80,9 +88,8 @@ function NodeMap({
                     edges={edges}
                     onNodesChange= {onNodesChange}
                     onEdgesChange={onEdgesChange}
-                    
+                    onNodeClick = {onNodeClick}
                 >
-                
                     <Controls>  <button onClick={addNode}>Add</button> </Controls>
                     
                 </ReactFlow>
