@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import projectManager, packetManager
+from routers import projectManager, packetManager, nodeManager
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -16,6 +16,7 @@ app.add_middleware(
 
 app.include_router(projectManager.router)
 app.include_router(packetManager.router)
+app.include_router(nodeManager.router)
 
 @app.get("/")
 async def root():
