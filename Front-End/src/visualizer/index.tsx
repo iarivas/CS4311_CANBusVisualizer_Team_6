@@ -14,7 +14,7 @@ import APIUtil from '../utilities/APIutils'
 import PacketState from './packetContainer/PacketState'
 import './index.css'
 import './modals/index.css'
-
+import EditNodeModal from './modals/EditNodeModal'
 function Visualizer() {
     const projectId = useParams().projectId!
 
@@ -31,6 +31,11 @@ function Visualizer() {
     })
     const showPacketViewSettingsModal = () => setIsShownPacketsModal(true)
     const hidePacketViewSettingsModal = () => setIsShownPacketsModal(false)
+
+    // Modal for editing node
+    let [editNodeModal, setEditNodeModal] = useState(false)
+    const showNodeModal = () => setEditNodeModal(true)
+    const hideNodeModal = () => setEditNodeModal(false)
 
     // Packet retrieval and infinite list
     let [packetList, setPacketList]: Array<any> = useState([])
@@ -113,6 +118,11 @@ function Visualizer() {
     
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const onNodeContextMenu = (event: React.MouseEvent, node: Node) => {
+        event.preventDefault()
+        showNodeModal()
+        console.log('node clicked', node)
+      }
     
     
     
@@ -138,6 +148,10 @@ function Visualizer() {
     
     return (
         <div className='visualizer'>
+            <EditNodeModal
+                isShow={editNodeModal}
+                setHide={hideNodeModal}
+            />
             <PacketViewSettingsModal
                 isShown={isShownPacketsModal}
                 setHide={hidePacketViewSettingsModal}
@@ -167,6 +181,7 @@ function Visualizer() {
                         edges={edges}
                         onNodesChange={onNodesChange}
                         onEdgesChange={onEdgesChange}
+                        onNodeContextMenu={onNodeContextMenu}
                     />
                     
                 </div>

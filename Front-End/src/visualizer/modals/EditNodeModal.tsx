@@ -4,12 +4,11 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-function EditNodeModal() {
-    const [show, setShow] = useState(false);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
+function EditNodeModal({
+  isShow,
+  setHide
+}: any) {
+    
     const dropdownOptions = {
       "car": "../images/car.png",
       "goatzilla": "../images/GOATZILLA.jpg",
@@ -18,7 +17,7 @@ function EditNodeModal() {
     };
 
     return (
-        <Modal show={true} onHide={handleClose} className='edit-node-modal'>
+        <Modal show={isShow} onHide={setHide} className='edit-node-modal'>
           <Modal.Header closeButton>
             <Modal.Title>Edit Node</Modal.Title>
           </Modal.Header>
@@ -101,10 +100,10 @@ function EditNodeModal() {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose} className='rounded-pill'>
+            <Button variant="secondary" onClick={setHide} className='rounded-pill'>
               Close
             </Button>
-            <Button variant="primary" onClick={handleClose} className='rounded-pill'>
+            <Button variant="primary" onClick={setHide} className='rounded-pill'>
               Send
             </Button>
           </Modal.Footer>
