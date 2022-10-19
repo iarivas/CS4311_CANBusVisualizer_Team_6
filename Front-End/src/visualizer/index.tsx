@@ -1,5 +1,5 @@
 import {useParams} from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import {
     useNodesState,
     useEdgesState,
@@ -110,8 +110,40 @@ function Visualizer() {
         {id: 'e1-2', source: '1', target: '2'}
     ]
 
+    const [els, setEls] = useState(initialNodes);
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const yPos = useRef(0);
+    
+    
+
+    
+
+
+    const addNode = () => {
+        // yPos.current += 50;
+        // setEls((els) => {
+        //   console.log(els);
+        //   return [
+        //     ...els,
+        //     {
+        //       id: Math.random().toString(),
+        //       position: { x: 100, y: 0 },
+        //       data: { label: "yo" }
+        //     }
+        //   ];
+        // });
+        console.log('HERE')
+        setNodes(nodes.concat(
+          {
+            id: Math.random().toString(),
+            position: {x: 100, y: 0},
+            data: {label: 'test'}
+          }
+        ))
+      };
+
+      
     
     // Other stuff
     
@@ -127,6 +159,7 @@ function Visualizer() {
             <Menubar
                 showPacketViewSettingsModal={showPacketViewSettingsModal}
                 hidePacketViewSettingsModal={hidePacketViewSettingsModal}
+                onAddNode={addNode}
             />
             <div className='visualizer-content'>
                 <div className='packet-container-content'>
@@ -140,11 +173,13 @@ function Visualizer() {
                 </div>
                 <div className='node-map-container-content'>
                     <NodeMap
+                        
                         nodes={nodes}
                         edges={edges}
                         onNodesChange={onNodesChange}
                         onEdgesChange={onEdgesChange}
                     />
+                    
                 </div>
             </div>
         </div>
