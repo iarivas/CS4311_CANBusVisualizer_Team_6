@@ -3,6 +3,8 @@ import ReactFlow, {
     Controls,
 } from 'react-flow-renderer';
 import './index.css'
+import React, { useCallback, useState, useRef } from "react";
+
 
 function NodeMap({
     edges,
@@ -10,7 +12,10 @@ function NodeMap({
     onNodesChange,
     onEdgesChange,
     onConnect,
+    onNodeContextMenu
     }: any) {
+        
+       
       
     return (
         <div className='node-map-container rounded'>
@@ -25,8 +30,9 @@ function NodeMap({
                     onNodesChange={onNodesChange}
                     onEdgesChange={onEdgesChange}
                     onConnect={onConnect}
+                    onNodeContextMenu={onNodeContextMenu}
                 >
-                    <Controls/>
+                    <Controls>   </Controls>
                 </ReactFlow>
             </div>
         </div>
