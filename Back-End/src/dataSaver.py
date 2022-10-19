@@ -1,5 +1,6 @@
 import pymongo
 from typing import Final
+from dataGetter import dataGetter
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
@@ -14,6 +15,35 @@ class dataSaver:
 
     def saveCANLocal(self, canBus):
         ...
+
+    def receiveTraffic(self, projectId, dbc, bus):
+
+        _msg = bus.recv()
+        _msgInfo = (dbc.get_message_by_frame_id(_msg.arbitration_id))
+        _msgData = str(dbc.decode_message(_msg.arbitration_id, _msg.data))
+
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
+        _myCol = _myDB["TestColNodes"]
+
+        # Checks if node is in testCol_Nodes
+        if _myCol.find_one({'nodeID': str(_msg.arbitration_id)}) == None:
+            node =    {'projectId': projectId,
+                    'nodeID': str(_msg.arbitration_id),
+                    'name': str(_msgInfo.comment),
+                    'data': Any,
+                    'position': None,
+                    'relationships': []}
+
+            self.storeNodes([node])
+
+        packet =    {'projectId': projectId,
+                    'timestamp': str(datetime.fromtimestamp(_msg.timestamp))[:-3],
+                    'type': str(_msg.dlc),
+                    'nodeId': str(_msgInfo.comment),
+                    'data': _msgData} 
+        self.storePackets([packet])
+        return
 
     def update(projectID, baudRate, initials, eventName, dbcFile, blacklistFile, archive):
         _myClient = pymongo.MongoClient(localDB)
@@ -80,12 +110,24 @@ class dataSaver:
 
         _myCol.delete_many({})
 
-    def storeNodes(node):
+    def storeNodes(nodes):
         _myClient = pymongo.MongoClient(localDB)
-        _myDB = _myClient["TestPDB"]
+        _myDB = _myClient["TestDB"]
         _myCol = _myDB["TestColNodes"]
 
-        _myCol.insert_many(node)
+        _myCol.insert_many(nodes)
+
+    def updateNodes(projectID, updatedNodeList):
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestColNodes"]
+
+        dbNodeList = dataGetter.getNodes(projectID)
+
+        for node in updatedNodeList:
+            if node not in dbNodeList:
+                _myCol.update_one({"nodeId": node["nodeId"]}, {"$set": {"data": node["data"], "name": node["name"], "position": node["position"], "relationship": node["relationship"]}})
+                break
 
 
 # This is meant for testing purposes only, in order to allow the quick and
