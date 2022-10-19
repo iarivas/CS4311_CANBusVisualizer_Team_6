@@ -1,5 +1,8 @@
+from dataSaver import dataSaver
 import pymongo
 from typing import Final
+from datetime import datetime
+
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
@@ -9,6 +12,35 @@ class dataGetter:
         ...
     
     #functions
+    def receiveTraffic(projectId, dbc, bus):
+
+        _msg = bus.recv()
+        _msgInfo = (dbc.get_message_by_frame_id(_msg.arbitration_id))
+        _msgData = str(dbc.decode_message(_msg.arbitration_id, _msg.data))
+
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
+        _myCol = _myDB["TestColNodes"]
+
+        # Checks if node is in testCol_Nodes
+        if _myCol.find_one({'nodeID': str(_msg.arbitration_id)}) == None:
+            node =    {'projectId': projectId,
+                    'nodeID': str(_msg.arbitration_id),
+                    'name': str(_msgInfo.comment),
+                    'data': None,
+                    'position': None,
+                    'relationships': []}
+
+            dataSaver.storeNodes([node])
+
+        packet =    {'projectId': projectId,
+                    'timestamp': str(datetime.fromtimestamp(_msg.timestamp))[:-3],
+                    'type': str(_msg.dlc),
+                    'nodeId': str(_msgInfo.comment),
+                    'data': _msgData} 
+        dataSaver.storePackets([packet])
+        return
+
     
     def decodePackets(self, packet):
         ...
@@ -137,22 +169,11 @@ class dataGetter:
 
         packetList = []
 
-        for packet in _myCol.find(findQuery, {'_id': False}).sort(field, sortType).limit(size):
+        for packet in _myCol.find(findQuery).sort(field, sortType).limit(size):
+            packet['_id'] = str(packet['_id'])
             packetList.append(packet)
         
         return packetList
-
-    def getNodes(projectID: str):
-        _myClient = pymongo.MongoClient(localDB)
-        _myDB = _myClient["TestDB"]
-        _myCol = _myDB["TestColNodes"]
-
-        nodeList = []
-
-        for node in _myCol.find({'projectId': projectID}, {'_id': False}):
-            nodeList.append(node)
-
-        return nodeList
     
     #return archived projects
     def retrieveArchivedProjects():
