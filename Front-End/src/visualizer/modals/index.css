@@ -1,8 +1,8 @@
-.edit-packet-modal .modal-content{
+.edit-packet-modal .modal-content, .edit-node-modal .modal-content{
     background-color: #17161b;
 }
 
-.edit-packet-modal .form-control {
+.edit-packet-modal .form-control, .edit-node-modal .form-control{
     background-color: rgba(0, 0, 0, 0);
     border-color: rgba(255, 255, 255, 0.2) !important;
     color: #edeff3;
@@ -10,6 +10,7 @@
 
 .packet-view-modal .modal-content, .mb-3{
     background-color: #17161b;
+    margin: 3%;
 }
 
 
@@ -17,4 +18,20 @@
     background-color: rgba(0, 0, 0, 0);
     border-color: rgba(255, 255, 255, 0.2) !important;
     color: #edeff3;
+}
+
+.packet-filter .form-control, .packet-sort .form-select, #node-icon{
+    background-color: rgba(0, 0, 0, 0);
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #edeff3;
+}
+
+.dropdown-icon.dropdown {
+    background-color: rgba(0, 0, 0, 0);
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #edeff3;
+}
+
+.label {
+    font-size: 1.30em;
 }
