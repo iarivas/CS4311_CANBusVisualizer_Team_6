@@ -1,5 +1,7 @@
 import pymongo
+from dataSaver import dataSaver
 from typing import Final
+import datetime
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
@@ -9,6 +11,35 @@ class dataGetter:
         ...
     
     #functions
+
+    def receiveTraffic( projectId, dbc, bus):
+
+        _msg = bus.recv()
+        _msgInfo = (dbc.get_message_by_frame_id(_msg.arbitration_id))
+        _msgData = str(dbc.decode_message(_msg.arbitration_id, _msg.data))
+
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
+        _myCol = _myDB["TestColNodes"]
+
+        # Checks if node is in testCol_Nodes
+        if _myCol.find_one({'nodeID': str(_msg.arbitration_id)}) == None:
+            node =    {'projectId': projectId,
+                    'nodeID': str(_msg.arbitration_id),
+                    'name': str(_msgInfo.comment),
+                    'data': None,
+                    'position': None,
+                    'relationships': []}
+
+            dataSaver.storeNodes([node])
+
+        packet =    {'projectId': projectId,
+                    'timestamp': str(datetime.datetime.fromtimestamp(_msg.timestamp))[:-3],
+                    'type': str(_msg.dlc),
+                    'nodeId': str(_msgInfo.comment),
+                    'data': _msgData} 
+        dataSaver.storePackets([packet])
+        return
     
     def decodePackets(self, packet):
         ...
@@ -144,7 +175,7 @@ class dataGetter:
 
     def getNodes(projectID: str):
         _myClient = pymongo.MongoClient(localDB)
-        _myDB = _myClient["TestDB"]
+        _myDB = _myClient["TestPDB"]
         _myCol = _myDB["TestColNodes"]
 
         nodeList = []
@@ -157,7 +188,7 @@ class dataGetter:
     #return archived projects
     def retrieveArchivedProjects():
         _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        _myDB = _myClient["TestDB"]
+        _myDB = _myClient["TestPDB"]
         _myCol = _myDB["TestCol"]
 
         store = []
