@@ -16,7 +16,7 @@
     flex: 1 0 auto;
     min-width: 700px;
     min-height: 400px;
-    background-color: "transparent";
+    background-color: rgb(168, 92, 168);
 }
 
 .map-flow {
