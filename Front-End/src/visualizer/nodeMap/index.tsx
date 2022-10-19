@@ -10,6 +10,7 @@ function NodeMap({
     nodes,
     onNodesChange,
     onEdgesChange,
+    onConnect,
     onNodeContextMenu
     }: any) {
         
@@ -27,6 +28,7 @@ function NodeMap({
                     nodes={nodes}
                     onNodesChange={onNodesChange}
                     onEdgesChange={onEdgesChange}
+                    onConnect={onConnect}
                     onNodeContextMenu={onNodeContextMenu}
                 >
                     <Controls>   </Controls>
