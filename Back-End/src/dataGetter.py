@@ -1,3 +1,4 @@
+from dataSaver import dataSaver
 import pymongo
 from dataSaver import dataSaver
 from typing import Final
@@ -11,8 +12,7 @@ class dataGetter:
         ...
     
     #functions
-
-    def receiveTraffic( projectId, dbc, bus):
+    def receiveTraffic(projectId, dbc, bus):
 
         _msg = bus.recv()
         _msgInfo = (dbc.get_message_by_frame_id(_msg.arbitration_id))
@@ -168,7 +168,8 @@ class dataGetter:
 
         packetList = []
 
-        for packet in _myCol.find(findQuery, {'_id': False}).sort(field, sortType).limit(size):
+        for packet in _myCol.find(findQuery).sort(field, sortType).limit(size):
+            packet['_id'] = str(packet['_id'])
             packetList.append(packet)
         
         return packetList

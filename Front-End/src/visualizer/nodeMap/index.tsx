@@ -1,15 +1,21 @@
 import ReactFlow, {
     MiniMap,
-    Controls
+    Controls,
 } from 'react-flow-renderer';
 import './index.css'
+import React, { useCallback, useState, useRef } from "react";
+
 
 function NodeMap({
     edges,
     nodes,
     onNodesChange,
     onEdgesChange,
+    onConnect,
+    onNodeContextMenu
     }: any) {
+        
+       
       
     return (
         <div className='node-map-container rounded'>
@@ -23,8 +29,10 @@ function NodeMap({
                     nodes={nodes}
                     onNodesChange={onNodesChange}
                     onEdgesChange={onEdgesChange}
+                    onConnect={onConnect}
+                    onNodeContextMenu={onNodeContextMenu}
                 >
-                    <Controls/>
+                    <Controls>   </Controls>
                 </ReactFlow>
             </div>
         </div>

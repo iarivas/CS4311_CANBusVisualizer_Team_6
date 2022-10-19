@@ -1,4 +1,3 @@
-
 import pymongo
 from typing import Final
 
@@ -15,7 +14,6 @@ class dataSaver:
 
     def saveCANLocal(self, canBus):
         ...
-
 
     def update(projectID, baudRate, initials, eventName, dbcFile, blacklistFile, archive):
         _myClient = pymongo.MongoClient(localDB)
@@ -82,7 +80,7 @@ class dataSaver:
 
         _myCol.delete_many({})
 
-    def storeNodes(nodes):
+    def storeNodes(node):
         _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestPDB"]
         _myCol = _myDB["TestColNodes"]
@@ -92,10 +90,10 @@ class dataSaver:
     def updateNodes(projectID, updatedNodeList):
         _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestPDB"]
+
         _myCol = _myDB["TestColNodes"]
 
-        for node in updatedNodeList:
-            _myCol.update_one({"projectId": projectID, "nodeId": node["nodeId"]}, {"$set": {"data": node["data"], "name": node["name"], "position": node["position"], "relationship": node["relationship"]}})
+        _myCol.insert_many(node)
 
 
 # This is meant for testing purposes only, in order to allow the quick and

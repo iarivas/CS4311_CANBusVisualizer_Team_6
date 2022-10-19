@@ -1,8 +1,9 @@
 import {useParams} from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import {
     useNodesState,
     useEdgesState,
+    addEdge
 } from 'react-flow-renderer';
 import PacketContainer from './packetContainer'
 import NodeMap from './nodeMap'
@@ -14,7 +15,7 @@ import APIUtil from '../utilities/APIutils'
 import PacketState from './packetContainer/PacketState'
 import './index.css'
 import './modals/index.css'
-
+import EditNodeModal from './modals/EditNodeModal'
 function Visualizer() {
     const projectId = useParams().projectId!
 
@@ -31,6 +32,11 @@ function Visualizer() {
     })
     const showPacketViewSettingsModal = () => setIsShownPacketsModal(true)
     const hidePacketViewSettingsModal = () => setIsShownPacketsModal(false)
+
+    // Modal for editing node
+    let [editNodeModal, setEditNodeModal] = useState(false)
+    const showNodeModal = () => setEditNodeModal(true)
+    const hideNodeModal = () => setEditNodeModal(false)
 
     // Packet retrieval and infinite list
     let [packetList, setPacketList]: Array<any> = useState([])
@@ -110,13 +116,46 @@ function Visualizer() {
         {id: 'e1-2', source: '1', target: '2'}
     ]
 
+    
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const onNodeContextMenu = (event: React.MouseEvent, node: Node) => {
+        event.preventDefault()
+        showNodeModal()
+        console.log('node clicked', node)
+      }
     
+    
+    
+
+    
+
+
+    const addNode = () => {
+        
+        console.log('HERE')
+        setNodes(nodes.concat(
+          {
+            id: Math.random().toString(),
+            position: {x: 100, y: 0},
+            data: {label: 'test'}
+          }
+        ))
+      };
+
+      
+    
+    const onConnect = (params: any) => {
+        setEdges((eds) => addEdge(params, eds))
+    }
     // Other stuff
     
     return (
         <div className='visualizer'>
+            <EditNodeModal
+                isShow={editNodeModal}
+                setHide={hideNodeModal}
+            />
             <PacketViewSettingsModal
                 isShown={isShownPacketsModal}
                 setHide={hidePacketViewSettingsModal}
@@ -127,6 +166,7 @@ function Visualizer() {
             <Menubar
                 showPacketViewSettingsModal={showPacketViewSettingsModal}
                 hidePacketViewSettingsModal={hidePacketViewSettingsModal}
+                onAddNode={addNode}
             />
             <div className='visualizer-content'>
                 <div className='packet-container-content'>
@@ -140,11 +180,15 @@ function Visualizer() {
                 </div>
                 <div className='node-map-container-content'>
                     <NodeMap
+                        
                         nodes={nodes}
                         edges={edges}
                         onNodesChange={onNodesChange}
                         onEdgesChange={onEdgesChange}
+                        onConnect={onConnect}
+                        onNodeContextMenu={onNodeContextMenu}
                     />
+                    
                 </div>
             </div>
         </div>
