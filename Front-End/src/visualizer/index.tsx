@@ -120,12 +120,14 @@ function Visualizer() {
     ]
 
     const [nodeDict, setNodeDict] = useState<any>({})
+    const [edgeDict, setEdgeDict] = useState<any>({})
     
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const nodesRef = useRef(nodes)
     const edgesRef = useRef(edges)
     const nodeDictRef = useRef(nodeDict)
+    const edgeDictRef = useRef(edgeDict)
 
     const onNodeContextMenu = (event: React.MouseEvent, node: Node) => {
         event.preventDefault()
@@ -161,6 +163,12 @@ function Visualizer() {
                     }
                 })
 
+                // Add edges to dict
+                newEdges.forEach((edge) => {
+                    edgeDictRef.current[edge.id] = true
+                    setEdgeDict(edgeDictRef.current)
+                })
+
                 setNodes(newNodes)
                 setEdges(newEdges)
             })
@@ -170,28 +178,42 @@ function Visualizer() {
     const getNewNodes = () => {
         api.getNodes(projectId)
             .then(response => {
-                let newNodesData = response.data
-                newNodesData = newNodesData.filter((newNode: NodeData) => !(newNode.nodeId in nodeDictRef.current))
+                const newNodesData = response.data
 
                 const [newNodes, newEdges] = nodeUtils.parseNodesData(newNodesData)
                 console.log(nodeDictRef.current)
+                console.log(edgeDictRef.current)
+                const nodesToAdd: any[] = []
+                const edgesToAdd: any[] = []
 
                 newNodes.forEach((node, idx) => {
-                    nodeDictRef.current[node.id] = true
-                    setNodeDict(nodeDictRef.current)
-                    node.position = {
-                        x: (idx + nodesRef.current.length) * 200,
-                        y: 0
+                    // If node not in dict, add it
+                    if (!(node.id in nodeDictRef.current)) {
+                        nodeDictRef.current[node.id] = true
+                        setNodeDict(nodeDictRef.current)
+    
+                        node.position = {
+                            x: (idx + nodesRef.current.length) * 200,
+                            y: 0
+                        }
+
+                        nodesToAdd.push(node)
                     }
                 })
 
-                if (newNodes.length > 0) {
-                    setNodes(nodesRef.current.concat(newNodes))
-                }
+                newEdges.forEach((edge) => {
+                    // If edge not in list, add it
+                    if (!(edge.id in edgeDictRef.current)) {
+                        edgeDictRef.current[edge.id] = true
+                        setEdgeDict(edgeDictRef.current)
 
-                if (newEdges.length > 0) {
-                    setEdges(edgesRef.current.concat(newEdges))
-                }
+                        edgesToAdd.push(edge)
+                    }
+                })
+
+                // Update lists accordingly
+                if (nodesToAdd.length > 0) setNodes(nodesRef.current.concat(nodesToAdd))
+                if (edgesToAdd.length > 0) setEdges(edgesRef.current.concat(edgesToAdd))
             })
             .catch(error => console.log(error))
     }
@@ -199,6 +221,7 @@ function Visualizer() {
     useEffect(() => {nodesRef.current = nodes}, [nodes])
     useEffect(() => {edgesRef.current = edges}, [edges])
     useEffect(() => {nodeDictRef.current = nodeDict}, [nodeDict])
+    useEffect(() => {edgeDictRef.current = edgeDict}, [edgeDict])
 
     // This will call the API once to get the list of nodes
     // once when going to this screen. Afterwards, it will
@@ -223,7 +246,7 @@ function Visualizer() {
         }, 500)
 
         return () => clearInterval(saveInterval)
-    }, [nodes])
+    }, [nodes, edges])
 
     const addNode = () => {
         
