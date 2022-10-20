@@ -21,21 +21,21 @@ class NodeUtils {
     private _parseNodeData(nodeData: NodeData) {
         return [
             {
-                id: nodeData.nodeId,
+                id: nodeData.nodeID,
                 data: nodeData.data ? nodeData.data : {label: nodeData.name},
                 position: nodeData.position
             },
             nodeData.relationships.map((target: string) => {
                 return {
-                    id: nodeData.nodeId + '->' + target,
-                    source: nodeData.nodeId,
+                    id: nodeData.nodeID+ '->' + target,
+                    source: nodeData.nodeID,
                     target: target
                 }
             })
         ]
     }
 
-    parseToData(nodes: any, edges: any) {
+    parseToData(nodes: any, edges: any, projectId: string) {
         // Find all the edges corresponding to nodes
         const nodeEdges: any = {}
         nodes.forEach((node: any) => nodeEdges[node.id] = [])
@@ -44,7 +44,8 @@ class NodeUtils {
         // Final parse
         const nodesData: NodeData[] = nodes.map((node: any): NodeData => {
             return {
-                nodeId: node.id,
+                projectId: projectId,
+                nodeID: node.id,
                 name: node.data.label,
                 data: node.data,
                 position: node.position,

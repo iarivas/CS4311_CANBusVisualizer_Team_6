@@ -4,7 +4,8 @@ interface NodePosition {
 }
 
 interface NodeData {
-    nodeId: string,
+    projectId: string,
+    nodeID: string,
     name: string
     data: any,
     position: NodePosition | null,

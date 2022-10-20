@@ -135,7 +135,7 @@ function Visualizer() {
       }
 
     const saveNodes = () => {
-        const data = nodeUtils.parseToData(nodes, edges)
+        const data = nodeUtils.parseToData(nodes, edges, projectId)
         // console.log('JSON sent:')
         // console.log(data)
         api.updateNodes(projectId, data)
