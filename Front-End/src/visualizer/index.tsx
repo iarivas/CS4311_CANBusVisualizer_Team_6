@@ -16,7 +16,6 @@ import PacketState from './packetContainer/PacketState'
 import NodeUtils from '../utilities/NodeUtils';
 import './index.css'
 import './modals/index.css'
-import NodeData from '../utilities/NodeData';
 import EditNodeModal from './modals/EditNodeModal'
 
 function Visualizer() {
@@ -249,11 +248,12 @@ function Visualizer() {
     }, [nodes, edges])
 
     const addNode = () => {
-        
-        console.log('HERE')
+        const nodeId = Math.random().toString()
+        nodeDictRef.current[nodeId] = true
+        setNodeDict(nodeDictRef.current)
         setNodes(nodes.concat(
           {
-            id: Math.random().toString(),
+            id: nodeId,
             position: {x: 100, y: 0},
             data: {label: 'test'}
           }
