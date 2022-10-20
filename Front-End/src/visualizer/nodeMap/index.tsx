@@ -1,6 +1,5 @@
 import ReactFlow, {
-    MiniMap,
-    Controls,
+    Controls
 } from 'react-flow-renderer';
 import './index.css'
 import React, { useCallback, useState, useRef } from "react";

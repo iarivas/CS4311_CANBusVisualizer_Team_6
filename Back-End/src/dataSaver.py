@@ -94,7 +94,7 @@ class dataSaver:
         _myCol = _myDB["TestColNodes"]
 
         for node in updatedNodeList:
-            _myCol.update_one({"projectId": projectID, "nodeId": node["nodeId"]}, {"$set": {"data": node["data"], "name": node["name"], "position": node["position"], "relationship": node["relationship"]}})
+            _myCol.update_one({"projectId": projectID, "nodeID": node["nodeID"]}, {"$set": {"data": node["data"], "name": node["name"], "position": node["position"], "relationships": node["relationships"]}})
 
 
 # This is meant for testing purposes only, in order to allow the quick and
