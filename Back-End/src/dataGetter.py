@@ -1,8 +1,8 @@
 from dataSaver import dataSaver
 import pymongo
+from dataSaver import dataSaver
 from typing import Final
-from datetime import datetime
-
+import datetime
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
@@ -34,13 +34,12 @@ class dataGetter:
             dataSaver.storeNodes([node])
 
         packet =    {'projectId': projectId,
-                    'timestamp': str(datetime.fromtimestamp(_msg.timestamp))[:-3],
+                    'timestamp': str(datetime.datetime.fromtimestamp(_msg.timestamp))[:-3],
                     'type': str(_msg.dlc),
                     'nodeId': str(_msgInfo.comment),
                     'data': _msgData} 
         dataSaver.storePackets([packet])
         return
-
     
     def decodePackets(self, packet):
         ...
@@ -174,11 +173,23 @@ class dataGetter:
             packetList.append(packet)
         
         return packetList
+
+    def getNodes(projectID: str):
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
+        _myCol = _myDB["TestColNodes"]
+
+        nodeList = []
+
+        for node in _myCol.find({'projectId': projectID}, {'_id': False}):
+            nodeList.append(node)
+
+        return nodeList
     
     #return archived projects
     def retrieveArchivedProjects():
         _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        _myDB = _myClient["TestDB"]
+        _myDB = _myClient["TestPDB"]
         _myCol = _myDB["TestCol"]
 
         store = []

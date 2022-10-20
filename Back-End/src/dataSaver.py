@@ -80,12 +80,21 @@ class dataSaver:
 
         _myCol.delete_many({})
 
-    def storeNodes(node):
+    def storeNodes(nodes):
         _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestPDB"]
         _myCol = _myDB["TestColNodes"]
 
-        _myCol.insert_many(node)
+        _myCol.insert_many(nodes)
+
+    def updateNodes(projectID, updatedNodeList):
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
+
+        _myCol = _myDB["TestColNodes"]
+
+        for node in updatedNodeList:
+            _myCol.update_one({"projectId": projectID, "nodeId": node["nodeId"]}, {"$set": {"data": node["data"], "name": node["name"], "position": node["position"], "relationship": node["relationship"]}})
 
 
 # This is meant for testing purposes only, in order to allow the quick and
