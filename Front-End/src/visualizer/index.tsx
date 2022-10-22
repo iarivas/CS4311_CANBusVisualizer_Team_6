@@ -17,12 +17,14 @@ import NodeUtils from '../utilities/NodeUtils';
 import './index.css'
 import './modals/index.css'
 import EditNodeModal from './modals/EditNodeModal'
+import PacketUtils from '../utilities/PacketUtils';
 
 function Visualizer() {
     const projectId = useParams().projectId!
 
     const api = new APIUtil()
     const nodeUtils = new NodeUtils()
+    const packetUtils = new PacketUtils()
 
     // Modal for changing packet view settings
     let [isShownPacketsModal, setIsShownPacketsModal] = useState(false)
@@ -55,18 +57,14 @@ function Visualizer() {
         )
     })
     const fetchPackets = () => {
-        const lastPacket: PacketState | undefined = packetList.length > 0 ? packetList[packetList.length - 1] : null
-        const viewSettings: PacketViewSettingsState = {
-            size: packetViewSettings.size,
-            before: packetViewSettings.before,
-            after: lastPacket ? lastPacket.timestamp : undefined,
-            node: packetViewSettings.node,
-            sort: packetViewSettings.sort
-        }
-        api.getPackets(
-            viewSettings,
-            projectId,
-            (response: any) => { // On success
+        const lastPacket: PacketState | null = packetList.length > 0 ? packetList[packetList.length - 1] : null
+        const viewSettings = packetUtils.nextPacketViewSettings(
+            packetViewSettings,
+            lastPacket
+        )
+
+        api.getPackets(viewSettings, projectId)
+            .then((response) => {
                 const newPackets = response.data
                 if (newPackets.length > 0) {
                     // Append to list
@@ -74,18 +72,14 @@ function Visualizer() {
                 } else {
                     setHasMorePackets(false)
                 }
-            },
-            (error: any) => { // On failure
+            })
+            .catch((error) => {
                 console.log(error)
-                return
-            }
-        )
+            })
     }
     const refreshPackets = () => {
-        api.getPackets(
-            packetViewSettings,
-            projectId,
-            (response: any) => { // On success
+        api.getPackets(packetViewSettings, projectId)
+            .then((response) => {
                 const newPackets = response.data
                 if (newPackets.length > 0) {
                     // Append to list
@@ -93,12 +87,10 @@ function Visualizer() {
                 } else {
                     setHasMorePackets(false)
                 }
-            },
-            (error: any) => { // On failure
+            })
+            .catch((error) => {
                 console.log(error)
-                return
-            }
-        )
+            })
         let elem = document.getElementById('packet-table')
         elem?.scrollTo(0, 0)
     }

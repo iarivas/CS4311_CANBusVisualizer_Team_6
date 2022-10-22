@@ -40,12 +40,10 @@ class APIUtil {
         ]
     }
 
-    getPackets(filters: PacketViewSettingsState, projectId: string, onSuccess: any, onFailure: any) {
-        axios.get(this.url + '/projects/' + projectId + '/packets', {
+    getPackets(filters: PacketViewSettingsState, projectId: string) {
+        return axios.get(this.url + '/projects/' + projectId + '/packets', {
             params: filters
         })
-        .then((response) => onSuccess(response))
-        .catch((error) => onFailure(error))
     }
 
     getNodes(projectId: string) {
