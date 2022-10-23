@@ -17,14 +17,12 @@ import NodeUtils from '../utilities/NodeUtils';
 import './index.css'
 import './modals/index.css'
 import EditNodeModal from './modals/EditNodeModal'
-import PacketUtils from '../utilities/PacketUtils';
 
 function Visualizer() {
     const projectId = useParams().projectId!
 
     const api = new APIUtil()
     const nodeUtils = new NodeUtils()
-    const packetUtils = new PacketUtils()
 
     // Modal for changing packet view settings
     let [isShownPacketsModal, setIsShownPacketsModal] = useState(false)
@@ -58,12 +56,7 @@ function Visualizer() {
     })
     const fetchPackets = () => {
         const lastPacket: PacketState | null = packetList.length > 0 ? packetList[packetList.length - 1] : null
-        const viewSettings = packetUtils.nextPacketViewSettings(
-            packetViewSettings,
-            lastPacket
-        )
-
-        api.getPackets(viewSettings, projectId)
+        api.getPackets(packetViewSettings, projectId)
             .then((response) => {
                 const newPackets = response.data
                 if (newPackets.length > 0) {
