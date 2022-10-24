@@ -223,7 +223,6 @@ function Visualizer() {
     // once when going to this screen. Afterwards, it will
     // add new nodes found every 1.5 seconds
     useEffect(() => {
-        console.log('This will run once');
         const interval = setInterval(() => {
             getNewNodes()
           }, 1500);
