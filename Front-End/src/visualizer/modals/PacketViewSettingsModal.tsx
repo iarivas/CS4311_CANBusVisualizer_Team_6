@@ -7,29 +7,22 @@ function PacketViewSettingsModal({
         isShown,
         setHide,
         packetViewSettings,
-        setPacketViewSettings,
+        onApply
     }: any) {
 
     let [newPacketViewSettings, setNewPacketViewSettings] = useState<PacketViewSettingsState>({...packetViewSettings})
-    const reset = () => setNewPacketViewSettings({...packetViewSettings})
-    const onHide = () => {
-        reset()
-        setHide()
-    }
-    const onApply = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        setPacketViewSettings({...newPacketViewSettings},
-        () => reset())
-        setHide()
-    }
 
     return (
-        <Modal show={isShown} onHide={onHide} className='packet-view-modal'>
+        <Modal show={isShown} onHide={setHide} className='packet-view-modal'>
             <Modal.Header>
                 <Modal.Title>Packet View Settings</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={onApply}>
+                <Form onSubmit={(e) => {
+                    e.preventDefault()
+                    onApply(newPacketViewSettings)
+                    setHide()
+                }}>
                     <div className='packet-sort'>
                         <h5>Order</h5>
                         <InputGroup className="mb-3" size='sm'>
@@ -93,7 +86,7 @@ function PacketViewSettingsModal({
                         </InputGroup>
                     </div>
                     <br />
-                    <Button variant="secondary" size='sm' className='rounded-pill' onClick={onHide}>
+                    <Button variant="secondary" size='sm' className='rounded-pill' onClick={setHide}>
                         Close
                     </Button>
                     &nbsp;

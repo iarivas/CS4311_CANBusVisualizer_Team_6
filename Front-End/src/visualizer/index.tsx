@@ -26,8 +26,7 @@ function Visualizer() {
 
     // Modal for changing packet view settings
     let [isShownPacketsModal, setIsShownPacketsModal] = useState(false)
-    let [packetViewSettings, setPacketViewSettings] = useState<PacketViewSettingsState>({
-        size: PACKET_PAGE_SIZE,
+    let packetViewSettings = useRef<PacketViewSettingsState>({
         before: undefined,
         after: undefined,
         node: undefined,
@@ -42,6 +41,7 @@ function Visualizer() {
     const hideNodeModal = () => setEditNodeModal(false)
 
     // Packet retrieval and infinite list
+    const packetPage = useRef(1)
     let [packetList, setPacketList]: Array<any> = useState([])
     let [hasMorePackets, setHasMorePackets] = useState(true)
     const renderPackets = packetList.map((packet: PacketState) => {
@@ -55,13 +55,13 @@ function Visualizer() {
         )
     })
     const fetchPackets = () => {
-        const lastPacket: PacketState | null = packetList.length > 0 ? packetList[packetList.length - 1] : null
-        api.getPackets(packetViewSettings, projectId)
+        api.getPackets(packetViewSettings.current, projectId, packetPage.current, PACKET_PAGE_SIZE)
             .then((response) => {
                 const newPackets = response.data
                 if (newPackets.length > 0) {
                     // Append to list
                     setPacketList(packetList.concat(newPackets))
+                    packetPage.current = packetPage.current + 1
                 } else {
                     setHasMorePackets(false)
                 }
@@ -71,7 +71,7 @@ function Visualizer() {
             })
     }
     const refreshPackets = () => {
-        api.getPackets(packetViewSettings, projectId)
+        api.getPackets(packetViewSettings.current, projectId, packetPage.current, PACKET_PAGE_SIZE)
             .then((response) => {
                 const newPackets = response.data
                 if (newPackets.length > 0) {
@@ -87,6 +87,18 @@ function Visualizer() {
         let elem = document.getElementById('packet-table')
         elem?.scrollTo(0, 0)
     }
+
+    // Modal for packet view
+    const onPacketViewModalApply = (newPacketViewSettings: PacketViewSettingsState) => {
+        packetViewSettings.current.before = newPacketViewSettings.before
+        packetViewSettings.current.after = newPacketViewSettings.after
+        packetViewSettings.current.node = newPacketViewSettings.node
+        packetViewSettings.current.sort = newPacketViewSettings.sort
+        packetPage.current = 0
+        setHasMorePackets(true)
+        setPacketList([])
+    }
+    
     const onPlay = (play: boolean) => {
         api.gatherTraffic(play, projectId)
     }
@@ -260,7 +272,7 @@ function Visualizer() {
                 isShown={isShownPacketsModal}
                 setHide={hidePacketViewSettingsModal}
                 packetViewSettings={packetViewSettings}
-                setPacketViewSettings={setPacketViewSettings}
+                onApply={onPacketViewModalApply}
             />
             <h1 className='visualizer-title'>{projectId}</h1>
             <Menubar
