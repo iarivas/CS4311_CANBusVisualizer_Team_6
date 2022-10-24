@@ -47,10 +47,10 @@ function Visualizer() {
     const renderPackets = packetList.map((packet: PacketState) => {
         return (
             <tr key={packet._id}>
-                <td>{packet.timestamp.toUpperCase()}</td>
-                <td>{packet.nodeId.toUpperCase()}</td>
-                <td>{packet.type.toUpperCase()}</td>
-                <td>{packet.data.toUpperCase()}</td>
+                <td>{packet.timestamp}</td>
+                <td>{packet.nodeId}</td>
+                <td>{packet.type}</td>
+                <td>{packet.data}</td>
             </tr>
         )
     })
