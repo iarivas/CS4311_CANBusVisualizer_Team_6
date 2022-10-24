@@ -54,6 +54,8 @@ function PacketViewSettingsModal({
                                             const value = e.target.value
                                             setNewPacketViewSettings({...newPacketViewSettings, after: value === '' ? undefined : value})
                                         }}
+                                        pattern={'([0-9]{4})-([0-9]{2}-[0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})(.[0-9]{1,})?'}
+                                        title={'yyyy-mm-ddThh:mm:ss[.ms]'}
                                     />
                                 </InputGroup>
                             </Col>
@@ -68,6 +70,8 @@ function PacketViewSettingsModal({
                                             const value = e.target.value
                                             setNewPacketViewSettings({...newPacketViewSettings, before: value === '' ? undefined : value})
                                         }}
+                                        pattern={'([0-9]{4})-([0-9]{2}-[0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})(.[0-9]{1,})?'}
+                                        title={'yyyy-mm-ddThh:mm:ss.ms'}
                                     />
                                 </InputGroup>
                             </Col>
