@@ -41,7 +41,6 @@ class APIUtil {
     }
 
     getPackets(filters: PacketViewSettingsState, projectId: string, page: number, size: number) {
-        // console.log(page)
         return axios.get(this.url + '/projects/' + projectId + '/packets', {
             params: {
                 size: size,
