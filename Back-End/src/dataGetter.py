@@ -144,7 +144,7 @@ class dataGetter:
         return initials
 
     ##return packets of project matching projectID
-    def getPackets(projectID: str, size: int, sort: str, node=None, before=None, after=None):
+    def getPackets(projectID: str, size: int, sort: str, page: int, node=None, before=None, after=None):
         _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestPDB"]
         _myCol = _myDB["TestCol"]
@@ -181,8 +181,8 @@ class dataGetter:
 
         packetList = []
 
-        for packet in _myCol.find(filterBy, {'_id': False}).sort(sortByField, sortByType).limit(size):
-            packet['timestamp'] = packet['timestamp'].strftime('%m/%d/%Y, %H:%M:%S')
+        for packet in _myCol.find(filterBy, {'_id': False}).sort(sortByField, sortByType).skip(((page - 1) * size) if page > 0 else 0).limit(size):
+            packet['timestamp'] = packet['timestamp'].strftime('%Y-%m-%dT%H:%M:%S.%f%z')
             packetList.append(packet)
         
         return packetList

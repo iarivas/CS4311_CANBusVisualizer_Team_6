@@ -95,8 +95,8 @@ class packetManager():
         ...
 
     @router.get("/projects/{projectId}/packets", tags=["packets"])
-    def getPacketsFromProject(projectId: str, size: int, sort: str, node: Union[str, None] = None, before: Union[str, None] = None, after: Union[str, None] = None):
-        return dataGetter.getPackets(projectId, size, sort, node, before, after)
+    def getPacketsFromProject(projectId: str, size: int, sort: str, page: int, node: Union[str, None] = None, before: Union[str, None] = None, after: Union[str, None] = None):
+        return dataGetter.getPackets(projectId, size, sort, page, node, before, after)
 
     @router.put("/projects/{projectId}/play", tags=["play"])
     def getLivePackets(projectId: str, play: Play):
