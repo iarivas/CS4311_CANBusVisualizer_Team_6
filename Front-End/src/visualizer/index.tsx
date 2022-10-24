@@ -94,7 +94,7 @@ function Visualizer() {
         packetViewSettings.current.after = newPacketViewSettings.after || packetViewSettings.current.after
         packetViewSettings.current.node = newPacketViewSettings.node || packetViewSettings.current.node
         packetViewSettings.current.sort = newPacketViewSettings.sort || packetViewSettings.current.sort
-        packetPage.current = 0
+        packetPage.current = 1
         setHasMorePackets(true)
         setPacketList([])
     }
@@ -224,8 +224,6 @@ function Visualizer() {
     // add new nodes found every 1.5 seconds
     useEffect(() => {
         console.log('This will run once');
-        getNodes()
-
         const interval = setInterval(() => {
             getNewNodes()
           }, 1500);
