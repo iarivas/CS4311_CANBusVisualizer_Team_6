@@ -48,7 +48,7 @@ function PacketViewSettingsModal({
                                     <InputGroup.Text id='basic-addon2'>After:</InputGroup.Text>
                                     <Form.Control
                                         size='sm'
-                                        placeholder={'11T082554602'}
+                                        placeholder={'2022-10-10T01:30:55.950000'}
                                         value={newPacketViewSettings.after}
                                         onChange={(e) => {
                                             const value = e.target.value
@@ -62,7 +62,7 @@ function PacketViewSettingsModal({
                                     <InputGroup.Text id='basic-addon3'>Before:</InputGroup.Text>
                                     <Form.Control
                                         size='sm'
-                                        placeholder={'11T082620711'}
+                                        placeholder={'2022-10-10T14:30:55.950000'}
                                         value={newPacketViewSettings.before}
                                         onChange={(e) => {
                                             const value = e.target.value
