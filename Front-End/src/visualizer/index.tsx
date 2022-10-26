@@ -26,8 +26,7 @@ function Visualizer() {
 
     // Modal for changing packet view settings
     let [isShownPacketsModal, setIsShownPacketsModal] = useState(false)
-    let [packetViewSettings, setPacketViewSettings] = useState<PacketViewSettingsState>({
-        size: PACKET_PAGE_SIZE,
+    let packetViewSettings = useRef<PacketViewSettingsState>({
         before: undefined,
         after: undefined,
         node: undefined,
@@ -42,50 +41,38 @@ function Visualizer() {
     const hideNodeModal = () => setEditNodeModal(false)
 
     // Packet retrieval and infinite list
+    const packetPage = useRef(1)
     let [packetList, setPacketList]: Array<any> = useState([])
     let [hasMorePackets, setHasMorePackets] = useState(true)
     const renderPackets = packetList.map((packet: PacketState) => {
         return (
             <tr key={packet._id}>
-                <td>{packet.timestamp.toUpperCase()}</td>
-                <td>{packet.nodeId.toUpperCase()}</td>
-                <td>{packet.type.toUpperCase()}</td>
-                <td>{packet.data.toUpperCase()}</td>
+                <td>{packet.timestamp}</td>
+                <td>{packet.nodeId}</td>
+                <td>{packet.type}</td>
+                <td>{packet.data}</td>
             </tr>
         )
     })
     const fetchPackets = () => {
-        const lastPacket: PacketState | undefined = packetList.length > 0 ? packetList[packetList.length - 1] : null
-        const viewSettings: PacketViewSettingsState = {
-            size: packetViewSettings.size,
-            before: packetViewSettings.before,
-            after: lastPacket ? lastPacket.timestamp : undefined,
-            node: packetViewSettings.node,
-            sort: packetViewSettings.sort
-        }
-        api.getPackets(
-            viewSettings,
-            projectId,
-            (response: any) => { // On success
+        api.getPackets(packetViewSettings.current, projectId, packetPage.current, PACKET_PAGE_SIZE)
+            .then((response) => {
                 const newPackets = response.data
                 if (newPackets.length > 0) {
                     // Append to list
                     setPacketList(packetList.concat(newPackets))
+                    packetPage.current = packetPage.current + 1
                 } else {
                     setHasMorePackets(false)
                 }
-            },
-            (error: any) => { // On failure
+            })
+            .catch((error) => {
                 console.log(error)
-                return
-            }
-        )
+            })
     }
     const refreshPackets = () => {
-        api.getPackets(
-            packetViewSettings,
-            projectId,
-            (response: any) => { // On success
+        api.getPackets(packetViewSettings.current, projectId, packetPage.current, PACKET_PAGE_SIZE)
+            .then((response) => {
                 const newPackets = response.data
                 if (newPackets.length > 0) {
                     // Append to list
@@ -93,15 +80,25 @@ function Visualizer() {
                 } else {
                     setHasMorePackets(false)
                 }
-            },
-            (error: any) => { // On failure
+            })
+            .catch((error) => {
                 console.log(error)
-                return
-            }
-        )
+            })
         let elem = document.getElementById('packet-table')
         elem?.scrollTo(0, 0)
     }
+
+    // Modal for packet view
+    const onPacketViewModalApply = (newPacketViewSettings: PacketViewSettingsState) => {
+        packetViewSettings.current.before = newPacketViewSettings.before || packetViewSettings.current.before
+        packetViewSettings.current.after = newPacketViewSettings.after || packetViewSettings.current.after
+        packetViewSettings.current.node = newPacketViewSettings.node || packetViewSettings.current.node
+        packetViewSettings.current.sort = newPacketViewSettings.sort || packetViewSettings.current.sort
+        packetPage.current = 1
+        setHasMorePackets(true)
+        setPacketList([])
+    }
+    
     const onPlay = (play: boolean) => {
         api.gatherTraffic(play, projectId)
     }
@@ -226,9 +223,6 @@ function Visualizer() {
     // once when going to this screen. Afterwards, it will
     // add new nodes found every 1.5 seconds
     useEffect(() => {
-        console.log('This will run once');
-        getNodes()
-
         const interval = setInterval(() => {
             getNewNodes()
           }, 1500);
@@ -275,7 +269,7 @@ function Visualizer() {
                 isShown={isShownPacketsModal}
                 setHide={hidePacketViewSettingsModal}
                 packetViewSettings={packetViewSettings}
-                setPacketViewSettings={setPacketViewSettings}
+                onApply={onPacketViewModalApply}
             />
             <h1 className='visualizer-title'>{projectId}</h1>
             <Menubar
