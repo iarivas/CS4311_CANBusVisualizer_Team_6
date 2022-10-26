@@ -90,10 +90,10 @@ function Visualizer() {
 
     // Modal for packet view
     const onPacketViewModalApply = (newPacketViewSettings: PacketViewSettingsState) => {
-        packetViewSettings.current.before = newPacketViewSettings.before || packetViewSettings.current.before
-        packetViewSettings.current.after = newPacketViewSettings.after || packetViewSettings.current.after
-        packetViewSettings.current.node = newPacketViewSettings.node || packetViewSettings.current.node
-        packetViewSettings.current.sort = newPacketViewSettings.sort || packetViewSettings.current.sort
+        packetViewSettings.current.before = newPacketViewSettings.before
+        packetViewSettings.current.after = newPacketViewSettings.after
+        packetViewSettings.current.node = newPacketViewSettings.node
+        packetViewSettings.current.sort = newPacketViewSettings.sort
         packetPage.current = 1
         setHasMorePackets(true)
         setPacketList([])
