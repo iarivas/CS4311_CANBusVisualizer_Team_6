@@ -3,7 +3,6 @@ import pymongo
 from dataSaver import dataSaver
 from typing import Final
 import datetime
-from can import Message
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
@@ -42,7 +41,7 @@ class dataGetter:
                         'data': _msgData} 
             dataSaver.storePackets([packet])
         except KeyError:
-            return    
+            print("KeyError", _msg.arbitration_id)   
         return
     
     def decodePackets(self, packet):

@@ -97,8 +97,6 @@ class packetManager():
     def getLivePackets(projectId: str, play: Play):
         i = 1
         while(play and i <= 10):
-            print(i, end =" ")
             dataGetter.receiveTraffic(projectId, dbc, bus)
-            print("")
             i += 1
         return 
