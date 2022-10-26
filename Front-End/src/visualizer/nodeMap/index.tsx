@@ -3,6 +3,9 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 import './index.css'
 import React, { useCallback, useState, useRef } from "react";
+import CustomNode from './customNode'
+
+const nodeTypes = { custom: CustomNode};
 
 
 function NodeMap({
@@ -30,6 +33,7 @@ function NodeMap({
                     onEdgesChange={onEdgesChange}
                     onConnect={onConnect}
                     onNodeContextMenu={onNodeContextMenu}
+                    nodeTypes={nodeTypes}
                 >
                     <Controls>   </Controls>
                 </ReactFlow>
