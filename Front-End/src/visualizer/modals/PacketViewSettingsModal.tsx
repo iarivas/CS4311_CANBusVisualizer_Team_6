@@ -10,12 +10,7 @@ function PacketViewSettingsModal({
         onApply
     }: any) {
 
-    let [newPacketViewSettings, setNewPacketViewSettings] = useState<PacketViewSettingsState>({
-        before: packetViewSettings.current.before,
-        after: packetViewSettings.current.after,
-        node: packetViewSettings.current.node,
-        sort: packetViewSettings.current.sort
-    })
+    let [newPacketViewSettings, setNewPacketViewSettings] = useState<PacketViewSettingsState>({...packetViewSettings})
 
     return (
         <Modal show={isShown} onHide={setHide} className='packet-view-modal'>
