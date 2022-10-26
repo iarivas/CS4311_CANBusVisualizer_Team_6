@@ -22,7 +22,8 @@ class NodeUtils {
         return [
             {
                 id: nodeData.nodeID,
-                data: nodeData.data ? nodeData.data : {label: nodeData.name},
+                type: 'custom',
+                data: nodeData.data ? nodeData.data : {label: nodeData.name, icon: '../images/car.png'},
                 position: nodeData.position
             },
             nodeData.relationships.map((target: string) => {

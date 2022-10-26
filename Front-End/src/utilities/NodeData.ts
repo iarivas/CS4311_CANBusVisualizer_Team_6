@@ -6,8 +6,11 @@ interface NodePosition {
 interface NodeData {
     projectId: string,
     nodeID: string,
-    name: string
-    data: any,
+    name: string,
+    data: {
+        label: string,
+        icon: string
+    },
     position: NodePosition | null,
     relationships: string[]
 }

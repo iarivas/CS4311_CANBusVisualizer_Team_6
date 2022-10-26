@@ -11,6 +11,7 @@ interface data{
 interface NodeData{
     nodeId: string,
     name: string,
+    type: 'custom',
     data: data | null,
     position: NodePosition | null,
     relationships: string[]
