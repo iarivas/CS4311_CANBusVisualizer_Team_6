@@ -250,6 +250,7 @@ function Visualizer() {
         setNodes(nodes.concat(
           {
             id: nodeId,
+            type: 'custom',
             position: {x: 100, y: 0},
             data: {label: 'test'}
           }
