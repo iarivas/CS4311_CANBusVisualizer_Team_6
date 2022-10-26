@@ -161,16 +161,16 @@ class dataGetter:
 
         # set the time filters
         if before is not None and after is not None:
-            beforeDate = datetime.strptime(before, '%Y-%m-%dT%H:%M:%S.%f%z')
-            afterDate = datetime.strptime(after, '%Y-%m-%dT%H:%M:%S.%f%z')
+            beforeDate = datetime.strptime(before, '%Y-%m-%dT%H:%M:%S.%f')
+            afterDate = datetime.strptime(after, '%Y-%m-%dT%H:%M:%S.%f')
             beforeAndAfterFilter = {'timestamp': {'$lt': beforeDate, '$gt': afterDate}}
             filterBy.update(beforeAndAfterFilter)
         elif before is not None:
-            beforeDate = datetime.strptime(before, '%Y-%m-%dT%H:%M:%S.%f%z')
+            beforeDate = datetime.strptime(before, '%Y-%m-%dT%H:%M:%S.%f')
             beforeFilter = {'timestamp': {'$lt': beforeDate}}
             filterBy.update(beforeFilter)
         elif after is not None:
-            afterDate = datetime.strptime(after, '%Y-%m-%dT%H:%M:%S.%f%z')
+            afterDate = datetime.strptime(after, '%Y-%m-%dT%H:%M:%S.%f')
             afterFilter = {'timestamp': {'$gt': afterDate}}
             filterBy.update(afterFilter)
 
@@ -182,7 +182,7 @@ class dataGetter:
         packetList = []
 
         for packet in _myCol.find(filterBy, {'_id': False}).sort(sortByField, sortByType).skip(((page - 1) * size) if page > 0 else 0).limit(size):
-            packet['timestamp'] = packet['timestamp'].strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+            packet['timestamp'] = packet['timestamp'].strftime('%Y-%m-%dT%H:%M:%S.%f')
             packetList.append(packet)
         
         return packetList
