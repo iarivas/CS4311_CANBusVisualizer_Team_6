@@ -3,6 +3,7 @@ import pymongo
 from dataSaver import dataSaver
 from typing import Final
 import datetime
+from can import Message
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
@@ -15,30 +16,33 @@ class dataGetter:
     def receiveTraffic(projectId, dbc, bus):
 
         _msg = bus.recv()
-        _msgInfo = (dbc.get_message_by_frame_id(_msg.arbitration_id))
-        _msgData = str(dbc.decode_message(_msg.arbitration_id, _msg.data))
+        try:
+            _msgInfo = (dbc.get_message_by_frame_id(_msg.arbitration_id))
+            _msgData = str(dbc.decode_message(_msg.arbitration_id, _msg.data))
 
-        _myClient = pymongo.MongoClient(localDB)
-        _myDB = _myClient["TestPDB"]
-        _myCol = _myDB["TestColNodes"]
+            _myClient = pymongo.MongoClient(localDB)
+            _myDB = _myClient["TestPDB"]
+            _myCol = _myDB["TestColNodes"]
 
-        # Checks if node is in testCol_Nodes
-        if _myCol.find_one({'nodeID': str(_msg.arbitration_id)}) == None:
-            node =    {'projectId': projectId,
-                    'nodeID': str(_msg.arbitration_id),
-                    'name': str(_msgInfo.comment),
-                    'data': None,
-                    'position': None,
-                    'relationships': []}
+            # Checks if node is in testCol_Nodes
+            if _myCol.find_one({'nodeID': str(_msg.arbitration_id+2147483648)}) == None:
+                node =    {'projectId': projectId,
+                        'nodeID': str(_msg.arbitration_id+2147483648), #Note sure why but the 2147483648 is needed to match up with the cangen node ID
+                        'name': str(_msgInfo.comment),
+                        'data': None,
+                        'position': None,
+                        'relationships': []}
 
-            dataSaver.storeNodes([node])
+                dataSaver.storeNodes([node])
 
-        packet =    {'projectId': projectId,
-                    'timestamp': str(datetime.datetime.fromtimestamp(_msg.timestamp))[:-3],
-                    'type': str(_msg.dlc),
-                    'nodeId': str(_msgInfo.comment),
-                    'data': _msgData} 
-        dataSaver.storePackets([packet])
+            packet =    {'projectId': projectId,
+                        'timestamp': str(datetime.datetime.fromtimestamp(_msg.timestamp))[:-3],
+                        'type': str(_msg.dlc),
+                        'nodeId': str(_msgInfo.comment),
+                        'data': _msgData} 
+            dataSaver.storePackets([packet])
+        except KeyError:
+            return    
         return
     
     def decodePackets(self, packet):

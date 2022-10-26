@@ -7,7 +7,7 @@ from dataGetter import dataGetter
 from typing import Union
 
 bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
-dbc = cantools.database.load_file('/home/kali/Desktop/CSS-Electronics-SAE-J1939-2018-08_v1.2.dbc')
+dbc = cantools.database.load_file('/home/cbvs/Desktop/dbcFile.dbc')
 router = APIRouter()
 
 class Play(BaseModel):
@@ -97,6 +97,8 @@ class packetManager():
     def getLivePackets(projectId: str, play: Play):
         i = 1
         while(play and i <= 10):
+            print(i, end =" ")
             dataGetter.receiveTraffic(projectId, dbc, bus)
+            print("")
             i += 1
         return 
