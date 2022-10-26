@@ -28,6 +28,11 @@ function CustomNode({ id, data }: any) {
       <Handle type="target" position={Position.Top} />
       <div style={{ textAlign: 'center', color: 'black', fontSize: 'large'}}>
         <strong>{data.label}</strong>
+        
+      </div>
+
+      <div style={{ textAlign: 'center', color: 'gray'}}>
+        {id}
       </div>
       
       <img style={{ marginRight: 'auto', marginLeft: 'auto'}} src={renderSwitch(data.icon)} />
