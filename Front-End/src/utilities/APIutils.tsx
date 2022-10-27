@@ -54,13 +54,11 @@ class APIUtil {
         })
     }
 
-    sendPackets(packets: [], play: boolean, projectId: string) {
+    sendPackets(packets: [], projectId: string) {
         axios.post(
             this.url + '/projects/' + projectId + '/packets',
             packets,
-            {
-                params: {play: play}
-            })
+        )
     }
 
     getNodes(projectId: string) {

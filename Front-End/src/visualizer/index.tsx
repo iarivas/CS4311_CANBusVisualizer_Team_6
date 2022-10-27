@@ -58,6 +58,10 @@ function Visualizer() {
         console.log('TODO: Implement edit packet')
         console.log(packetInFocus.current)
     }
+    const onPlayPacket = () => {
+        console.log('TODO: Implement play packet')
+        console.log(packetInFocus.current)  
+    }
     const onAddToQueuePacket = () => {
         console.log('TODO: Implement add to queue')
         console.log(packetInFocus.current)
@@ -297,6 +301,7 @@ function Visualizer() {
         <div className='visualizer'>
             <Menu id={MENU_ID}>
                 <Item onClick={onEditPacket}>Edit</Item>
+                <Item onClick={onPlayPacket}>Play</Item>
                 <Item onClick={onAddToQueuePacket}>Add to queue</Item>
             </Menu>
             <EditNodeModal
