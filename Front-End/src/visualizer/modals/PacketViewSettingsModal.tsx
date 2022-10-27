@@ -7,29 +7,27 @@ function PacketViewSettingsModal({
         isShown,
         setHide,
         packetViewSettings,
-        setPacketViewSettings,
+        onApply
     }: any) {
 
-    let [newPacketViewSettings, setNewPacketViewSettings] = useState<PacketViewSettingsState>({...packetViewSettings})
-    const reset = () => setNewPacketViewSettings({...packetViewSettings})
-    const onHide = () => {
-        reset()
-        setHide()
-    }
-    const onApply = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        setPacketViewSettings({...newPacketViewSettings},
-        () => reset())
-        setHide()
-    }
+    let [newPacketViewSettings, setNewPacketViewSettings] = useState<PacketViewSettingsState>({
+        before: packetViewSettings.current.before,
+        after: packetViewSettings.current.after,
+        node: packetViewSettings.current.node,
+        sort: packetViewSettings.current.sort
+    })
 
     return (
-        <Modal show={isShown} onHide={onHide} className='packet-view-modal'>
+        <Modal show={isShown} onHide={setHide} className='packet-view-modal'>
             <Modal.Header>
                 <Modal.Title>Packet View Settings</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={onApply}>
+                <Form onSubmit={(e) => {
+                    e.preventDefault()
+                    onApply(newPacketViewSettings)
+                    setHide()
+                }}>
                     <div className='packet-sort'>
                         <h5>Order</h5>
                         <InputGroup className="mb-3" size='sm'>
@@ -55,12 +53,14 @@ function PacketViewSettingsModal({
                                     <InputGroup.Text id='basic-addon2'>After:</InputGroup.Text>
                                     <Form.Control
                                         size='sm'
-                                        placeholder={'11T082554602'}
+                                        placeholder={'2022-10-10T01:30:55.950000'}
                                         value={newPacketViewSettings.after}
                                         onChange={(e) => {
                                             const value = e.target.value
                                             setNewPacketViewSettings({...newPacketViewSettings, after: value === '' ? undefined : value})
                                         }}
+                                        pattern={'([0-9]{4})-([0-9]{2}-[0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})(.[0-9]{1,})?'}
+                                        title={'yyyy-mm-ddThh:mm:ss[.ms]'}
                                     />
                                 </InputGroup>
                             </Col>
@@ -69,12 +69,14 @@ function PacketViewSettingsModal({
                                     <InputGroup.Text id='basic-addon3'>Before:</InputGroup.Text>
                                     <Form.Control
                                         size='sm'
-                                        placeholder={'11T082620711'}
+                                        placeholder={'2022-10-10T14:30:55.950000'}
                                         value={newPacketViewSettings.before}
                                         onChange={(e) => {
                                             const value = e.target.value
                                             setNewPacketViewSettings({...newPacketViewSettings, before: value === '' ? undefined : value})
                                         }}
+                                        pattern={'([0-9]{4})-([0-9]{2}-[0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})(.[0-9]{1,})?'}
+                                        title={'yyyy-mm-ddThh:mm:ss.ms'}
                                     />
                                 </InputGroup>
                             </Col>
@@ -93,7 +95,7 @@ function PacketViewSettingsModal({
                         </InputGroup>
                     </div>
                     <br />
-                    <Button variant="secondary" size='sm' className='rounded-pill' onClick={onHide}>
+                    <Button variant="secondary" size='sm' className='rounded-pill' onClick={setHide}>
                         Close
                     </Button>
                     &nbsp;
