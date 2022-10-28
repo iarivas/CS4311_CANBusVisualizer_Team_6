@@ -40,6 +40,11 @@ function ReplayPacketModal({
         })
     }
 
+    const hideModal = () => {
+        setIsPlaying(false)
+        onHide()
+    }
+
     const playButton = (
         <Button
             className='rounded-pill replay-packet-button'
@@ -66,7 +71,7 @@ function ReplayPacketModal({
     )
 
     return (
-        <Modal show={isShown} onHide={onHide} className='packet-view-modal'>
+        <Modal show={isShown} onHide={hideModal} className='packet-view-modal'>
             <Modal.Body>
             <Modal.Title>Replay Packets</Modal.Title>
             <br />
@@ -103,7 +108,7 @@ function ReplayPacketModal({
                 <Button
                     variant="secondary"
                     size='sm' className='rounded-pill'
-                    onClick={onHide}
+                    onClick={hideModal}
                 >
                     Close
                 </Button>
