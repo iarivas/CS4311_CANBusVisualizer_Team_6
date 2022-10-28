@@ -2,14 +2,14 @@ from datetime import datetime
 import time
 from fastapi import APIRouter
 from pydantic import BaseModel
-# import can
-# import cantools
+import can
+import cantools
 from dataSaver import dataSaver
 from dataGetter import dataGetter
 from typing import Union
 
-# bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
-# dbc = cantools.database.load_file('/home/cbvs/Desktop/dbcFile.dbc')
+bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
+dbc = cantools.database.load_file('/home/cbvs/Desktop/dbcFile.dbc')
 router = APIRouter()
 
 class Play(BaseModel):
