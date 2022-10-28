@@ -5,6 +5,7 @@ import {
     useEdgesState,
     addEdge
 } from 'react-flow-renderer';
+import { Menu, Item, useContextMenu } from 'react-contexify';
 import PacketContainer from './packetContainer'
 import NodeMap from './nodeMap'
 import { PacketSortOptions as PacketSort, PACKET_PAGE_SIZE} from '../common/Constants'
@@ -17,6 +18,9 @@ import NodeUtils from '../utilities/NodeUtils';
 import './index.css'
 import './modals/index.css'
 import EditNodeModal from './modals/EditNodeModal'
+import "react-contexify/dist/ReactContexify.css";
+
+const MENU_ID = 'packet-context-menu';
 
 function Visualizer() {
     const projectId = useParams().projectId!
@@ -35,6 +39,34 @@ function Visualizer() {
     const showPacketViewSettingsModal = () => setIsShownPacketsModal(true)
     const hidePacketViewSettingsModal = () => setIsShownPacketsModal(false)
 
+    // Packet context menu
+    const packetInFocus = useRef<PacketState>()
+    const { show } = useContextMenu({
+        id: MENU_ID,
+    });
+    
+    function handleContextMenu(event: any){
+        event.preventDefault();
+        show(event, {
+            props: {
+                key: 'value'
+            }
+        })
+      }
+
+    const onEditPacket = () => {
+        console.log('TODO: Implement edit packet')
+        console.log(packetInFocus.current)
+    }
+    const onPlayPacket = () => {
+        console.log('TODO: Implement play packet')
+        console.log(packetInFocus.current)  
+    }
+    const onAddToQueuePacket = () => {
+        console.log('TODO: Implement add to queue')
+        console.log(packetInFocus.current)
+    }
+
     // Modal for editing node
     let [editNodeModal, setEditNodeModal] = useState(false)
     const showNodeModal = () => setEditNodeModal(true)
@@ -46,7 +78,13 @@ function Visualizer() {
     let [hasMorePackets, setHasMorePackets] = useState(true)
     const renderPackets = packetList.map((packet: PacketState) => {
         return (
-            <tr key={packet._id}>
+            <tr
+                key={packet._id}
+                onContextMenu={(event) => {
+                    packetInFocus.current = packet
+                    handleContextMenu(event)
+                }}
+            >
                 <td>{packet.timestamp}</td>
                 <td>{packet.nodeId}</td>
                 <td>{packet.type}</td>
@@ -261,6 +299,11 @@ function Visualizer() {
     
     return (
         <div className='visualizer'>
+            <Menu id={MENU_ID}>
+                <Item onClick={onEditPacket}>Edit</Item>
+                <Item onClick={onPlayPacket}>Play</Item>
+                <Item onClick={onAddToQueuePacket}>Add to queue</Item>
+            </Menu>
             <EditNodeModal
                 isShow={editNodeModal}
                 setHide={hideNodeModal}

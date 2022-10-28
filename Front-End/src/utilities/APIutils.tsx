@@ -1,6 +1,7 @@
 import ProjectState from "../projects/new/ProjectState"
 import ProjectCardState from "../projects/ProjectCardState"
 import PacketViewSettingsState from "../visualizer/modals/PacketViewSettingsState"
+import PacketState from "../visualizer/packetContainer/PacketState"
 import axios from 'axios'
 
 
@@ -51,6 +52,13 @@ class APIUtil {
                 page: page
             }
         })
+    }
+
+    sendPackets(packets: [], projectId: string) {
+        axios.post(
+            this.url + '/projects/' + projectId + '/packets',
+            packets,
+        )
     }
 
     getNodes(projectId: string) {
