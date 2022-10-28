@@ -17,7 +17,12 @@ class dataGetter:
         _msg = bus.recv()
         try:
             _msgInfo = (dbc.get_message_by_frame_id(_msg.arbitration_id))
-            _msgData = str(dbc.decode_message(_msg.arbitration_id, _msg.data))
+            try:
+                _msgData = str(dbc.decode_message(_msg.arbitration_id, _msg.data))
+            
+            except :
+                print("bitstruct.Error ", _msg.data)
+                return
 
             _myClient = pymongo.MongoClient(localDB)
             _myDB = _myClient["TestPDB"]
@@ -41,7 +46,8 @@ class dataGetter:
                         'data': _msgData} 
             dataSaver.storePackets([packet])
         except KeyError:
-            print("KeyError", _msg.arbitration_id)   
+            print("KeyError", _msg.arbitration_id)
+
         return
     
     def decodePackets(self, packet):
