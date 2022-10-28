@@ -72,7 +72,6 @@ function Visualizer() {
     }
     const onAddToQueuePacket = () => {
         setPacketsToReplay(packetsToReplay.concat(packetInFocus.current!))
-        console.log(packetsToReplay)
     }
 
     // Modal for editing node
