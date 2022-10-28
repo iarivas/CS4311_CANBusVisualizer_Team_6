@@ -19,6 +19,7 @@ import './index.css'
 import './modals/index.css'
 import EditNodeModal from './modals/EditNodeModal'
 import "react-contexify/dist/ReactContexify.css";
+import ReplayPacketModal from './modals/ReplayPacketModal';
 
 const MENU_ID = 'packet-context-menu';
 
@@ -140,6 +141,9 @@ function Visualizer() {
     const onPlay = (play: boolean) => {
         api.gatherTraffic(play, projectId)
     }
+
+    // Modal for replay packets
+    const [isShownReplayPacketsModal, setIsShownReplayPacketsModal] = useState<boolean>(false)
 
     // Node map
     const initialNodes: any[] = [
@@ -314,10 +318,15 @@ function Visualizer() {
                 packetViewSettings={packetViewSettings}
                 onApply={onPacketViewModalApply}
             />
+            <ReplayPacketModal
+                isShown={isShownReplayPacketsModal}
+                onHide={() => setIsShownReplayPacketsModal(false)}
+            />
             <h1 className='visualizer-title'>{projectId}</h1>
             <Menubar
                 showPacketViewSettingsModal={showPacketViewSettingsModal}
                 hidePacketViewSettingsModal={hidePacketViewSettingsModal}
+                showReplayPacketsModal={() => setIsShownReplayPacketsModal(true)}
                 onAddNode={addNode}
             />
             <div className='visualizer-content'>
