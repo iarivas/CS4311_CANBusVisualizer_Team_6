@@ -40,6 +40,13 @@ function Visualizer() {
     const showPacketViewSettingsModal = () => setIsShownPacketsModal(true)
     const hidePacketViewSettingsModal = () => setIsShownPacketsModal(false)
 
+    // Modal for replay packets
+    const [isShownReplayPacketsModal, setIsShownReplayPacketsModal] = useState<boolean>(false)
+    const [packetsToReplay, setPacketsToReplay] = useState<PacketState[]>([])
+    const clearPacketsToReplay = () => {
+        setPacketsToReplay([])
+    }
+
     // Packet context menu
     const packetInFocus = useRef<PacketState>()
     const { show } = useContextMenu({
@@ -59,13 +66,10 @@ function Visualizer() {
         console.log('TODO: Implement edit packet')
         console.log(packetInFocus.current)
     }
-    const onPlayPacket = () => {
-        console.log('TODO: Implement play packet')
-        console.log(packetInFocus.current)  
-    }
     const onAddToQueuePacket = () => {
-        console.log('TODO: Implement add to queue')
-        console.log(packetInFocus.current)
+        setPacketsToReplay(packetsToReplay.concat(packetInFocus.current!))
+        console.log('PACKETS TO REPLAY:')
+        console.log(packetsToReplay)
     }
 
     // Modal for editing node
@@ -141,9 +145,6 @@ function Visualizer() {
     const onPlay = (play: boolean) => {
         api.gatherTraffic(play, projectId)
     }
-
-    // Modal for replay packets
-    const [isShownReplayPacketsModal, setIsShownReplayPacketsModal] = useState<boolean>(false)
 
     // Node map
     const initialNodes: any[] = [
@@ -305,7 +306,6 @@ function Visualizer() {
         <div className='visualizer'>
             <Menu id={MENU_ID}>
                 <Item onClick={onEditPacket}>Edit</Item>
-                <Item onClick={onPlayPacket}>Play</Item>
                 <Item onClick={onAddToQueuePacket}>Add to queue</Item>
             </Menu>
             <EditNodeModal
@@ -321,6 +321,8 @@ function Visualizer() {
             <ReplayPacketModal
                 isShown={isShownReplayPacketsModal}
                 onHide={() => setIsShownReplayPacketsModal(false)}
+                packets={packetsToReplay}
+                clear={clearPacketsToReplay}
             />
             <h1 className='visualizer-title'>{projectId}</h1>
             <Menubar
