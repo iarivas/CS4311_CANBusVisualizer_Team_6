@@ -47,6 +47,10 @@ function Visualizer() {
         setPacketsToReplay([])
     }
 
+    const replayPackets = (packets: PacketState[]) => {
+        api.sendPackets(packets, projectId)
+    }
+
     // Packet context menu
     const packetInFocus = useRef<PacketState>()
     const { show } = useContextMenu({
@@ -68,7 +72,6 @@ function Visualizer() {
     }
     const onAddToQueuePacket = () => {
         setPacketsToReplay(packetsToReplay.concat(packetInFocus.current!))
-        console.log('PACKETS TO REPLAY:')
         console.log(packetsToReplay)
     }
 
@@ -322,6 +325,7 @@ function Visualizer() {
                 isShown={isShownReplayPacketsModal}
                 onHide={() => setIsShownReplayPacketsModal(false)}
                 packets={packetsToReplay}
+                replayPackets={replayPackets}
                 clear={clearPacketsToReplay}
             />
             <h1 className='visualizer-title'>{projectId}</h1>

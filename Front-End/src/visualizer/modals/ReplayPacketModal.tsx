@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Modal, Button, Table } from 'react-bootstrap'
 import { PlayFill, StopFill} from 'react-bootstrap-icons'
 import PacketState from '../packetContainer/PacketState'
@@ -8,6 +8,7 @@ interface Props {
     onHide: (() => void),
     packets: PacketState[],
     clear: (() => void),
+    replayPackets: ((packets: PacketState[]) => void),
 }
 
 function ReplayPacketModal({
@@ -15,10 +16,12 @@ function ReplayPacketModal({
     onHide,
     packets,
     clear,
+    replayPackets,
     }: Props) {
 
     const [idxToReplay, setIdxToReplay] = useState(-1)
     const [isPlaying, setIsPlaying] = useState(false)
+    const isPlayingRef = useRef(false)
 
     const packetDisplay = () => {
         return packets.map((packet, idx) => {
@@ -44,6 +47,15 @@ function ReplayPacketModal({
         setIsPlaying(false)
         onHide()
     }
+
+    useEffect(() => {isPlayingRef.current = isPlaying}, [isPlaying])
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (isPlayingRef.current) replayPackets([packets[idxToReplay]])
+        }, 500);
+        return () => clearInterval(interval);
+    }, [])
 
     const playButton = (
         <Button
