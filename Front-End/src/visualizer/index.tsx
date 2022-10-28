@@ -309,7 +309,7 @@ function Visualizer() {
         <div className='visualizer'>
             <Menu id={MENU_ID}>
                 <Item onClick={onEditPacket}>Edit</Item>
-                <Item onClick={onAddToQueuePacket}>Add to queue</Item>
+                <Item onClick={onAddToQueuePacket}>Add to play list</Item>
             </Menu>
             <EditNodeModal
                 isShow={editNodeModal}
