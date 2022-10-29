@@ -59,7 +59,7 @@ class dataGetter:
 
         projects = []
 
-        filterBy = {'archive': True} if isArchived else {}
+        filterBy = {'archive': isArchived} if isArchived != None else {}
 
         for project in _myCol.find(filterBy):
             projects.append(project)
