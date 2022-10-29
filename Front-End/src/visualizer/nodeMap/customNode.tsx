@@ -1,21 +1,21 @@
 import { Position, Handle } from "react-flow-renderer";
 
 let pics = {
-  pic1: require('../images/GOATZILLA.jpg'),
-  pic2: require('../images/car.png'),
-  pic3: require('../images/goomba.png'),
-  pic4: require('../images/PB&J.png')
+  pic1: require('../images/ac.png'),
+  pic2: require('../images/engine.png'),
+  pic3: require('../images/brake.png'),
+  pic4: require('../images/steering_wheel.png')
 }
 
 function renderSwitch(param: any) {
   switch(param) {
-    case '../images/GOATZILLA.jpg':
+    case '../images/ac.png':
       return pics.pic1;
-    case '../images/car.png':
+    case '../images/engine.png':
       return pics.pic2;
-    case '../images/goomba.png':
+    case '../images/brake.png':
       return pics.pic3;
-    case '../images/PB&J.png':
+    case '../images/steering_wheel.png':
       return pics.pic4;
     default:
       return pics.pic2;

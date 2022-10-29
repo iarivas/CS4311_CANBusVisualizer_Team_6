@@ -23,7 +23,7 @@ class NodeUtils {
             {
                 id: nodeData.nodeID,
                 type: 'custom',
-                data: nodeData.data ? nodeData.data : {label: nodeData.name, icon: '../images/car.png'},
+                data: nodeData.data ? nodeData.data : {label: nodeData.name, icon: '../images/engine.png'},
                 position: nodeData.position
             },
             nodeData.relationships.map((target: string) => {
