@@ -1,25 +1,23 @@
 
-#when Node and filemanager are implemented Ill edit this class -Ian
+# when Node and filemanager are implemented Ill edit this class -Ian
 class blacklistManager:
     def __init__(self, listOfBlacklistedNodes):
+        # Maybe add a way to fill the list by digesting an actual blacklist file
         self._listOfBlacklistedNodes = listOfBlacklistedNodes
 
-    def setListOfBlacklistedNodes():
+    def setListOfBlacklistedNodes(self):
         return
-        #TODO: finish this thang
-        
-    def getListOfBlacklistedNodes():
+        # TODO: finish this thang
+
+    def getListOfBlacklistedNodes(self):
         return self._listOfBlacklistedNodes
-    
-    def checkIfNodeIsBlacklisted():
-        return
-        #TODO: finish the fight
 
-    def importNodes():
+    def checkIfNodeIsBlacklisted(self):
+        return
+        # TODO: finish the fight
+
+    def importNodes(self):
         #listOfBlacklistedNodes = projectManager.importNodes()
+        # To add more nodes from imported blacklist files
         return
-        #TODO: finish it
-
-    def exportNodes():
-        return
-        #TODO: you already know what imma put
+        # TODO: finish it
