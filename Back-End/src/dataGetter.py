@@ -52,17 +52,19 @@ class dataGetter:
         ...
 
     #return all projects in db
-    def retrieveAllProjects():
-        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+    def getAllProjects(isArchived: bool):
+        _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestDB"]
         _myCol = _myDB["TestCol"]
 
-        store = []
+        projects = []
 
-        for x in _myCol.find({} , {"_id": 1, "eventName": 1}):
-            store.append(x)
+        filterBy = {'archive': isArchived} if isArchived != None else {}
+
+        for project in _myCol.find(filterBy):
+            projects.append(project)
         
-        return store
+        return projects
 
     #return project matching projectID
     def retrieveProject(projectID):
