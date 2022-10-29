@@ -143,14 +143,10 @@ function Visualizer() {
 
     // Node map
     const initialNodes: any[] = [
-        // { id: '1', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
-        // { id: '2', data: { label: 'Node 2' }, position: { x: 400, y: 100 } },
-        // { id: '3', data: { label: 'Node 3' }, position: { x: 150, y: 100 } },
-        // { id: '4', data: { label: 'Node 4' }, position: { x: 0, y: 200 } },
+ 
     ];
-
     const initialEdges: any[] = [
-        // {id: 'e1-2', source: '1', target: '2'}
+        
     ]
 
     const [nodeDict, setNodeDict] = useState<any>({})
@@ -223,6 +219,7 @@ function Visualizer() {
                 newNodes.forEach((node, idx) => {
                     // If node not in dict, add it
                     if (!(node.id in nodeDictRef.current)) {
+                        
                         nodeDictRef.current[node.id] = true
                         setNodeDict(nodeDictRef.current)
     
@@ -288,6 +285,7 @@ function Visualizer() {
         setNodes(nodes.concat(
           {
             id: nodeId,
+            type: 'custom',
             position: {x: 100, y: 0},
             data: {label: 'test'}
           }
