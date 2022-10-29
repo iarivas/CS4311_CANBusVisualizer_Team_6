@@ -19,6 +19,7 @@ import './index.css'
 import './modals/index.css'
 import EditNodeModal from './modals/EditNodeModal'
 import "react-contexify/dist/ReactContexify.css";
+import ReplayPacketModal from './modals/ReplayPacketModal';
 
 const MENU_ID = 'packet-context-menu';
 
@@ -39,6 +40,17 @@ function Visualizer() {
     const showPacketViewSettingsModal = () => setIsShownPacketsModal(true)
     const hidePacketViewSettingsModal = () => setIsShownPacketsModal(false)
 
+    // Modal for replay packets
+    const [isShownReplayPacketsModal, setIsShownReplayPacketsModal] = useState<boolean>(false)
+    const [packetsToReplay, setPacketsToReplay] = useState<PacketState[]>([])
+    const clearPacketsToReplay = () => {
+        setPacketsToReplay([])
+    }
+
+    const replayPackets = (packets: PacketState[]) => {
+        api.sendPackets(packets, projectId)
+    }
+
     // Packet context menu
     const packetInFocus = useRef<PacketState>()
     const { show } = useContextMenu({
@@ -58,13 +70,8 @@ function Visualizer() {
         console.log('TODO: Implement edit packet')
         console.log(packetInFocus.current)
     }
-    const onPlayPacket = () => {
-        console.log('TODO: Implement play packet')
-        console.log(packetInFocus.current)  
-    }
     const onAddToQueuePacket = () => {
-        console.log('TODO: Implement add to queue')
-        console.log(packetInFocus.current)
+        setPacketsToReplay(packetsToReplay.concat(packetInFocus.current!))
     }
 
     // Modal for editing node
@@ -301,8 +308,7 @@ function Visualizer() {
         <div className='visualizer'>
             <Menu id={MENU_ID}>
                 <Item onClick={onEditPacket}>Edit</Item>
-                <Item onClick={onPlayPacket}>Play</Item>
-                <Item onClick={onAddToQueuePacket}>Add to queue</Item>
+                <Item onClick={onAddToQueuePacket}>Add to play list</Item>
             </Menu>
             <EditNodeModal
                 isShow={editNodeModal}
@@ -314,10 +320,18 @@ function Visualizer() {
                 packetViewSettings={packetViewSettings}
                 onApply={onPacketViewModalApply}
             />
+            <ReplayPacketModal
+                isShown={isShownReplayPacketsModal}
+                onHide={() => setIsShownReplayPacketsModal(false)}
+                packets={packetsToReplay}
+                replayPackets={replayPackets}
+                clear={clearPacketsToReplay}
+            />
             <h1 className='visualizer-title'>{projectId}</h1>
             <Menubar
                 showPacketViewSettingsModal={showPacketViewSettingsModal}
                 hidePacketViewSettingsModal={hidePacketViewSettingsModal}
+                showReplayPacketsModal={() => setIsShownReplayPacketsModal(true)}
                 onAddNode={addNode}
             />
             <div className='visualizer-content'>

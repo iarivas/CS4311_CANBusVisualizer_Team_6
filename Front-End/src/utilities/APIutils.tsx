@@ -54,7 +54,7 @@ class APIUtil {
         })
     }
 
-    sendPackets(packets: [], projectId: string) {
+    sendPackets(packets: any[], projectId: string) {
         axios.post(
             this.url + '/projects/' + projectId + '/packets',
             packets,

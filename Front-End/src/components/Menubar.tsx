@@ -6,6 +6,7 @@ import {Navbar, Nav, NavDropdown, Form, FormControl} from 'react-bootstrap'
 export default function Menubar({
       showPacketViewSettingsModal,
       hidePacketViewSettingsModal,
+      showReplayPacketsModal,
       onAddNode,
     } : any
     ){
@@ -32,7 +33,7 @@ export default function Menubar({
 
             <NavDropdown title="Packets" id="basic-nav-dropdown" >
               <NavDropdown.Item id="action" href="#action/3.1"> Edit Packets</NavDropdown.Item>
-              <NavDropdown.Item id="action" href="#action/3.2"> Replay Packets </NavDropdown.Item>
+              <NavDropdown.Item id="action" onClick={showReplayPacketsModal}> Replay Packets </NavDropdown.Item>
               <NavDropdown.Item id='action' onClick={showPacketViewSettingsModal}>Filter and Sort</NavDropdown.Item>
               
             </NavDropdown>
