@@ -26,7 +26,7 @@ function Projects() {
 
   let newProjectForm = NewProject()
 
-  const activeProjectCards = activeProjects.map((project: any) => {
+  const activeProjectCards = activeProjects.map((project) => {
     return (
       <Dropdown as={ButtonGroup} className='mock-project'>
         <OverlayTrigger
@@ -55,7 +55,7 @@ function Projects() {
     )
   })
 
-  const archivedProjectCards = archivedProjects.map((project: any) => {
+  const archivedProjectCards = archivedProjects.map((project) => {
     return (
       <Dropdown as={ButtonGroup} className='mock-project'>
         <OverlayTrigger
