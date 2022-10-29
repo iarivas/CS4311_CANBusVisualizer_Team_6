@@ -89,13 +89,6 @@ class packetManager():
             order (int): If equal to 1, list returned in ascending order, else if equal to 0, list returned in decending order
     """
 
-    # NOT Sure if we agreed if this was a front end responsibility
-    # def sortPackets(self, attribute, order):
-    #     ...
-
-    # def filterPackets(self, listOfAttributes):
-    #     ...
-
     def generatePacket(self, listOfAttributes):
         ...
 
