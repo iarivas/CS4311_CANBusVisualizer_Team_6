@@ -65,7 +65,7 @@ function Projects() {
         <Dropdown.Toggle className='inside-mock-dropdown'split variant="secondary" id="dropdown-split-basic"/>
 
         <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">Archive</Dropdown.Item>
+        <Dropdown.Item href="#/action-1">Move to Active</Dropdown.Item>
         <Dropdown.Item href="#/action-2">Duplicate</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
