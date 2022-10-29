@@ -2,7 +2,7 @@ import './index.css';
 import APIUtil from '../utilities/APIutils';
 import {useNavigate} from "react-router-dom";
 import NewProject from './new';
-import { Button, ButtonGroup, Col, Nav, Dropdown, Row, Tab } from 'react-bootstrap';
+import { Button, ButtonGroup, Col, Nav, Dropdown, Row, Tab, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import ProjectState from './new/ProjectState';
 import { useEffect, useState } from 'react';
 
@@ -29,6 +29,11 @@ function Projects() {
   const activeProjectCards = activeProjects.map((project: any) => {
     return (
       <Dropdown as={ButtonGroup} className='mock-project'>
+        <OverlayTrigger
+          placement="right"
+          delay={{ show: 250, hide: 400 }}
+          overlay={<Tooltip id='tooltip'>{project.eventName}</Tooltip>}
+        >
         <Button
           className='inside-mock'
           variant='warning'
@@ -37,8 +42,9 @@ function Projects() {
             onNavigateProject('/projects/' + path)
           }}
         >
-          {project.eventName}
+          <div className='card-event-name'>{project.eventName}</div>
         </Button>
+        </OverlayTrigger>
         <Dropdown.Toggle className='inside-mock-dropdown'split variant="warning" id="dropdown-split-basic"/>
 
         <Dropdown.Menu>
@@ -52,16 +58,22 @@ function Projects() {
   const archivedProjectCards = archivedProjects.map((project: any) => {
     return (
       <Dropdown as={ButtonGroup} className='mock-project'>
-        <Button
-          className='inside-mock'
-          variant='secondary'
-          onClick={() => {
-            const path = project._id
-            onNavigateProject('/projects/' + path)
-          }}
+        <OverlayTrigger
+          placement="right"
+          delay={{ show: 250, hide: 400 }}
+          overlay={<Tooltip id='tooltip'>{project.eventName}</Tooltip>}
         >
-          {project.eventName}
-        </Button>
+          <Button
+            className='inside-mock'
+            variant='secondary'
+            onClick={() => {
+              const path = project._id
+              onNavigateProject('/projects/' + path)
+            }}
+          >
+            {project.eventName}
+          </Button>
+        </OverlayTrigger>
         <Dropdown.Toggle className='inside-mock-dropdown'split variant="secondary" id="dropdown-split-basic"/>
 
         <Dropdown.Menu>
