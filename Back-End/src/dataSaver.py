@@ -55,9 +55,7 @@ class dataSaver:
         x = _myCol.insert_one(doc)
 
         print(x.inserted_id)
-    
-    # TEST THIS FUNCTION WITH LOCAL DB TO SEE HOW MUCH SPACE PACKETS WILL TAKE PLACE
-    # CHANGE DB AND COLLECTION REFERENCES AS NEEDED
+
     def storePackets(packets):
         _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestPDB"]
