@@ -7,7 +7,7 @@ from dataGetter import dataGetter
 from typing import Union
 
 bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
-dbc = cantools.database.load_file('/home/kali/Desktop/CSS-Electronics-SAE-J1939-2018-08_v1.2.dbc')
+dbc = cantools.database.load_file('CSS-Electronics-SAE-J1939-2018-08_v1.2.dbc')
 router = APIRouter()
 
 class Play(BaseModel):
@@ -88,7 +88,7 @@ class packetManager():
     
     def generatePacket(self, listOfAttributes):
         ...
-
+    
     @router.get("/projects/{projectId}/packets", tags=["packets"])
     def getPacketsFromProject(projectId: str, size: int, sort: str, node: Union[str, None] = None, before: Union[str, None] = None, after: Union[str, None] = None):
         return dataGetter.getPackets(projectId, size, sort, node, before, after)
