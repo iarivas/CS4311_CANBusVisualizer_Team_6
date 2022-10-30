@@ -1,5 +1,7 @@
 from datetime import datetime
+#from sqlite3 import Timestamp
 import time
+#from tokenize import String
 from fastapi import APIRouter
 from pydantic import BaseModel
 import can
@@ -15,6 +17,11 @@ router = APIRouter()
 class Play(BaseModel):
     play: bool
 
+class packet(BaseModel):
+    Timestamp: str
+    nodeId: str
+    type: str
+    data: str
 
 class packetManager():
     
@@ -93,7 +100,12 @@ class packetManager():
     
     def generatePacket(self, listOfAttributes):
         ...
-    
+        
+    @router.post("/projects/{projectId}/editpacket", tags=["editPackets"])
+    def savePacket():
+        return
+
+
     @router.get("/projects/{projectId}/packets", tags=["packets"])
     def getPacketsFromProject(projectId: str, size: int, sort: str, page: int, node: Union[str, None] = None, before: Union[str, None] = None, after: Union[str, None] = None):
         return dataGetter.getPackets(projectId, size, sort, page, node, before, after)
