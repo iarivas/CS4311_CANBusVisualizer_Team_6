@@ -50,6 +50,7 @@ function Projects() {
         <Dropdown.Menu>
         <Dropdown.Item href="#/action-1">Archive</Dropdown.Item>
         <Dropdown.Item href="#/action-2">Duplicate</Dropdown.Item>
+        <Dropdown.Item href="#/action-3">Export </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     )
