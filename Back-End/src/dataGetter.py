@@ -31,6 +31,7 @@ class dataGetter:
                         'name': str(_msgInfo.comment),
                         'data': None,
                         'position': None,
+                        'isBlacklisted': False,
                         'relationships': []}
 
                 dataSaver.storeNodes([node])
