@@ -17,11 +17,11 @@ router = APIRouter()
 class Play(BaseModel):
     play: bool
 
-#class packet(BaseModel):
-#    Timestamp: str
-#    nodeId: str
-#    type: str
-#    data: str
+class packet(BaseModel):
+    Timestamp: str
+    nodeId: str
+    type: str
+    data: str
 
 class packetManager():
     
@@ -101,9 +101,11 @@ class packetManager():
     def generatePacket(self, listOfAttributes):
         ...
         
-    #@router.post("/projects/{projectId}/packet", tags=["packets"])
-    #def savePacket(packet: packet):
-    #    return dataSaver.storePackets(packet)
+    @router.post("/projects/{projectId}/packets", tags=["packets"])
+    def savePacket(projectId: str, packet: packet):
+        newPacket = {'projectId': projectId,'timestamp': packet.Timestamp, 'type': packet.type,
+        'nodeid': packet.nodeId, 'data': packet.data}
+        return dataSaver.storePackets(newPacket)
 
 
     @router.get("/projects/{projectId}/packets", tags=["packets"])
