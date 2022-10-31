@@ -4,12 +4,13 @@ interface NodePosition {
 }
 
 interface NodeData {
+    isBlacklisted: boolean,
     projectId: string,
     nodeID: string,
     name: string,
     data: {
         label: string,
-        icon: string
+        icon: string,
     },
     position: NodePosition | null,
     relationships: string[]
