@@ -20,6 +20,7 @@ import './modals/index.css'
 import EditNodeModal from './modals/EditNodeModal'
 import "react-contexify/dist/ReactContexify.css";
 import ReplayPacketModal from './modals/ReplayPacketModal';
+import EditPacketModal from './modals/EditPacketModal';
 
 const MENU_ID = 'packet-context-menu';
 
@@ -52,7 +53,7 @@ function Visualizer() {
     }
 
     // Packet context menu
-    const packetInFocus = useRef<PacketState>()
+    const [packetInFocus, setPacketInFocus] = useState<PacketState>()
     const { show } = useContextMenu({
         id: MENU_ID,
     });
@@ -67,11 +68,17 @@ function Visualizer() {
       }
 
     const onEditPacket = () => {
-        console.log('TODO: Implement edit packet')
-        console.log(packetInFocus.current)
+        setIsShownEditPacketModal(true)
     }
+
+    const [isShownEditPacketsModal, setIsShownEditPacketModal] = useState(false)
+    const hideEditPacketModal = () => {
+        setIsShownEditPacketModal(false)
+    }
+
+
     const onAddToQueuePacket = () => {
-        setPacketsToReplay(packetsToReplay.concat(packetInFocus.current!))
+        setPacketsToReplay(packetsToReplay.concat(packetInFocus!))
     }
 
     // Modal for editing node
@@ -88,7 +95,7 @@ function Visualizer() {
             <tr
                 key={packet._id}
                 onContextMenu={(event) => {
-                    packetInFocus.current = packet
+                    setPacketInFocus(packet)
                     handleContextMenu(event)
                 }}
             >
@@ -328,6 +335,11 @@ function Visualizer() {
                 packets={packetsToReplay}
                 replayPackets={replayPackets}
                 clear={clearPacketsToReplay}
+            />
+            <EditPacketModal
+                isShown={isShownEditPacketsModal}
+                onHide={hideEditPacketModal}
+                packetInFocus={packetInFocus}
             />
             <h1 className='visualizer-title'>{projectId}</h1>
             <Menubar
