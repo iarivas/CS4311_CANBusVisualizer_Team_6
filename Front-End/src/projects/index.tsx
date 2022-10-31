@@ -1,40 +1,104 @@
 import './index.css';
 import APIUtil from '../utilities/APIutils';
 import {useNavigate} from "react-router-dom";
-import ProjectCardState from './ProjectCardState';
 import NewProject from './new';
-import { Button, ButtonGroup, Col, Nav, Dropdown, Row, Tab, TabContainer, NavItem } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { Button, ButtonGroup, Col, Nav, Dropdown, Row, Tab, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import ProjectState from './new/ProjectState';
+import { useEffect, useState } from 'react';
 
 function Projects() {
 
   let navigate = useNavigate();
 
-    const onBackButtonClick = ()=> {
-      const path = '/'
-      navigate(path)
-    }
+  const onBackButtonClick = ()=> {
+    const path = '/'
+    navigate(path)
+  }
+
+  const onNavigateProject = (path: string) => {
+    navigate(path)
+  }
     
-    const api = new APIUtil()
+  const api = new APIUtil()
 
-    function getProjectCards(){
-      let projects = api.getProjects()
-        return projects.map((val: ProjectCardState) => {
-          return  <Dropdown as={ButtonGroup} className='mock-project' >
-          <Button  className='inside-mock' variant="warning">{val.name}</Button>
-          <Dropdown.Toggle className='inside-mock-dropdown'split variant="warning" id="dropdown-split-basic"/>
+  const [activeProjects, setActiveProjects] = useState<ProjectState[]>([])
+  const [archivedProjects, setArchivedProjects] = useState<ProjectState[]>([])
 
-          <Dropdown.Menu>
-            <Dropdown.Item href="#/action-1">Archive</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Duplicate</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-        })
-      }
+  let newProjectForm = NewProject()
 
-    let projectCards = getProjectCards()
-    let newProjectForm = NewProject()
+  const activeProjectCards = activeProjects.map((project) => {
+    return (
+      <Dropdown as={ButtonGroup} className='mock-project'>
+        <OverlayTrigger
+          placement="right"
+          delay={{ show: 250, hide: 400 }}
+          overlay={<Tooltip id='tooltip'>{project.eventName}</Tooltip>}
+        >
+        <Button
+          className='inside-mock'
+          variant='warning'
+          onClick={() => {
+            const path = project._id
+            onNavigateProject('/projects/' + path)
+          }}
+        >
+          <div className='card-event-name'>{project.eventName}</div>
+        </Button>
+        </OverlayTrigger>
+        <Dropdown.Toggle className='inside-mock-dropdown'split variant="warning" id="dropdown-split-basic"/>
+
+        <Dropdown.Menu>
+        <Dropdown.Item href="#/action-1">Archive</Dropdown.Item>
+        <Dropdown.Item href="#/action-2">Duplicate</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    )
+  })
+
+  const archivedProjectCards = archivedProjects.map((project) => {
+    return (
+      <Dropdown as={ButtonGroup} className='mock-project'>
+        <OverlayTrigger
+          placement="right"
+          delay={{ show: 250, hide: 400 }}
+          overlay={<Tooltip id='tooltip'>{project.eventName}</Tooltip>}
+        >
+          <Button
+            className='inside-mock'
+            variant='secondary'
+            onClick={() => {
+              const path = project._id
+              onNavigateProject('/projects/' + path)
+            }}
+          >
+            {project.eventName}
+          </Button>
+        </OverlayTrigger>
+        <Dropdown.Toggle className='inside-mock-dropdown'split variant="secondary" id="dropdown-split-basic"/>
+
+        <Dropdown.Menu>
+        <Dropdown.Item href="#/action-1">Move to Active</Dropdown.Item>
+        <Dropdown.Item href="#/action-2">Duplicate</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    )
+  })
+
+  useEffect(() => {
+    // Get active projects
+    api.getProjects(false)
+    .then((response) => {
+      setActiveProjects(response.data)
+    })
+    .catch((error: any) => console.log(error))
+
+    // Get archied projects
+    api.getProjects(true)
+    .then((response) => {
+      setArchivedProjects(response.data)
+    })
+    .catch((error: any) => console.log(error))
+  }, [])
 
   return (
     <div>
@@ -80,11 +144,11 @@ function Projects() {
             </Tab.Pane>
             <Tab.Pane eventKey='activeProjects'>
               <h3 className='projectHeader3'>Active Projects</h3>
-              {projectCards}
+              {activeProjectCards}
             </Tab.Pane>
             <Tab.Pane eventKey='archivedProjects'>
               <h3 className='projectHeader3'>Archived Projects</h3>
-              {projectCards}
+              {archivedProjectCards}
             </Tab.Pane>
           </Tab.Content>
         </Col>

@@ -12,7 +12,10 @@ API endpoint call
 import projectConfig
 from fastapi import status, HTTPException, APIRouter
 from dataSaver import *
+from dataGetter import *
 from pydantic import BaseModel
+#from socket import *
+from typing import Union
 
 router = APIRouter()
 
@@ -63,3 +66,17 @@ class projectManager():
                                     currentProject.dbcFileName,
                                     currentProject.blackListFileName)
         return currentProject
+
+    @router.get("/projects/", tags=["project"])
+    def getProjects(isArchived: Union[bool, None] = None):
+        return dataGetter.getAllProjects(isArchived)
+
+    # TODO FOR JUSTUS (thx!)
+    # @router.post("/projects/", tags=["project"])
+    # def sync():
+    #     s = socket(AF_INET, SOCK_STREAM)
+    #     s.bind(("localhost", 7069))
+    #     s.listen(5)
+
+    #     while True:
+    #         c,a = s.accept()

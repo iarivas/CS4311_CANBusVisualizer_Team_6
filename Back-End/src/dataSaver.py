@@ -55,9 +55,7 @@ class dataSaver:
         x = _myCol.insert_one(doc)
 
         print(x.inserted_id)
-    
-    # TEST THIS FUNCTION WITH LOCAL DB TO SEE HOW MUCH SPACE PACKETS WILL TAKE PLACE
-    # CHANGE DB AND COLLECTION REFERENCES AS NEEDED
+
     def storePackets(packets):
         _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestPDB"]
@@ -94,7 +92,7 @@ class dataSaver:
         _myCol = _myDB["TestColNodes"]
 
         for node in updatedNodeList:
-            _myCol.update_one({"projectId": projectID, "nodeId": node["nodeId"]}, {"$set": {"data": node["data"], "name": node["name"], "position": node["position"], "relationship": node["relationship"]}})
+            _myCol.update_one({"projectId": projectID, "nodeID": node["nodeID"]}, {"$set": {"data": node["data"], "name": node["name"], "position": node["position"], "relationships": node["relationships"]}})
 
 
 # This is meant for testing purposes only, in order to allow the quick and

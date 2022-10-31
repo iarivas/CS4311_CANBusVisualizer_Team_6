@@ -35,3 +35,24 @@
 .label {
     font-size: 1.30em;
 }
+
+.replay-packet-button {
+    width: 80px;
+}
+
+
+.selected-row td {
+    background-color: #106cfc !important;
+}
+
+.selected-row:hover td {
+    background-color: #105cd4 !important;
+}
+
+.non-selected-row:hover td {
+    background-color: #38343c;
+}
+
+.replay-packet-table {
+    overflow: scroll;
+}

@@ -5,6 +5,7 @@ import './index.css';
 
 function NewProject() {
     const [state, setState] = useState<ProjectState>({
+        _id: undefined,
         eventName: '',
         baudRate: 9600,
         initials: '',

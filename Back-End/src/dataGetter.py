@@ -2,7 +2,8 @@ from dataSaver import dataSaver
 import pymongo
 from dataSaver import dataSaver
 from typing import Final
-import datetime
+from datetime import datetime
+import re
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
@@ -15,30 +16,33 @@ class dataGetter:
     def receiveTraffic(projectId, dbc, bus):
 
         _msg = bus.recv()
-        _msgInfo = (dbc.get_message_by_frame_id(_msg.arbitration_id))
-        _msgData = str(dbc.decode_message(_msg.arbitration_id, _msg.data))
+        try:
+            _msgInfo = (dbc.get_message_by_frame_id(_msg.arbitration_id))
+            _msgData = str(dbc.decode_message(_msg.arbitration_id, _msg.data))
 
-        _myClient = pymongo.MongoClient(localDB)
-        _myDB = _myClient["TestPDB"]
-        _myCol = _myDB["TestColNodes"]
+            _myClient = pymongo.MongoClient(localDB)
+            _myDB = _myClient["TestPDB"]
+            _myCol = _myDB["TestColNodes"]
 
-        # Checks if node is in testCol_Nodes
-        if _myCol.find_one({'nodeID': str(_msg.arbitration_id)}) == None:
-            node =    {'projectId': projectId,
-                    'nodeID': str(_msg.arbitration_id),
-                    'name': str(_msgInfo.comment),
-                    'data': None,
-                    'position': None,
-                    'relationships': []}
+            # Checks if node is in testCol_Nodes
+            if _myCol.find_one({'nodeID': str(_msg.arbitration_id+2147483648)}) == None:
+                node =    {'projectId': projectId,
+                        'nodeID': str(_msg.arbitration_id+2147483648), #Note sure why but the 2147483648 is needed to match up with the cangen node ID
+                        'name': str(_msgInfo.comment),
+                        'data': None,
+                        'position': None,
+                        'relationships': []}
 
-            dataSaver.storeNodes([node])
+                dataSaver.storeNodes([node])
 
-        packet =    {'projectId': projectId,
-                    'timestamp': str(datetime.datetime.fromtimestamp(_msg.timestamp))[:-3],
-                    'type': str(_msg.dlc),
-                    'nodeId': str(_msgInfo.comment),
-                    'data': _msgData} 
-        dataSaver.storePackets([packet])
+            packet =    {'projectId': projectId,
+                        'timestamp': str(datetime.datetime.fromtimestamp(_msg.timestamp))[:-3],
+                        'type': str(_msg.dlc),
+                        'nodeId': str(_msgInfo.comment),
+                        'data': _msgData} 
+            dataSaver.storePackets([packet])
+        except KeyError:
+            print("KeyError", _msg.arbitration_id)   
         return
     
     def decodePackets(self, packet):
@@ -48,17 +52,19 @@ class dataGetter:
         ...
 
     #return all projects in db
-    def retrieveAllProjects():
-        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+    def getAllProjects(isArchived: bool):
+        _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestDB"]
         _myCol = _myDB["TestCol"]
 
-        store = []
+        projects = []
 
-        for x in _myCol.find({} , {"_id": 1, "eventName": 1}):
-            store.append(x)
+        filterBy = {'archive': isArchived} if isArchived != None else {}
+
+        for project in _myCol.find(filterBy):
+            projects.append(project)
         
-        return store
+        return projects
 
     #return project matching projectID
     def retrieveProject(projectID):
@@ -143,33 +149,45 @@ class dataGetter:
         return initials
 
     ##return packets of project matching projectID
-    def getPackets(projectID: str, size: int, sort: str, node=None, before=None, after=None):
+    def getPackets(projectID: str, size: int, sort: str, page: int, node=None, before=None, after=None):
         _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestPDB"]
         _myCol = _myDB["TestCol"]
 
-        if sort == "timeAsc":
-            field = "timestamp"
-            sortType = pymongo.ASCENDING
-        elif sort == "timeDesc":
-            field = "timestamp"
-            sortType = pymongo.DESCENDING
-        elif sort == "idAsc":
-            field = "nodeId"
-            sortType = pymongo.ASCENDING
-        else:
-            field = "nodeId"
-            sortType = pymongo.DESCENDING
+        isTime = re.search('^time', sort)
 
+        # set the sorting fields and types
+        sortByField = "timestamp" if isTime != None else "nodeId"
+        startIndex = 4 if sortByField == "timestamp" else 2
+        sortByType = pymongo.ASCENDING if sort.endswith("Asc", startIndex) else pymongo.DESCENDING
+
+        # set the filtering fields
+        filterBy = {'projectId': projectID}
+
+        # set the time filters
+        if before is not None and after is not None:
+            beforeDate = datetime.strptime(before, '%Y-%m-%dT%H:%M:%S.%f')
+            afterDate = datetime.strptime(after, '%Y-%m-%dT%H:%M:%S.%f')
+            beforeAndAfterFilter = {'timestamp': {'$lt': beforeDate, '$gt': afterDate}}
+            filterBy.update(beforeAndAfterFilter)
+        elif before is not None:
+            beforeDate = datetime.strptime(before, '%Y-%m-%dT%H:%M:%S.%f')
+            beforeFilter = {'timestamp': {'$lt': beforeDate}}
+            filterBy.update(beforeFilter)
+        elif after is not None:
+            afterDate = datetime.strptime(after, '%Y-%m-%dT%H:%M:%S.%f')
+            afterFilter = {'timestamp': {'$gt': afterDate}}
+            filterBy.update(afterFilter)
+
+        # set the node filters
         if node is not None:
-            findQuery = {'projectId': projectID, 'nodeId': node}
-        else:
-            findQuery = {'projectId': projectID}
+            nodeFilter = {'nodeId': node}
+            filterBy.update(nodeFilter)
 
         packetList = []
 
-        for packet in _myCol.find(findQuery).sort(field, sortType).limit(size):
-            packet['_id'] = str(packet['_id'])
+        for packet in _myCol.find(filterBy, {'_id': False}).sort(sortByField, sortByType).skip(((page - 1) * size) if page > 0 else 0).limit(size):
+            packet['timestamp'] = packet['timestamp'].strftime('%Y-%m-%dT%H:%M:%S.%f')
             packetList.append(packet)
         
         return packetList

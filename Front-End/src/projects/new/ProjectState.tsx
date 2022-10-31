@@ -1,4 +1,5 @@
 interface ProjectState {
+    _id: string | undefined
     eventName: string,
     baudRate: number,
     initials: string,

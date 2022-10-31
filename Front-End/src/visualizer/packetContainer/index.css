@@ -12,6 +12,7 @@
     flex: 1 0 auto;
     overflow-x: scroll;
     height: 0;
+    white-space: nowrap;
 }
 
 .packet-table th {

@@ -1,3 +1,5 @@
+from datetime import datetime
+import time
 from fastapi import APIRouter
 from pydantic import BaseModel
 import can
@@ -7,7 +9,7 @@ from dataGetter import dataGetter
 from typing import Union
 
 bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
-dbc = cantools.database.load_file('/home/kali/Desktop/CSS-Electronics-SAE-J1939-2018-08_v1.2.dbc')
+dbc = cantools.database.load_file('../CSS-Electronics-SAE-J1939-2018-08_v1.2.dbc')
 router = APIRouter()
 
 class Play(BaseModel):
@@ -31,28 +33,31 @@ class packetManager():
 
 
     ##FUNCITONS
+    # please leave for testing purposes - montse
+    # def populatePacketList(self, projectId):
 
-    def populatePacketList(self, projectId):
+    #     # this is hardcoded to read from the packets.txt file provided by the cutsomer for now, 
+    #     # until we can read the packets from the CAN Bus
+    #     i = 0
 
-        # this is hardcoded to read from the packets.txt file provided by the cutsomer for now, 
-        # until we can read the packets from the CAN Bus
-
-        # with open('packets.txt', 'r') as f:
-        #     for line in f:
-        #         fields = line.strip().split(';')
-        #         packet = {'projectId': projectId, 'timestamp': fields[0], 'type': fields[1],
-        #            'nodeId': fields[2], 'data': fields[3]}
-        #         self.packetList.append(packet)
+    #     with open('packets.txt', 'r') as f:
+    #         for line in f:
+    #             fields = line.strip().split(';')
+    #             now = time.time()
+    #             t = datetime.fromtimestamp(now)
+    #             #timestampStr = now.strftime("%m/%d/%Y, %H:%M:%S")
+    #             #timestampDate = datetime.strptime(timestampStr, "%m/%d/%Y, %H:%M:%S")
+    #             packet = {'projectId': projectId, 'timestamp': t, 'type': fields[1],
+    #                'nodeId': fields[2], 'data': fields[3]}
+    #             self.packetList.append(packet)
+    #             i+=1
+    #             if i == 6:
+    #                 break
         
-        #semi Hardcoded for demos sake until discussed how we would rearrange threading 
-        #dataGetter.receiveTraffic(projectId)
-
-        # for p in packets:
-        #     packet = {'projectId': projectId, 'timestamp': p[0], 'type': p[2], 
-        #         'nodeId': p[1], 'data': p[3]}
-        #     self.packetList.append(packet)
-        # dataSaver.storePackets(self.packetList)
-        return
+    #     # semi Hardcoded for demos sake until discussed how we would rearrange threading 
+    #     # dataGetter.receiveTraffic(projectId)
+    #     dataSaver.storePackets(self.packetList)
+    #     return
 
     #needs to be updated to get packet from DB and modified before being sent
     #https://python-can.readthedocs.io/en/master/message.html?highlight=message
@@ -90,8 +95,8 @@ class packetManager():
         ...
 
     @router.get("/projects/{projectId}/packets", tags=["packets"])
-    def getPacketsFromProject(projectId: str, size: int, sort: str, node: Union[str, None] = None, before: Union[str, None] = None, after: Union[str, None] = None):
-        return dataGetter.getPackets(projectId, size, sort, node, before, after)
+    def getPacketsFromProject(projectId: str, size: int, sort: str, page: int, node: Union[str, None] = None, before: Union[str, None] = None, after: Union[str, None] = None):
+        return dataGetter.getPackets(projectId, size, sort, page, node, before, after)
 
     @router.put("/projects/{projectId}/play", tags=["play"])
     def getLivePackets(projectId: str, play: Play):
