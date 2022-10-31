@@ -102,7 +102,7 @@ class packetManager():
         ...
         
     @router.post("/projects/{projectId}/packets", tags=["packets"])
-    def savePacket(projectId: str, packet: packet):
+    def saveEditedPacket(projectId: str, packet: packet):
         newPacket = {'projectId': projectId,'timestamp': packet.Timestamp, 'type': packet.type,
         'nodeid': packet.nodeId, 'data': packet.data}
         return dataSaver.storePackets(newPacket)
