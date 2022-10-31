@@ -42,7 +42,7 @@ class dataGetter:
                 dataSaver.storeNodes([node])
 
             packet =    {'projectId': projectId,
-                        'timestamp': str(datetime.datetime.fromtimestamp(_msg.timestamp))[:-3],
+                        'timestamp': datetime.fromtimestamp(_msg.timestamp),
                         'type': str(_msg.dlc),
                         'nodeId': str(_msgInfo.comment),
                         'data': _msgData} 
