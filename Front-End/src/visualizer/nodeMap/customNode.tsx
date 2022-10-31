@@ -1,3 +1,4 @@
+import React from "react";
 import { Position, Handle } from "react-flow-renderer";
 
 let pics = {
@@ -24,18 +25,18 @@ function renderSwitch(param: any) {
 
 function CustomNode({ id, data }: any) {
   return (
-    <main style={{ backgroundColor: 'white', overflow: 'hidden'}}>
+    <main style={{ backgroundColor: (data.isBlacklisted ? '#C0C0C0' : 'white'), overflow: 'hidden'}}>
       <Handle type="target" position={Position.Top} />
       <div style={{ textAlign: 'center', color: 'black', fontSize: 'large'}}>
         <strong>{data.label}</strong>
         
       </div>
 
-      <div style={{ textAlign: 'center', color: 'gray'}}>
+      <div style={{ textAlign: 'center', color: 'blue'}}>
         {id}
       </div>
       
-      <img style={{ marginRight: 'auto', marginLeft: 'auto'}} src={renderSwitch(data.icon)} />
+      <img style={{ marginRight: 'auto', marginLeft: 'auto'}} src={renderSwitch(data.icon)} alt='icon'/>
 
       <Handle type="source" position={Position.Bottom} />
     </main>
