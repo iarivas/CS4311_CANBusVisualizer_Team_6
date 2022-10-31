@@ -1,7 +1,7 @@
 import './index.css';
 import APIUtil from '../utilities/APIutils';
 import {useNavigate} from "react-router-dom";
-import NewProject from './new';
+import {NewProject, ImportProject} from './new';
 import { Button, ButtonGroup, Col, Nav, Dropdown, Row, Tab, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import ProjectState from './new/ProjectState';
 import { useEffect, useState } from 'react';
@@ -25,6 +25,7 @@ function Projects() {
   const [archivedProjects, setArchivedProjects] = useState<ProjectState[]>([])
 
   let newProjectForm = NewProject()
+  let importProjectForm = ImportProject()
 
   const activeProjectCards = activeProjects.map((project) => {
     return (
@@ -140,8 +141,9 @@ function Projects() {
               {newProjectForm}
             </Tab.Pane>
             <Tab.Pane eventKey='importProject'>
-              <h3 className='projectHeader3'>Import Project</h3>
-              Due to import project method not existing on backend this is empty
+              
+              {importProjectForm}
+              
             </Tab.Pane>
             <Tab.Pane eventKey='activeProjects'>
               <h3 className='projectHeader3'>Active Projects</h3>
