@@ -23,7 +23,7 @@ class NodeUtils {
             {
                 id: nodeData.nodeID,
                 type: 'custom',
-                data: nodeData.data ? nodeData.data : {label: nodeData.name, icon: '../images/engine.png'},
+                data: nodeData.data ? nodeData.data : {label: nodeData.name, icon: '../images/engine.png', isBlacklisted: nodeData.isBlacklisted},
                 position: nodeData.position
             },
             nodeData.relationships.map((target: string) => {
@@ -48,6 +48,7 @@ class NodeUtils {
                 projectId: projectId,
                 nodeID: node.id,
                 name: node.data.label,
+                isBlacklisted: node.isBlacklisted,
                 data: node.data,
                 position: node.position,
                 relationships: nodeEdges[node.id]

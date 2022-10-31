@@ -1,5 +1,4 @@
 import ProjectState from "../projects/new/ProjectState"
-import ProjectCardState from "../projects/ProjectCardState"
 import PacketViewSettingsState from "../visualizer/modals/PacketViewSettingsState"
 import PacketState from "../visualizer/packetContainer/PacketState"
 import axios from 'axios'
@@ -30,15 +29,12 @@ class APIUtil {
             })
     }
 
-    getProjects(): Array<ProjectCardState> {
-        return [
-            {id: 1, name: 'Project PBJ'},
-            {id: 5, name: 'Project grilled cheese'},
-            {id: 6, name: 'Project ham'},
-            {id: 9, name: 'Project nutella'},
-            {id: 11, name: 'Project ham'},
-            {id: 13, name: 'Project chicken'},
-        ]
+    getProjects(isArchived: boolean | undefined) {
+        return axios.get(this.url + '/projects', {
+            params: {
+                isArchived: isArchived
+            }
+        })
     }
 
     getPackets(filters: PacketViewSettingsState, projectId: string, page: number, size: number) {
