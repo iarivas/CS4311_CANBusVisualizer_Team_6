@@ -1,38 +1,40 @@
 class tempFileManager:
-    def __init__(self, listOfNodes, blacklist, packet, setting):
+    def __init__(self, listOfNodes, blacklist, listOfPackets, settings):
         self._listOfNodes = listOfNodes
         self._blacklsit = blacklist
-        self._packet = packet
-        self._setting = setting
-    
-    def getListOfNodes():
+        self._listOfPackets = listOfPackets
+        self._settings = settings
+
+    # GETTERS
+
+    def getListOfNodes(self):
         return self._listOfNodes
-    
-    def getBlacklist():
-        return self._blacklsit
-    
-    def getPacket():
-        return self._packet
 
-    def getSetting():
-        return self._setting
-    
-    def setListOfNodes(listOfNodes):
+    def getBlacklist(self):
+        return self._blacklsit
+
+    def getListOfPackets(self):
+        return self._listOfPackets
+
+    def getSettings(self):
+        return self._settings
+
+    # SETTERS
+
+    def setListOfNodes(self, listOfNodes):
         self._listOfNodes = listOfNodes
-    
-    def setBlacklist(blacklist):
+
+    def setBlacklist(self, blacklist):
         self._blacklsit = blacklist
 
-    def setPacket(packet):
-        self._packet = packet
+    def setListOfPackets(self, listOfPackets):
+        self._listOfPackets = listOfPackets
 
-    def setSetting(setting):
-        self._setting = setting
+    def setSettings(self, settings):
+        self._settings = settings
 
     def writeToTempFile():
         return
-    
+
     def readFromTempFile():
         return
-
-    
