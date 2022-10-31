@@ -101,7 +101,7 @@ class packetManager():
     @router.put("/projects/{projectId}/play", tags=["play"])
     def getLivePackets(projectId: str, play: Play):
         i = 1
-        while(play and i <= 10):
+        while(play and i <= 50):
             dataGetter.receiveTraffic(projectId, dbc, bus)
             i += 1
         return 
