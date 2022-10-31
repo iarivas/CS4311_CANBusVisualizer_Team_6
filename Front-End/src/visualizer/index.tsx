@@ -53,7 +53,7 @@ function Visualizer() {
     }
 
     // Packet context menu
-    const [packetInFocus, setPacketInFocus] = useState<PacketState>()
+    const packetInFocus = useRef<PacketState>()
     const { show } = useContextMenu({
         id: MENU_ID,
     });
@@ -78,7 +78,7 @@ function Visualizer() {
 
 
     const onAddToQueuePacket = () => {
-        setPacketsToReplay(packetsToReplay.concat(packetInFocus!))
+        setPacketsToReplay(packetsToReplay.concat(packetInFocus.current!))
     }
 
     // Modal for editing node
@@ -95,7 +95,7 @@ function Visualizer() {
             <tr
                 key={packet._id}
                 onContextMenu={(event) => {
-                    setPacketInFocus(packet)
+                    packetInFocus.current = packet
                     handleContextMenu(event)
                 }}
             >
@@ -339,7 +339,7 @@ function Visualizer() {
             <EditPacketModal
                 isShown={isShownEditPacketsModal}
                 onHide={hideEditPacketModal}
-                packetInFocus={packetInFocus}
+                packetInFocus={packetInFocus.current}
             />
             <h1 className='visualizer-title'>{projectId}</h1>
             <Menubar

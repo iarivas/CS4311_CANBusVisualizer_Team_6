@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import PacketState from '../packetContainer/PacketState';
-function EditPacketModal({isShown, onHide, packetInFocus}: any) {
-  console.log('HEREEEE')
-  console.log(packetInFocus)
-  const [packetInEditing, setPacketInEditing] = useState<PacketState>({
-    timestamp: packetInFocus?.timestamp|| 'something',
-    _id: packetInFocus?._id || 'something',
-    nodeId: packetInFocus?.nodeId || 'something',
-    type: packetInFocus?.type || 'something',
-    data: packetInFocus?.data || 'something',
-    projectId: packetInFocus?.projectId || 'something'
-  })
 
+interface Props {
+  isShown: boolean,
+  onHide: (() => void),
+  packetInFocus: PacketState | undefined
+}
+
+function EditPacketModal({isShown, onHide, packetInFocus}: Props) {
+  const [packetInEditing, setPacketInEditing] = useState<PacketState | undefined>(packetInFocus)
+
+  useEffect(() => {
+    setPacketInEditing(packetInFocus)
+  }, [packetInFocus])
 
   return (
       <Modal show={isShown} onHide={onHide} className='edit-packet-modal'>
@@ -28,7 +29,7 @@ function EditPacketModal({isShown, onHide, packetInFocus}: any) {
               <Form.Control
                 type="text"
                 placeholder=""
-                value={packetInEditing.timestamp}
+                value={packetInEditing?.timestamp}
                 autoFocus
               />
             </Form.Group>
@@ -41,7 +42,7 @@ function EditPacketModal({isShown, onHide, packetInFocus}: any) {
               <Form.Control 
                 type='text' 
                 placeholder='' 
-                value={packetInEditing.nodeId}
+                value={packetInEditing?.nodeId}
                 autoFocus
                />
             </Form.Group>
@@ -53,7 +54,7 @@ function EditPacketModal({isShown, onHide, packetInFocus}: any) {
               <Form.Control 
                 type='text' 
                 placeholder='' 
-                value={packetInEditing.type}
+                value={packetInEditing?.type}
                 autoFocus
                />
             </Form.Group>
@@ -65,7 +66,7 @@ function EditPacketModal({isShown, onHide, packetInFocus}: any) {
               <Form.Control 
                 type='text' 
                 placeholder='' 
-                value={packetInEditing.data}
+                value={packetInEditing?.data}
                 autoFocus
                />
             </Form.Group>
