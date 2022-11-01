@@ -166,10 +166,11 @@ function Visualizer() {
     const nodeDictRef = useRef(nodeDict)
     const edgeDictRef = useRef(edgeDict)
 
+    const nodeInFocus = useRef<any>()
     const onNodeContextMenu = (event: React.MouseEvent, node: Node) => {
         event.preventDefault()
         showNodeModal()
-        console.log('node clicked', node)
+        nodeInFocus.current = node
       }
 
     const saveNodes = () => {
@@ -313,6 +314,7 @@ function Visualizer() {
             <EditNodeModal
                 isShow={editNodeModal}
                 setHide={hideNodeModal}
+                node={nodeInFocus.current}
             />
             <PacketViewSettingsModal
                 isShown={isShownPacketsModal}

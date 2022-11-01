@@ -1,4 +1,3 @@
-import React from "react";
 import { Position, Handle } from "react-flow-renderer";
 
 let pics = {
@@ -25,7 +24,10 @@ function renderSwitch(param: any) {
 
 function CustomNode({ id, data }: any) {
   return (
-    <main style={{ backgroundColor: (data.isBlacklisted ? '#C0C0C0' : 'white'), overflow: 'hidden'}}>
+    <main
+      style={{ backgroundColor: (data.isBlacklisted ? '#C0C0C0' : 'white'), overflow: 'hidden'}}
+      className='rounded'
+    >
       <Handle type="target" position={Position.Top} />
       <div style={{ textAlign: 'center', color: 'black', fontSize: 'large'}}>
         <strong>{data.label}</strong>
