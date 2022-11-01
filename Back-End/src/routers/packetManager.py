@@ -18,7 +18,6 @@ class Play(BaseModel):
     play: bool
 
 class packet(BaseModel):
-    isReplayPacket: bool
     Timestamp: str
     nodeId: str
     type: str
@@ -103,10 +102,10 @@ class packetManager():
         ...
         
     @router.post("/projects/{projectId}/packets", tags=["packets"])
-    def saveEditedPacket(projectId: str, packet: packet):
+    def saveEditedPacket(projectId: str, packet: packet, replayPacket: Union[bool, None] = None):
         newPacket = {'projectId': projectId,'timestamp': packet.Timestamp, 'type': packet.type,
         'nodeid': packet.nodeId, 'data': packet.data}
-        if(packet.isReplayPacket):
+        if(replayPacket):
             #sendPacketToBus(newPacket)
             ...
         return dataSaver.storePackets(newPacket)
