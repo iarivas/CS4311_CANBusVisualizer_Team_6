@@ -2,52 +2,80 @@ import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import Dropdown from 'react-bootstrap/Dropdown';
-import NodeData from '../nodeMap/NodeData';
+import { Node } from 'react-flow-renderer';
+import CustomNodeData from '../nodeMap/CustomNodeData';
+
+interface Props {
+  isShow: boolean,
+  setHide: (() => void),
+  onApply: ((node: Node<CustomNodeData>) => void),
+  node: Node<CustomNodeData>
+}
 
 function EditNodeModal({
   isShow,
   setHide,
+  onApply,
   node
-}: any) {
+}: Props) {
 
-  const [noteBeingEdited, setNodeBeingEdited] = useState<NodeData | undefined>()
+  const [nodeBeingEdited, setNodeBeingEdited] = useState<Node<CustomNodeData>>()
 
   useEffect(() => {
     setNodeBeingEdited(node) 
   }, [node])
     
   const dropdownOptions = {
-    "car": "../images/car.png",
-    "goatzilla": "../images/GOATZILLA.jpg",
-    "goomba": "../images/goomba.png",
-    "pb&j": "../images/PB&J.png"
-  };
+    ac: '../images/ac.png',
+    engine: '../images/engine.png',
+    brake: '../images/brake.png',
+    wheel: '../images/steering_wheel.png',
+  }
 
   return (
-    <Modal show={isShow} onHide={setHide} className='edit-node-modal'>
+    <Modal show={isShow} onHide={setHide} className='edit-node-modal' onSubmit={(e: any) => {
+      e.preventDefault()
+      onApply(nodeBeingEdited!)
+    }}>
       <Modal.Header closeButton>
         <Modal.Title>Edit Node</Modal.Title>
       </Modal.Header>
+      <Form>
       <Modal.Body>
-        <Form>
           <Form.Group className="mb-3" controlId="node-name">
             <Form.Label className='label'>Name</Form.Label>
               <Form.Control
                 type="text"
                 placeholder=""
-                value={noteBeingEdited?.data?.label}
+                value={nodeBeingEdited?.data?.label}
+                onChange={(e) => {
+                  setNodeBeingEdited({...nodeBeingEdited!, data: {
+                    label: e.target.value,
+                    isBlacklisted: nodeBeingEdited!.data.isBlacklisted,
+                    icon: nodeBeingEdited!.data.icon
+                  }})
+                }}
                 autoFocus
               />
             </Form.Group>
 
           <Form.Group className="mb-3" controlId="node-icon">
             <Form.Label className='label'>Icon</Form.Label>
-            <Form.Select aria-label="Default select example">
-              <option value="car">Car</option>
-              <option value="goatzilla">GOATZILLA</option>
-              <option value="goomba">Goomba</option>
-              <option value="pb&j">PB&J</option>
+            <Form.Select
+              aria-label="Default select example"
+              value={nodeBeingEdited?.data.icon}
+              onChange={(e) => {
+                setNodeBeingEdited({...nodeBeingEdited!, data: {
+                  label: nodeBeingEdited!.data.label,
+                  isBlacklisted: nodeBeingEdited!.data.isBlacklisted,
+                  icon: e.target!.value
+                }})
+              }
+            }>
+              <option value='../images/ac.png'>../images/ac.png</option>
+              <option value='../images/engine.png'>../images/engine.png</option>
+              <option value='../images/brake.png'>../images/brake.png</option>
+              <option value='../images/steering_wheel.png'>../images/steering_wheel.png</option>
             </Form.Select>
           </Form.Group>
 
@@ -104,16 +132,16 @@ function EditNodeModal({
               </Form.Text>
           </Form.Group>
         </fieldset>
-      </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={setHide} className='rounded-pill'>
           Close
         </Button>
-        <Button variant="primary" onClick={setHide} className='rounded-pill'>
-          Send
+        <Button variant="primary" onClick={setHide} className='rounded-pill' type="submit">
+          Apply
         </Button>
       </Modal.Footer>
+      </Form>
     </Modal>
   );
 }
