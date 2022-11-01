@@ -1,10 +1,12 @@
+import { Node } from "react-flow-renderer"
+import CustomNodeData from "../visualizer/nodeMap/CustomNodeData"
 import NodeData from "./NodeData"
 
 class NodeUtils {
     // Returns a list containing:
     // [newNodes, newEdges]
     parseNodesData(nodesData: NodeData[]) {
-        const nodes: any[] = []
+        const nodes: Node<CustomNodeData>[] = []
         const edges: any[] = []
 
         nodesData.forEach((nodeData: NodeData) => {
@@ -23,7 +25,13 @@ class NodeUtils {
             {
                 id: nodeData.nodeID,
                 type: 'custom',
-                data: nodeData.data ? nodeData.data : {label: nodeData.name, icon: '../images/engine.png', isBlacklisted: nodeData.isBlacklisted},
+                data: {
+                    label: nodeData.data?.label || nodeData.name,
+                    icon: nodeData.data?.icon || '../images/engine.png',
+                    isBlacklisted: nodeData.data?.isBlacklisted || nodeData.isBlacklisted,
+                    annotation: nodeData.data?.annotation || '',
+                    flag: nodeData.data?.flag || null
+                },
                 position: nodeData.position
             },
             nodeData.relationships.map((target: string) => {
@@ -36,7 +44,7 @@ class NodeUtils {
         ]
     }
 
-    parseToData(nodes: any, edges: any, projectId: string) {
+    parseToData(nodes: Node<CustomNodeData>[], edges: any, projectId: string) {
         // Find all the edges corresponding to nodes
         const nodeEdges: any = {}
         nodes.forEach((node: any) => nodeEdges[node.id] = [])

@@ -183,7 +183,10 @@ function Visualizer() {
                     data: {
                         label: updatedNode.data.label,
                         icon: updatedNode.data.icon,
-                        isBlacklisted: updatedNode.data.isBlacklisted
+                        isBlacklisted: updatedNode.data.isBlacklisted,
+                        flag: updatedNode.data.flag,
+                        annotation: updatedNode.data.annotation,
+                        notes: updatedNode.data.notes
                     },
                     type: 'custom',
                     position: {
@@ -319,7 +322,14 @@ function Visualizer() {
             id: nodeId,
             type: 'custom',
             position: {x: 100, y: 0},
-            data: {label: 'test', icon: '', isBlacklisted: false},
+            data: {
+                label: 'test',
+                icon: '',
+                isBlacklisted: false,
+                flag: 'none',
+                annotation: '',
+                notes: ''
+            },
           }
         ))
       };

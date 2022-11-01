@@ -37,6 +37,7 @@ function CustomNode({ id, data }: any) {
       <div style={{ textAlign: 'center', color: 'blue'}}>
         {id}
       </div>
+      {data.flag}
       
       <img style={{ marginRight: 'auto', marginLeft: 'auto'}} src={renderSwitch(data.icon)} alt='icon'/>
 

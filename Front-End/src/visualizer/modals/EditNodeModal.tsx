@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import { ButtonGroup, ToggleButton } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { Node } from 'react-flow-renderer';
+import { FlagOptions } from '../../common/Constants';
 import CustomNodeData from '../nodeMap/CustomNodeData';
 
 interface Props {
@@ -32,6 +34,15 @@ function EditNodeModal({
     wheel: '../images/steering_wheel.png',
   }
 
+  const radios: {name: string, value: string | null}[] = [
+    {name: 'None', value: FlagOptions.NONE},
+    {name: 'Blacklist', value: FlagOptions.BLACKLIST},
+    {name: 'Alive', value: FlagOptions.ALIVE},
+    {name: 'Scanned', value: FlagOptions.SCANNED},
+    {name: 'Enumerated', value: FlagOptions.ENUMERATED},
+    {name: 'DoSed', value: FlagOptions.DOSED},
+  ]
+
   return (
     <Modal show={isShow} onHide={setHide} className='edit-node-modal' onSubmit={(e: any) => {
       e.preventDefault()
@@ -50,9 +61,8 @@ function EditNodeModal({
                 value={nodeBeingEdited?.data?.label}
                 onChange={(e) => {
                   setNodeBeingEdited({...nodeBeingEdited!, data: {
-                    label: e.target.value,
-                    isBlacklisted: nodeBeingEdited!.data.isBlacklisted,
-                    icon: nodeBeingEdited!.data.icon
+                    ...nodeBeingEdited!.data,
+                    label: e.target.value
                   }})
                 }}
                 autoFocus
@@ -66,9 +76,8 @@ function EditNodeModal({
               value={nodeBeingEdited?.data.icon}
               onChange={(e) => {
                 setNodeBeingEdited({...nodeBeingEdited!, data: {
-                  label: nodeBeingEdited!.data.label,
-                  isBlacklisted: nodeBeingEdited!.data.isBlacklisted,
-                  icon: e.target!.value
+                  ...nodeBeingEdited!.data,
+                  icon: e.target!.value,
                 }})
               }
             }>
@@ -93,43 +102,41 @@ function EditNodeModal({
               controlId="annotations"
             >
               <Form.Label className='label'>Annotations</Form.Label>
-              <Form.Check 
-                type='radio' 
-                label='Black-List'
-                name="formHorizontalRadios"
-                id="formHorizontalRadios1"
-              />
-              <Form.Check 
-                type='radio' 
-                label='Alive'
-                name="formHorizontalRadios"
-                id="formHorizontalRadios2"
-              />
-              <Form.Check 
-                type='radio' 
-                label='Scanned'
-                name="formHorizontalRadios"
-                id="formHorizontalRadios3"
-              />
-              <Form.Check 
-                type='radio' 
-                label='Enumerated'
-                name="formHorizontalRadios"
-                id="formHorizontalRadios4"
-              />
-              <Form.Check 
-                type='radio' 
-                label='DoSed'
-                name="formHorizontalRadios"
-                id="formHorizontalRadios5"
-              />
+              <ButtonGroup>
+                {radios.map((radio, idx) => (
+                  <ToggleButton
+                    size='sm'
+                    key={idx}
+                    id={`radio-${idx}`}
+                    type="radio"
+                    variant='dark'
+                    name="radio"
+                    value={radio.value || 'none'}
+                    checked={nodeBeingEdited?.data.flag === radio.value}
+                    onChange={(e) => setNodeBeingEdited({...nodeBeingEdited!, data: {
+                      ...nodeBeingEdited!.data,
+                      flag: e.currentTarget.value
+                    }}
+                  )}
+                  >
+                    {radio.name}
+                  </ToggleButton>
+                ))}
+              </ButtonGroup>
               <br/>
-              <Form.Control as='textarea'
-                type='text'
+              <br/>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={nodeBeingEdited?.data.notes}
+                onChange={(e) => setNodeBeingEdited({...nodeBeingEdited!, data: {
+                  ...nodeBeingEdited!.data,
+                  notes: e.target.value
+                }
+              })}
               />
-              <Form.Text className="text-muted">
-                Notes
-              </Form.Text>
+            </Form.Group>
           </Form.Group>
         </fieldset>
       </Modal.Body>
