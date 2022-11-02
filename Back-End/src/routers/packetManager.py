@@ -105,7 +105,9 @@ class packetManager():
     def saveEditedPacket(projectId: str, packets: List[packet], replay: Union[bool, None] = None):
         packetList = []
         for packet in packets:
-            newPacket = {'projectId': projectId, 'timestamp': packet.timestamp, 'type': packet.type,
+            timestampStr = packet.timestamp.strftime("%m/%d/%Y, %H:%M:%S")
+            timestampDate = datetime.strptime(timestampStr, "%m/%d/%Y, %H:%M:%S")
+            newPacket = {'projectId': projectId, 'timestamp': timestampDate, 'type': packet.type,
             'nodeId': packet.nodeId, 'data': packet.data}
             packetList.append(newPacket)
             if(replay):
