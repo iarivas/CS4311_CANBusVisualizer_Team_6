@@ -54,4 +54,5 @@
 
 .replay-packet-table {
     overflow: scroll;
+    white-space: nowrap;
 }
