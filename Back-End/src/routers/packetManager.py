@@ -8,7 +8,7 @@ import can
 import cantools
 from dataSaver import dataSaver
 from dataGetter import dataGetter
-from typing import Union
+from typing import Union, List
 
 bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
 dbc = cantools.database.load_file('../CSS-Electronics-SAE-J1939-2018-08_v1.2.dbc')
@@ -18,7 +18,7 @@ class Play(BaseModel):
     play: bool
 
 class packet(BaseModel):
-    Timestamp: str
+    timestamp: str
     nodeId: str
     type: str
     data: str
@@ -102,13 +102,17 @@ class packetManager():
         ...
         
     @router.post("/projects/{projectId}/packets", tags=["packets"])
-    def saveEditedPacket(projectId: str, packet: packet, replayPacket: Union[bool, None] = None):
-        newPacket = {'projectId': projectId,'timestamp': packet.Timestamp, 'type': packet.type,
-        'nodeid': packet.nodeId, 'data': packet.data}
-        if(replayPacket):
-            #sendPacketToBus(newPacket)
-            ...
-        return dataSaver.storePackets(newPacket)
+    def saveEditedPacket(projectId: str, packets: List[packet], replayPacket: Union[bool, None] = None):
+        packetList = []
+        for packet in packets:
+            newPacket = {'projectId': projectId, 'timestamp': packet.timestamp, 'type': packet.type,
+            'nodeid': packet.nodeId, 'data': packet.data}
+            packetList.append(newPacket)
+            if(replayPacket):
+                #sendpacket()
+                ...
+
+        return dataSaver.storePackets(packetList)
 
 
     @router.get("/projects/{projectId}/packets", tags=["packets"])
