@@ -102,13 +102,13 @@ class packetManager():
         ...
         
     @router.post("/projects/{projectId}/packets", tags=["packets"])
-    def saveEditedPacket(projectId: str, packets: List[packet], replayPacket: Union[bool, None] = None):
+    def saveEditedPacket(projectId: str, packets: List[packet], replay: Union[bool, None] = None):
         packetList = []
         for packet in packets:
             newPacket = {'projectId': projectId, 'timestamp': packet.timestamp, 'type': packet.type,
             'nodeid': packet.nodeId, 'data': packet.data}
             packetList.append(newPacket)
-            if(replayPacket):
+            if(replay):
                 #sendpacket()
                 ...
 
