@@ -119,12 +119,15 @@ function Visualizer() {
             })
     }
     const refreshPackets = () => {
+        packetPage.current = 1
         api.getPackets(packetViewSettings.current, projectId, packetPage.current, PACKET_PAGE_SIZE)
             .then((response) => {
                 const newPackets = response.data
                 if (newPackets.length > 0) {
                     // Append to list
+                    packetPage.current = packetPage.current + 1
                     setPacketList(newPackets)
+                    setHasMorePackets(true)
                 } else {
                     setHasMorePackets(false)
                 }
