@@ -29,4 +29,5 @@ div.packet-container-content {
 div.node-map-container-content {
     display: flex;
     flex: 1 0 auto;
+    color: black
 }
