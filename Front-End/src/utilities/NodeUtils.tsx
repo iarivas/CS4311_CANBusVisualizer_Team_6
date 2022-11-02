@@ -30,7 +30,7 @@ class NodeUtils {
                     icon: nodeData.data?.icon || '../images/engine.png',
                     isBlacklisted: nodeData.data?.isBlacklisted || nodeData.isBlacklisted,
                     annotation: nodeData.data?.annotation || '',
-                    flag: nodeData.data?.flag || null,
+                    flag: nodeData.data?.flag || 'none',
                     hidden: nodeData.data?.hidden || false
                 },
                 position: nodeData.position

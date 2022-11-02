@@ -30,7 +30,7 @@ function CustomNode({ id, data }: any) {
       style={{ backgroundColor: (data.isBlacklisted ? '#C0C0C0' : 'white'), overflow: 'hidden'}}
       className='rounded'
     >
-      <Handle type="target" position={Position.Top} />
+      <Handle type="target" position={Position.Top} style={{ height:'12px', width:'12px' }} />
       <div className='custom-node-content'>
         <img style={{ marginRight: 'auto', marginLeft: 'auto', height: '70px', width: '70px'}} src={renderSwitch(data.icon)} alt='icon'/>
         <div className='custom-node-info'>
@@ -52,7 +52,7 @@ function CustomNode({ id, data }: any) {
           }
         </div>
       </div>
-      <Handle type="source" position={Position.Bottom} />
+      <Handle type="source" position={Position.Bottom} style={{ height:'12px', width:'12px' }} />
     </main>
   );
 }

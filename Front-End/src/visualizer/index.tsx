@@ -171,8 +171,13 @@ function Visualizer() {
     const nodeInFocus = useRef<any>()
     const onNodeContextMenu = (event: React.MouseEvent, node: Node) => {
         event.preventDefault()
-        showNodeModal()
-        nodeInFocus.current = node
+        if(node.data.isBlacklisted){
+
+        }
+        else{
+            showNodeModal()
+            nodeInFocus.current = node
+        }    
     }
 
     const onNodeEditApply = (updatedNode: Node<CustomNodeData>) => {
