@@ -50,10 +50,14 @@ class APIUtil {
         })
     }
 
-    sendPackets(packets: any[], projectId: string) {
-        axios.post(
+    sendPackets(packets: any[], projectId: string, replay: boolean) {
+        return axios.post(
             this.url + '/projects/' + projectId + '/packets',
-            packets,
+            packets, {
+                params: {
+                    replay: replay
+                }
+            }
         )
     }
 
