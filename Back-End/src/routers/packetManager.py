@@ -106,7 +106,7 @@ class packetManager():
         packetList = []
         for packet in packets:
             newPacket = {'projectId': projectId, 'timestamp': packet.timestamp, 'type': packet.type,
-            'nodeid': packet.nodeId, 'data': packet.data}
+            'nodeId': packet.nodeId, 'data': packet.data}
             packetList.append(newPacket)
             if(replay):
                 #sendpacket()
