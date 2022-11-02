@@ -32,7 +32,7 @@ function CustomNode({ id, data }: any) {
     >
       <Handle type="target" position={Position.Top} />
       <div className='custom-node-content'>
-        <img style={{ marginRight: 'auto', marginLeft: 'auto', height: '50px', width: '50px'}} src={renderSwitch(data.icon)} alt='icon'/>
+        <img style={{ marginRight: 'auto', marginLeft: 'auto', height: '70px', width: '70px'}} src={renderSwitch(data.icon)} alt='icon'/>
         <div className='custom-node-info'>
           <div style={{color: 'blue'}}>
             ID: {id}

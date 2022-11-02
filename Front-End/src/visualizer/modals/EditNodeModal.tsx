@@ -34,13 +34,18 @@ function EditNodeModal({
     wheel: '../images/steering_wheel.png',
   }
 
-  const radios: {name: string, value: string | null}[] = [
+  const flagRadios: {name: string, value: string | null}[] = [
     {name: 'None', value: FlagOptions.NONE},
     {name: 'Blacklist', value: FlagOptions.BLACKLIST},
     {name: 'Alive', value: FlagOptions.ALIVE},
     {name: 'Scanned', value: FlagOptions.SCANNED},
     {name: 'Enumerated', value: FlagOptions.ENUMERATED},
     {name: 'DoSed', value: FlagOptions.DOSED},
+  ]
+
+  const hiddenRadios: {name: string, value: string}[] = [
+    {name: 'Visible', value: 'visible'},
+    {name: 'Hidden', value: 'hidden'},
   ]
 
   return (
@@ -90,9 +95,32 @@ function EditNodeModal({
 
           <fieldset>
             <Form.Group className="mb-3" controlId="node-visability">
-              <Form.Label className='label'>Visability Status</Form.Label>
-              <Form.Check type='radio' label='Hidden' name="formHorizontalRadios" id="formHorizontalRadiosHidden"/>
-              <Form.Check type='radio' label='Visible' name="formHorizontalRadios" id="formHorizontalRadiosVisible"/>
+              <Form.Label className='label'>Visibility</Form.Label>
+              <br />
+            <ButtonGroup>
+                {hiddenRadios.map((radio, idx) => (
+                  <ToggleButton
+                    size='sm'
+                    key={`visibility-radio${idx}`}
+                    id={`visibility-radio-${idx}`}
+                    type="radio"
+                    variant='dark'
+                    name="visibility-radio"
+                    value={radio.value}
+                    checked={ nodeBeingEdited === undefined ? true :
+                      (nodeBeingEdited!.data.hidden === true && radio.value === 'hidden') ||
+                      (nodeBeingEdited!.data.hidden === false && radio.value === 'visible')
+                    }
+                    onChange={(e) => setNodeBeingEdited({...nodeBeingEdited!, data: {
+                      ...nodeBeingEdited!.data,
+                      hidden: e.currentTarget.value === 'hidden'
+                    }}
+                  )}
+                  >
+                    {radio.name}
+                  </ToggleButton>
+                ))}
+              </ButtonGroup>
             </Form.Group>
           </fieldset>
 
@@ -103,14 +131,14 @@ function EditNodeModal({
             >
               <Form.Label className='label'>Annotations</Form.Label>
               <ButtonGroup>
-                {radios.map((radio, idx) => (
+                {flagRadios.map((radio, idx) => (
                   <ToggleButton
                     size='sm'
-                    key={idx}
-                    id={`radio-${idx}`}
+                    key={`flag-radio-${idx}`}
+                    id={`flag-radio-${idx}`}
                     type="radio"
                     variant='dark'
-                    name="radio"
+                    name="flag-radio"
                     value={radio.value || 'none'}
                     checked={nodeBeingEdited?.data.flag === radio.value}
                     onChange={(e) => setNodeBeingEdited({...nodeBeingEdited!, data: {

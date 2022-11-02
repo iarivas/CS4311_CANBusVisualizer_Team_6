@@ -186,7 +186,8 @@ function Visualizer() {
                         isBlacklisted: updatedNode.data.isBlacklisted,
                         flag: updatedNode.data.flag,
                         annotation: updatedNode.data.annotation,
-                        notes: updatedNode.data.notes
+                        notes: updatedNode.data.notes,
+                        hidden: updatedNode.data.hidden
                     },
                     type: 'custom',
                     position: {
@@ -328,7 +329,8 @@ function Visualizer() {
                 isBlacklisted: false,
                 flag: 'none',
                 annotation: '',
-                notes: ''
+                notes: '',
+                hidden: false
             },
           }
         ))
