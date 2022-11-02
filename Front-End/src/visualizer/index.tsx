@@ -50,7 +50,8 @@ function Visualizer() {
     }
 
     const replayPackets = (packets: PacketState[]) => {
-        api.sendPackets(packets, projectId)
+        api.sendPackets(packets, projectId, true)
+            .catch((error) => console.log(error))
     }
 
     // Packet context menu
