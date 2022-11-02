@@ -179,7 +179,7 @@ function Visualizer() {
         setNodes(nodes.map((node) => {
             if (node.id === updatedNode.id) {
                 return {
-                    id: node.id,
+                    ...node,
                     data: {
                         label: updatedNode.data.label,
                         icon: updatedNode.data.icon,
@@ -188,11 +188,6 @@ function Visualizer() {
                         annotation: updatedNode.data.annotation,
                         notes: updatedNode.data.notes,
                         hidden: updatedNode.data.hidden
-                    },
-                    type: 'custom',
-                    position: {
-                        x: updatedNode.position.x,
-                        y: updatedNode.position.y
                     }
                 }
             } else {
