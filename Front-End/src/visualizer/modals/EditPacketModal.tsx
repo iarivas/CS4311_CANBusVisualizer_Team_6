@@ -30,7 +30,12 @@ function EditPacketModal({isShown, onHide, packetInFocus}: Props) {
                 type="text"
                 placeholder=""
                 value={packetInEditing?.timestamp}
+                onChange = {(e) => {
+                  setPacketInEditing({...packetInEditing!, timestamp: e.target!.value})
+                }}
                 autoFocus
+                pattern={'([0-9]{4})-([0-9]{2}-[0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})(.[0-9]{1,})?'}
+                title={'yyyy-mm-ddThh:mm:ss[.ms]'}
               />
             </Form.Group>
             <Form.Group
@@ -43,6 +48,9 @@ function EditPacketModal({isShown, onHide, packetInFocus}: Props) {
                 type='text' 
                 placeholder='' 
                 value={packetInEditing?.nodeId}
+                onChange = {(e) => {
+                  setPacketInEditing({...packetInEditing!, nodeId: e.target!.value})
+                }}
                 autoFocus
                />
             </Form.Group>
@@ -55,6 +63,9 @@ function EditPacketModal({isShown, onHide, packetInFocus}: Props) {
                 type='text' 
                 placeholder='' 
                 value={packetInEditing?.type}
+                onChange = {(e) => {
+                  setPacketInEditing({...packetInEditing!, type: e.target!.value})
+                }}
                 autoFocus
                />
             </Form.Group>
@@ -67,6 +78,9 @@ function EditPacketModal({isShown, onHide, packetInFocus}: Props) {
                 type='text' 
                 placeholder='' 
                 value={packetInEditing?.data}
+                onChange = {(e) => {
+                  setPacketInEditing({...packetInEditing!, data: e.target!.value})
+                }}
                 autoFocus
                />
             </Form.Group>
