@@ -22,6 +22,7 @@ function ReplayPacketModal({
     const [idxToReplay, setIdxToReplay] = useState(-1)
     const [isPlaying, setIsPlaying] = useState(false)
     const isPlayingRef = useRef(false)
+    const packetsToReplayRef = useRef<PacketState[]>([])
 
     const packetDisplay = () => {
         return packets.map((packet, idx) => {
@@ -48,11 +49,12 @@ function ReplayPacketModal({
         onHide()
     }
 
+    useEffect(() => {packetsToReplayRef.current = [packets[idxToReplay]]}, [idxToReplay, packets])
     useEffect(() => {isPlayingRef.current = isPlaying}, [isPlaying])
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if (isPlayingRef.current) replayPackets([packets[idxToReplay]])
+            if (isPlayingRef.current) replayPackets(packetsToReplayRef.current)
         }, 500);
         return () => clearInterval(interval);
     }, [])

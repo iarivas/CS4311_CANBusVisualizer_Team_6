@@ -3,7 +3,8 @@ import { useEffect, useRef, useState} from 'react'
 import {
     useNodesState,
     useEdgesState,
-    addEdge
+    addEdge,
+    Node
 } from 'react-flow-renderer';
 import { Menu, Item, useContextMenu } from 'react-contexify';
 import PacketContainer from './packetContainer'
@@ -21,6 +22,7 @@ import EditNodeModal from './modals/EditNodeModal'
 import "react-contexify/dist/ReactContexify.css";
 import ReplayPacketModal from './modals/ReplayPacketModal';
 import EditPacketModal from './modals/EditPacketModal';
+import CustomNodeData from './nodeMap/CustomNodeData';
 
 const MENU_ID = 'packet-context-menu';
 
@@ -49,7 +51,8 @@ function Visualizer() {
     }
 
     const replayPackets = (packets: PacketState[]) => {
-        api.sendPackets(packets, projectId)
+        api.sendPackets(packets, projectId, true)
+            .catch((error) => console.log(error))
     }
 
     // Packet context menu
@@ -123,12 +126,15 @@ function Visualizer() {
             })
     }
     const refreshPackets = () => {
+        packetPage.current = 1
         api.getPackets(packetViewSettings.current, projectId, packetPage.current, PACKET_PAGE_SIZE)
             .then((response) => {
                 const newPackets = response.data
                 if (newPackets.length > 0) {
                     // Append to list
+                    packetPage.current = packetPage.current + 1
                     setPacketList(newPackets)
+                    setHasMorePackets(true)
                 } else {
                     setHasMorePackets(false)
                 }
@@ -165,19 +171,46 @@ function Visualizer() {
 
     const [nodeDict, setNodeDict] = useState<any>({})
     const [edgeDict, setEdgeDict] = useState<any>({})
-    
-    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+
+    const [nodes, setNodes, onNodesChange] = useNodesState<CustomNodeData>(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const nodesRef = useRef(nodes)
     const edgesRef = useRef(edges)
     const nodeDictRef = useRef(nodeDict)
     const edgeDictRef = useRef(edgeDict)
 
+    const nodeInFocus = useRef<any>()
     const onNodeContextMenu = (event: React.MouseEvent, node: Node) => {
         event.preventDefault()
-        showNodeModal()
-        console.log('node clicked', node)
-      }
+        if(node.data.isBlacklisted){
+
+        }
+        else{
+            showNodeModal()
+            nodeInFocus.current = node
+        }    
+    }
+
+    const onNodeEditApply = (updatedNode: Node<CustomNodeData>) => {
+        setNodes(nodes.map((node) => {
+            if (node.id === updatedNode.id) {
+                return {
+                    ...node,
+                    data: {
+                        label: updatedNode.data.label,
+                        icon: updatedNode.data.icon,
+                        isBlacklisted: updatedNode.data.isBlacklisted,
+                        flag: updatedNode.data.flag,
+                        annotation: updatedNode.data.annotation,
+                        notes: updatedNode.data.notes,
+                        hidden: updatedNode.data.hidden
+                    }
+                }
+            } else {
+                return node
+            }
+        }))
+    }
 
     const saveNodes = () => {
         const data = nodeUtils.parseToData(nodes, edges, projectId)
@@ -301,7 +334,15 @@ function Visualizer() {
             id: nodeId,
             type: 'custom',
             position: {x: 100, y: 0},
-            data: {label: 'test'}
+            data: {
+                label: 'test',
+                icon: '',
+                isBlacklisted: false,
+                flag: 'none',
+                annotation: '',
+                notes: '',
+                hidden: false
+            },
           }
         ))
       };
@@ -320,6 +361,8 @@ function Visualizer() {
             <EditNodeModal
                 isShow={editNodeModal}
                 setHide={hideNodeModal}
+                onApply={onNodeEditApply}
+                node={nodeInFocus.current}
             />
             <PacketViewSettingsModal
                 isShown={isShownPacketsModal}
