@@ -7,23 +7,29 @@ import PacketState from '../packetContainer/PacketState';
 interface Props {
   isShown: boolean,
   onHide: (() => void),
-  packetInFocus: PacketState | undefined
+  packetInFocus: PacketState | undefined,
+  sendPackets: ((packets: any[]) => void)
 }
 
-function EditPacketModal({isShown, onHide, packetInFocus}: Props) {
+function EditPacketModal({isShown, onHide, packetInFocus, sendPackets}: Props) {
   const [packetInEditing, setPacketInEditing] = useState<PacketState | undefined>(packetInFocus)
 
   useEffect(() => {
     setPacketInEditing(packetInFocus)
   }, [packetInFocus])
 
+
+
   return (
       <Modal show={isShown} onHide={onHide} className='edit-packet-modal'>
         <Modal.Header closeButton>
           <Modal.Title>Edit Packet</Modal.Title>
         </Modal.Header>
+        <Form onSubmit={(e) => {
+          e.preventDefault()
+          sendPackets([packetInEditing])
+          onHide()}}>
         <Modal.Body>
-          <Form>
             <Form.Group className="mb-3" controlId="time">
               <Form.Label className='label'>Time</Form.Label>
               <Form.Control
@@ -84,16 +90,17 @@ function EditPacketModal({isShown, onHide, packetInFocus}: Props) {
                 autoFocus
                />
             </Form.Group>
-          </Form>
+          
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide} className='rounded-pill'>
             Close
           </Button>
-          <Button variant="primary" onClick={onHide} className='rounded-pill'>
+          <Button variant="primary" className='rounded-pill' type = 'submit'>
             Send
           </Button>
         </Modal.Footer>
+      </Form>
       </Modal>
   );
 }

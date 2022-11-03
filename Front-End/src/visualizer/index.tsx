@@ -50,6 +50,11 @@ function Visualizer() {
         setPacketsToReplay([])
     }
 
+    const sendPackets = (packetsToSend: PacketState[]) => {
+        api.sendPackets(packetsToSend, projectId, false)
+            .catch((error) => console.log(error))
+    }
+
     const replayPackets = (packets: PacketState[]) => {
         api.sendPackets(packets, projectId, true)
             .catch((error) => console.log(error))
@@ -381,6 +386,7 @@ function Visualizer() {
                 isShown={isShownEditPacketsModal}
                 onHide={hideEditPacketModal}
                 packetInFocus={packetInFocus.current}
+                sendPackets={sendPackets}
             />
             <h1 className='visualizer-title'>{projectId}</h1>
             <Menubar
