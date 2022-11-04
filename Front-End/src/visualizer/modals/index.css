@@ -10,7 +10,6 @@
 
 .packet-view-modal .modal-content, .mb-3{
     background-color: #17161b;
-    margin: 3%;
 }
 
 
@@ -55,4 +54,5 @@
 
 .replay-packet-table {
     overflow: scroll;
+    white-space: nowrap;
 }
