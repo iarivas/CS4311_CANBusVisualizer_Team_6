@@ -30,7 +30,7 @@ function PacketContainer({fetchData, hasMore, packetList, refresh, onPlay}: any)
         }}>
             <PlayFill/>
             &nbsp;
-            Play
+            Capture
         </Button>
     )
 
@@ -39,13 +39,17 @@ function PacketContainer({fetchData, hasMore, packetList, refresh, onPlay}: any)
             <div className='packet-container-inner'>
                 <h3>Packets</h3>
                 <div className='packet-action-buttons'>
+                    {isPlaying ? stopButton : playButton}
+                    &nbsp;
                     <Button className='rounded-pill' size='sm' onClick={refresh}>
                         <ArrowRepeat/>
+                        <br/>
                         &nbsp;
                         Fetch
+                        &nbsp;
                     </Button>
-                    &nbsp;
-                    {isPlaying ? stopButton : playButton}
+                    
+                    
                 </div>
             </div>
             <PacketList
