@@ -4,7 +4,8 @@ import {
     useNodesState,
     useEdgesState,
     addEdge,
-    Node
+    Node,
+    Edge
 } from 'react-flow-renderer';
 import { Menu, Item, useContextMenu } from 'react-contexify';
 import PacketContainer from './packetContainer'
@@ -334,10 +335,8 @@ function Visualizer() {
       };
     
     const onConnect = (params: any) => {
-        if (!edgeDictRef.current[params.source + '->' + params.target]) {
-            edgeDictRef.current[params.source + '->' + params.target] = true
-            setEdges((eds) => addEdge(params, eds))
-        }
+        edgeDictRef.current[params.source + '->' + params.target] = true
+        setEdges((eds) => addEdge(params, eds))
     }
     // Other stuff
     

@@ -34,6 +34,7 @@ function NodeMap({
                     onConnect={onConnect}
                     onNodeContextMenu={onNodeContextMenu}
                     nodeTypes={nodeTypes}
+                    onEdgesDelete={(edges) => {}}
                 >
                     <Controls>   </Controls>
                 </ReactFlow>
