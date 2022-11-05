@@ -175,13 +175,8 @@ function Visualizer() {
     const nodeInFocus = useRef<any>()
     const onNodeContextMenu = (event: React.MouseEvent, node: Node) => {
         event.preventDefault()
-        if(node.data.isBlacklisted){
-
-        }
-        else{
-            showNodeModal()
-            nodeInFocus.current = node
-        }    
+        nodeInFocus.current = node
+        showNodeModal()
     }
 
     const onNodeEditApply = (updatedNode: Node<CustomNodeData>) => {
@@ -195,7 +190,6 @@ function Visualizer() {
                         isBlacklisted: updatedNode.data.isBlacklisted,
                         flag: updatedNode.data.flag,
                         annotation: updatedNode.data.annotation,
-                        notes: updatedNode.data.notes,
                         hidden: updatedNode.data.hidden
                     }
                 }
@@ -333,7 +327,6 @@ function Visualizer() {
                 isBlacklisted: false,
                 flag: 'none',
                 annotation: '',
-                notes: '',
                 hidden: false
             },
           }
