@@ -246,7 +246,7 @@ function Visualizer() {
 
                 const [newNodes, newEdges] = nodeUtils.parseNodesData(newNodesData)
                 console.log(nodeDictRef.current)
-                console.log(edgeDictRef.current)
+                console.log(edgesRef.current)
                 const nodesToAdd: any[] = []
                 const edgesToAdd: any[] = []
 
@@ -334,7 +334,10 @@ function Visualizer() {
       };
     
     const onConnect = (params: any) => {
-        setEdges((eds) => addEdge(params, eds))
+        if (!edgeDictRef.current[params.source + '->' + params.target]) {
+            edgeDictRef.current[params.source + '->' + params.target] = true
+            setEdges((eds) => addEdge(params, eds))
+        }
     }
     // Other stuff
     
