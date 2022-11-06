@@ -33,7 +33,7 @@ export default function Menubar({
 
             <NavDropdown title="Node" id="basic-nav-dropdown" >
               <NavDropdown.Item id="action" onClick={() => onAddNode()}> Add Node  </NavDropdown.Item>
-              <NavDropdown.Item id="action" onClick={showHideNodeModal}>Hide/Show nodes</NavDropdown.Item>
+              <NavDropdown.Item id="action" onClick={showHideNodeModal}>Hide/Show</NavDropdown.Item>
 
             </NavDropdown>
 
