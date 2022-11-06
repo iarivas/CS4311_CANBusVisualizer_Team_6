@@ -200,6 +200,7 @@ function Visualizer() {
             if (node.id === updatedNode.id) {
                 return {
                     ...node,
+                    hidden: updatedNode.data.hidden,
                     data: {
                         label: updatedNode.data.label,
                         icon: updatedNode.data.icon,
@@ -211,6 +212,17 @@ function Visualizer() {
                 }
             } else {
                 return node
+            }
+        }))
+
+        setEdges(edges.map((edge) => {
+            if (edge.source === updatedNode.id || edge.target === updatedNode.id) {
+                return {
+                    ...edge,
+                    hidden: updatedNode.data.hidden
+                }
+            } else {
+                return edge
             }
         }))
     }
