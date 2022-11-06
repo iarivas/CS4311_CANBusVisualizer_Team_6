@@ -87,8 +87,6 @@ function Visualizer() {
     // Modal for hiding nodes
     const [isShownHideNodeModal, setIsShownHideNodeModal] = useState(false)
     const onHideNodesApply = (selected: string[]) => {
-        console.log('SELECTED:')
-        console.log(selected)
         setNodes(nodes.map((node) => {
             return {...node, data: {...node.data, hidden: selected.includes(node.id)}}
         }))
