@@ -5,7 +5,6 @@ import {
     useEdgesState,
     addEdge,
     Node,
-    Edge
 } from 'react-flow-renderer';
 import { Menu, Item, useContextMenu } from 'react-contexify';
 import PacketContainer from './packetContainer'
@@ -273,10 +272,15 @@ function Visualizer() {
                 const newNodesData = response.data
 
                 const [newNodes, newEdges] = nodeUtils.parseNodesData(newNodesData)
-                console.log(nodeDictRef.current)
-                console.log(edgesRef.current)
                 const nodesToAdd: any[] = []
                 const edgesToAdd: any[] = []
+
+                const hiddenNodes = new Set()
+                nodesRef.current.forEach((node) => {
+                    if (node.hidden) {
+                        hiddenNodes.add(node.id)
+                    }
+                });
 
                 newNodes.forEach((node, idx) => {
                     // If node not in dict, add it
@@ -297,6 +301,11 @@ function Visualizer() {
                 newEdges.forEach((edge) => {
                     // If edge not in list, add it
                     if (!(edge.id in edgeDictRef.current)) {
+                        // Add hidden property
+                        if (hiddenNodes.has(edge.source) || hiddenNodes.has(edge.target)) {
+                            edge.hidden = true
+                        }
+
                         edgeDictRef.current[edge.id] = true
                         setEdgeDict(edgeDictRef.current)
 
