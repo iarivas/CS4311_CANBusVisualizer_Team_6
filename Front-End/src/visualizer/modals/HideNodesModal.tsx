@@ -9,13 +9,15 @@ import CustomNodeData from '../nodeMap/CustomNodeData';
 interface Props {
     isShown: boolean,
     onHide: (() => void),
-    nodes: Node<CustomNodeData>[]
+    nodes: Node<CustomNodeData>[],
+    onApply: ((selected: string[]) => void),
 }
 
 function HideNodesModal({
     isShown,
     onHide,
-    nodes
+    nodes,
+    onApply
 }: Props) {
     const options: {value: string, label: string}[] = nodes.map((node) => {
         return {value: node.id, label: node.data?.label}
@@ -52,7 +54,14 @@ function HideNodesModal({
             <Button variant="secondary" onClick={onHide} className='rounded-pill'>
                 Close
             </Button>
-            <Button variant="primary" onClick={() => {}} className='rounded-pill'>
+            <Button
+                variant="primary"
+                onClick={() => {
+                    onApply(currSelected)
+                    onHide()
+                }}
+                className='rounded-pill'
+            >
                 Apply
             </Button>
             </Modal.Footer>

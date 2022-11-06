@@ -23,7 +23,7 @@ import EditNodeModal from './modals/EditNodeModal'
 import "react-contexify/dist/ReactContexify.css";
 import ReplayPacketModal from './modals/ReplayPacketModal';
 import CustomNodeData from './nodeMap/CustomNodeData';
-import HideNodesModal from './modals/HiddenNodesModal';
+import HideNodesModal from './modals/HideNodesModal';
 
 const MENU_ID = 'packet-context-menu';
 
@@ -86,6 +86,13 @@ function Visualizer() {
 
     // Modal for hiding nodes
     const [isShownHideNodeModal, setIsShownHideNodeModal] = useState(false)
+    const onHideNodesApply = (selected: string[]) => {
+        console.log('SELECTED:')
+        console.log(selected)
+        setNodes(nodes.map((node) => {
+            return {...node, data: {...node.data, hidden: selected.includes(node.id)}}
+        }))
+    }
 
     // Packet retrieval and infinite list
     const packetPage = useRef(1)
@@ -366,6 +373,7 @@ function Visualizer() {
                 isShown={isShownHideNodeModal}
                 onHide={() => setIsShownHideNodeModal(false)}
                 nodes={nodes}
+                onApply={onHideNodesApply}
             />
             <ReplayPacketModal
                 isShown={isShownReplayPacketsModal}
