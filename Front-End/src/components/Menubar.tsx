@@ -8,6 +8,7 @@ export default function Menubar({
       hidePacketViewSettingsModal,
       showReplayPacketsModal,
       onAddNode,
+      showHideNodeModal,
     } : any
     ){
   return (
@@ -32,7 +33,7 @@ export default function Menubar({
 
             <NavDropdown title="Node" id="basic-nav-dropdown" >
               <NavDropdown.Item id="action" onClick={() => onAddNode()}> Add Node  </NavDropdown.Item>
-              <NavDropdown.Item id="action" href="#action/3.1"> Select All </NavDropdown.Item>
+              <NavDropdown.Item id="action" onClick={showHideNodeModal}>Hide/Show nodes</NavDropdown.Item>
 
             </NavDropdown>
 
