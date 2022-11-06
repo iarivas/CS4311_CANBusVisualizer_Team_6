@@ -7,7 +7,6 @@ export const PacketSortOptions = {
 
 export const FlagOptions = {
     NONE: 'none',
-    BLACKLIST: 'blacklist',
     ALIVE: 'alive',
     SCANNED: 'scanned',
     ENUMERATED: 'enumerated',

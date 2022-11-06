@@ -4,7 +4,6 @@ interface CustomNodeData {
     isBlacklisted: boolean,
     annotation: string,
     flag: string,
-    notes: string,
     hidden: boolean
 }
 
