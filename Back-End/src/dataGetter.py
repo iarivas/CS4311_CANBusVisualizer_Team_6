@@ -1,9 +1,9 @@
 from dataSaver import dataSaver
-import pymongo
-from dataSaver import dataSaver
+import pymongo, re, json
 from typing import Final
 from datetime import datetime
-import re
+from bson.json_util import dumps
+from pymongo import MongoClient
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
@@ -237,3 +237,54 @@ class dataGetter:
             store.append(x)
         
         return store
+
+    def getCurrentProject(_projName):
+        client = MongoClient('localhost', 27017)
+        
+        db = client.TestDB
+        project = []
+        projCollection = db.TestCol
+        projCursor = list(projCollection.find({'eventName': _projName}))
+
+        pdb = client.TestPDB
+        nodes = []
+        nodeCollection = pdb.TestColNodes
+        nodeCursor = list(nodeCollection.find({'projectId': _projName}))
+
+        packets = []
+        packetCollection = pdb.TestCol
+        packetCursor = list(packetCollection.find({'projectId': _projName}))
+
+        json_project = dumps(projCursor, indent = 2) 
+        json_nodes = dumps(nodeCursor, indent = 2) 
+        json_packets = dumps(packetCursor, indent = 2) 
+
+        file = '/home/cbvs/Desktop/CS4311_CANBusVisualizer_Team_6/Back-End/Projects/' + _projName +'.json'
+        print(file)
+
+        with open(file, 'w') as file:
+            file.write("{\n\"Project\": " + json_project + ",\n")
+            file.write("\"Nodes\": " + json_nodes + ",\n")
+            file.write("\"Packets\": " + json_packets + "}\n")
+        return
+
+    def merge_JsonFiles(filenames):
+        result = list()
+        for f1 in filenames:
+            with open(f1, 'r') as infile:
+                result.extend(json.load(infile))
+
+        with open('counseling3.json', 'w') as output_file:
+            json.dump(result, output_file)
+
+    def syncProject(eventName, eventName2):
+        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
+
+        # creates a Json file of the current project
+        getCurrentProject(_myCol.find({"eventName": eventName}))
+        merge_JsonFiles([eventName, eventName2])
+
+        
+        return
