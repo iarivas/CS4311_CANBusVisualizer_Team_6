@@ -56,3 +56,9 @@
     overflow: scroll;
     white-space: nowrap;
 }
+
+.rdl-filter, .rdl-control {
+    color: #edeff3 !important;
+    background-color: #17161b;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
