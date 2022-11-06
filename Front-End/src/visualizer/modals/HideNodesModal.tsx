@@ -40,7 +40,7 @@ function HideNodesModal({
     return (
         <Modal onHide={onHide} show={isShown} className='hide-nodes-modal'>
             <Modal.Header closeButton>
-                <Modal.Title>Hide Nodes</Modal.Title>
+                <Modal.Title>Hide/Show Nodes</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <DualListBox
