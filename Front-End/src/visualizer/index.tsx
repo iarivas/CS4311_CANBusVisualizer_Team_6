@@ -87,8 +87,14 @@ function Visualizer() {
     // Modal for hiding nodes
     const [isShownHideNodeModal, setIsShownHideNodeModal] = useState(false)
     const onHideNodesApply = (selected: string[]) => {
+        const nodeHiddenSet = new Set()
+        selected.forEach((id) => nodeHiddenSet.add(id))
+
         setNodes(nodes.map((node) => {
-            return {...node, data: {...node.data, hidden: selected.includes(node.id)}}
+            return {...node, hidden: nodeHiddenSet.has(node.id), data: {...node.data, hidden: nodeHiddenSet.has(node.id)}}
+        }))
+        setEdges(edges.map((edge) => {
+            return {...edge, hidden: nodeHiddenSet.has(edge.source) || nodeHiddenSet.has(edge.target)}
         }))
     }
 
