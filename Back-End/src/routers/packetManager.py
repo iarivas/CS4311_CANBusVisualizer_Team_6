@@ -1,12 +1,14 @@
 from datetime import datetime
+#from sqlite3 import Timestamp
 import time
+#from tokenize import String
 from fastapi import APIRouter
 from pydantic import BaseModel
 import can
 import cantools
 from dataSaver import dataSaver
 from dataGetter import dataGetter
-from typing import Union
+from typing import Union, List
 
 bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
 dbc = cantools.database.load_file('../CSS-Electronics-SAE-J1939-2018-08_v1.2.dbc')
@@ -15,6 +17,11 @@ router = APIRouter()
 class Play(BaseModel):
     play: bool
 
+class packet(BaseModel):
+    timestamp: str
+    nodeId: str
+    type: str
+    data: str
 
 class packetManager():
     
@@ -93,6 +100,21 @@ class packetManager():
     
     def generatePacket(self, listOfAttributes):
         ...
+        
+    @router.post("/projects/{projectId}/packets", tags=["packets"])
+    def saveEditedPacket(projectId: str, packets: List[packet], replay: Union[bool, None] = None):
+        packetList = []
+        for packet in packets:
+            timestampDate = datetime.strptime(packet.timestamp, '%Y-%m-%dT%H:%M:%S.%f')
+            newPacket = {'projectId': projectId, 'timestamp': timestampDate, 'type': packet.type,
+            'nodeId': packet.nodeId, 'data': packet.data}
+            packetList.append(newPacket)
+            if(replay):
+                #sendpacket()
+                ...
+
+        return dataSaver.storePackets(packetList)
+
 
     @router.get("/projects/{projectId}/packets", tags=["packets"])
     def getPacketsFromProject(projectId: str, size: int, sort: str, page: int, node: Union[str, None] = None, before: Union[str, None] = None, after: Union[str, None] = None):
