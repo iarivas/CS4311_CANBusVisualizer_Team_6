@@ -43,16 +43,20 @@ function installMongoDbCommunity {
 }
 function runner {
     echo "running";
+    sudo modprobe vcan
+    sudo ip link add dev vcan0 type vcan
+    sudo ip link set up vcan0
     cd Back-End/src && python3 -m main && export BackendId=$!;
-    cd ../..;
-    cd Front-End/src && npm start && export frontEndId=$!;
+    #cd ../..;
+    #cd Front-End/src && npm start && export frontEndId=$!;
 }
-function exit {
-    kill frontEndId;
-    kill BackendId;
+exit() {
+    #kill frontEndId;
+    kill -2 $BackendId;
     exit
 }
-trap exit SIGINT 
+trap exit SIGINT EXIT
+
 if [ $arguement1 = $installOption ] 
 then 
     installer
