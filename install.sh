@@ -17,7 +17,6 @@ function installer {
     echo "installing";
 }
 function installNpm {
-    currentDir = pwd;
     sudo apt-get install -y npm;
     cd Front-End/src && npm install;
     cd ../..;
@@ -32,20 +31,37 @@ function installPythonModules {
 function installMongoDbCompass {
     wget https://downloads.mongodb.com/compass/mongodb-compass_1.33.1_amd64.deb;
     sudo dpkg -i mongodb-compass_1.33.1_amd64.deb;
+    rm mongodb-compass_1.33.1_amd64.deb;
 }
 function installMongoDbCommunity {
     wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -;
     echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list;
     sudo apt-get update -y;
-    sudo apt-install -y mongodb-org;
+    sudo apt-get install -y mongodb-org;
+    sudo systemctl start mongod;
+    sudo systemctl enable mongod;
 }
 function runner {
-    echo "running"
+    echo "running";
+    cd Back-End/src && python3 -m main && export BackendId=$!;
+    cd ../..;
+    cd Front-End/src && npm start && export frontEndId=$!;
 }
+function exit {
+    kill frontEndId;
+    kill BackendId;
+    exit
+}
+trap exit SIGINT 
 if [ $arguement1 = $installOption ] 
 then 
     installer
 elif [ $arguement1 = $runOption ]
 then
-    runner
+    runner;
+    while true;
+    do
+        echo "press CTRL-C to quit program";
+        sleep 5;
+    done
 fi
