@@ -11,7 +11,16 @@ function installer {
     installMongoDbCompass;
     #install python modules
     installPythonModules;
+    #install NPM
+    installNpm;
+
     echo "installing";
+}
+function installNpm {
+    currentDir = pwd;
+    sudo apt-get install -y npm;
+    cd Front-End/src && npm install;
+    cd ../..;
 }
 function installPythonModules {
     python3 -m pip install fastapi;
