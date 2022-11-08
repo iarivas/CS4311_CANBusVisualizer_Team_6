@@ -43,7 +43,6 @@ function CustomNode({ id, data }: any) {
           {data.flag === FlagOptions.NONE ? '---' : 
           <FlagFill style={{color: 
             data.flag === FlagOptions.ALIVE ? 'green' :
-            data.flag === FlagOptions.BLACKLIST ? 'black' :
             data.flag === FlagOptions.DOSED ? 'red' :
             data.flag === FlagOptions.ENUMERATED ? 'blue' :
             // Scanned

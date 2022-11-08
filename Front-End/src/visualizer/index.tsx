@@ -4,7 +4,8 @@ import {
     useNodesState,
     useEdgesState,
     addEdge,
-    Node
+    Node,
+    Edge
 } from 'react-flow-renderer';
 import { Menu, Item, useContextMenu } from 'react-contexify';
 import PacketContainer from './packetContainer'
@@ -175,13 +176,8 @@ function Visualizer() {
     const nodeInFocus = useRef<any>()
     const onNodeContextMenu = (event: React.MouseEvent, node: Node) => {
         event.preventDefault()
-        if(node.data.isBlacklisted){
-
-        }
-        else{
-            showNodeModal()
-            nodeInFocus.current = node
-        }    
+        nodeInFocus.current = node
+        showNodeModal()
     }
 
     const onNodeEditApply = (updatedNode: Node<CustomNodeData>) => {
@@ -195,7 +191,6 @@ function Visualizer() {
                         isBlacklisted: updatedNode.data.isBlacklisted,
                         flag: updatedNode.data.flag,
                         annotation: updatedNode.data.annotation,
-                        notes: updatedNode.data.notes,
                         hidden: updatedNode.data.hidden
                     }
                 }
@@ -252,7 +247,7 @@ function Visualizer() {
 
                 const [newNodes, newEdges] = nodeUtils.parseNodesData(newNodesData)
                 console.log(nodeDictRef.current)
-                console.log(edgeDictRef.current)
+                console.log(edgesRef.current)
                 const nodesToAdd: any[] = []
                 const edgesToAdd: any[] = []
 
@@ -333,7 +328,6 @@ function Visualizer() {
                 isBlacklisted: false,
                 flag: 'none',
                 annotation: '',
-                notes: '',
                 hidden: false
             },
           }
@@ -341,6 +335,7 @@ function Visualizer() {
       };
     
     const onConnect = (params: any) => {
+        edgeDictRef.current[params.source + '->' + params.target] = true
         setEdges((eds) => addEdge(params, eds))
     }
     // Other stuff

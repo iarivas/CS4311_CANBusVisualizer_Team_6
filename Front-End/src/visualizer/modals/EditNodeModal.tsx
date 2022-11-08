@@ -36,17 +36,27 @@ function EditNodeModal({
 
   const flagRadios: {name: string, value: string | null}[] = [
     {name: 'None', value: FlagOptions.NONE},
-    {name: 'Blacklist', value: FlagOptions.BLACKLIST},
     {name: 'Alive', value: FlagOptions.ALIVE},
     {name: 'Scanned', value: FlagOptions.SCANNED},
     {name: 'Enumerated', value: FlagOptions.ENUMERATED},
     {name: 'DoSed', value: FlagOptions.DOSED},
   ]
 
+  const blacklistRadios: {name: string, value: string}[] = [
+    {name: 'Off-limits', value: 'true'},
+    {name: 'Accessible', value: 'false'},
+  ]
+
   const hiddenRadios: {name: string, value: string}[] = [
     {name: 'Visible', value: 'visible'},
     {name: 'Hidden', value: 'hidden'},
   ]
+
+  console.log('NODE:')
+  console.log(nodeBeingEdited)
+
+  console.log('NOTE:')
+  console.log(nodeBeingEdited?.data.annotation)
 
   return (
     <Modal show={isShow} onHide={setHide} className='edit-node-modal' onSubmit={(e: any) => {
@@ -101,7 +111,7 @@ function EditNodeModal({
                 {hiddenRadios.map((radio, idx) => (
                   <ToggleButton
                     size='sm'
-                    key={`visibility-radio${idx}`}
+                    key={`visibility-radio-${idx}`}
                     id={`visibility-radio-${idx}`}
                     type="radio"
                     variant='dark'
@@ -125,11 +135,43 @@ function EditNodeModal({
           </fieldset>
 
           <fieldset>
+            <Form.Group className="mb-3" controlId="node-blacklist">
+              <Form.Label className='label'>Off-limits</Form.Label>
+              <br />
+            <ButtonGroup>
+                {blacklistRadios.map((radio, idx) => (
+                  <ToggleButton
+                    size='sm'
+                    key={`blacklist-radio-${idx}`}
+                    id={`blacklist-radio-${idx}`}
+                    type="radio"
+                    variant='dark'
+                    name="blacklist-radio"
+                    value={radio.value}
+                    checked={ nodeBeingEdited === undefined ? true :
+                      (nodeBeingEdited!.data.isBlacklisted === true && radio.value === 'true') ||
+                      (nodeBeingEdited!.data.isBlacklisted === false && radio.value === 'false')
+                    }
+                    onChange={(e) => setNodeBeingEdited({...nodeBeingEdited!, data: {
+                      ...nodeBeingEdited!.data,
+                      isBlacklisted: e.currentTarget.value === 'true'
+                    }}
+                  )}
+                  >
+                    {radio.name}
+                  </ToggleButton>
+                ))}
+              </ButtonGroup>
+            </Form.Group>
+          </fieldset>
+
+          <fieldset>
             <Form.Group
               className="mb-3"
               controlId="annotations"
             >
               <Form.Label className='label'>Annotations</Form.Label>
+              <br />
               <ButtonGroup>
                 {flagRadios.map((radio, idx) => (
                   <ToggleButton
@@ -157,10 +199,10 @@ function EditNodeModal({
               <Form.Control
                 as="textarea"
                 rows={3}
-                value={nodeBeingEdited?.data.notes}
+                value={nodeBeingEdited?.data.annotation}
                 onChange={(e) => setNodeBeingEdited({...nodeBeingEdited!, data: {
                   ...nodeBeingEdited!.data,
-                  notes: e.target.value
+                  annotation: e.target.value
                 }
               })}
               />
