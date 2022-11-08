@@ -71,7 +71,7 @@ class projectManager():
     def getProjects(isArchived: Union[bool, None] = None):
         return dataGetter.getAllProjects(isArchived)
 
-    @router.post("/projects/", tags=["project"])
+    #@router.post("/projects/{projectId}/Export", tags=["Export"])
     def exportProject(projectInfo: ProjectInfo):
         return dataGetter.exportCurrentProject(projectInfo.eventName, 'json')
 

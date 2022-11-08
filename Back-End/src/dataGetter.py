@@ -257,7 +257,6 @@ class dataGetter:
 
         if type == 'json':
             file = '/../Projects/' + _projName +'.json'
-            print(file)
 
             with open(file, 'w') as file:
                 file.write("{\n\"Project\": " + json_project + ",\n")
