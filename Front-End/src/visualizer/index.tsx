@@ -221,10 +221,19 @@ function Visualizer() {
                     nodeDictRef.current[node.id] = true
                     setNodeDict(nodeDictRef.current)
                     if (!node.position) {
-                        node.position = {
-                            x: idx * 200,
-                            y: 0
+                        if (idx%2 === 0){
+                            node.position = {
+                                x: idx * 200,
+                                y: 200
+                            }
                         }
+                        else{
+                            node.position = {
+                                x: (idx-1) * 200,
+                                y: 0
+                            }
+                        }
+                        
                     }
                 })
 
@@ -258,9 +267,17 @@ function Visualizer() {
                         nodeDictRef.current[node.id] = true
                         setNodeDict(nodeDictRef.current)
     
-                        node.position = {
-                            x: (idx + nodesRef.current.length) * 200,
-                            y: 0
+                        if (idx%2 === 0){
+                            node.position = {
+                                x: idx * 200,
+                                y: 200
+                            }
+                        }
+                        else{
+                            node.position = {
+                                x: (idx-1) * 200,
+                                y: 0
+                            }
                         }
 
                         nodesToAdd.push(node)
