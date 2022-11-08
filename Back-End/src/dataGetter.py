@@ -82,7 +82,6 @@ class dataGetter:
         x = _myCol.find_one({
             "_id": projectID
         })
-
         print(x)
 
     #return name of project matching projectID
@@ -238,20 +237,17 @@ class dataGetter:
         
         return store
 
-    def getCurrentProject(_projName):
+    def exportCurrentProject(_projName, type):
         client = MongoClient('localhost', 27017)
         
         db = client.TestDB
-        project = []
         projCollection = db.TestCol
         projCursor = list(projCollection.find({'eventName': _projName}))
 
         pdb = client.TestPDB
-        nodes = []
         nodeCollection = pdb.TestColNodes
         nodeCursor = list(nodeCollection.find({'projectId': _projName}))
 
-        packets = []
         packetCollection = pdb.TestCol
         packetCursor = list(packetCollection.find({'projectId': _projName}))
 
@@ -259,32 +255,46 @@ class dataGetter:
         json_nodes = dumps(nodeCursor, indent = 2) 
         json_packets = dumps(packetCursor, indent = 2) 
 
-        file = '/home/cbvs/Desktop/CS4311_CANBusVisualizer_Team_6/Back-End/Projects/' + _projName +'.json'
-        print(file)
+        if type == 'json':
+            file = '/../Projects/' + _projName +'.json'
+            print(file)
 
-        with open(file, 'w') as file:
-            file.write("{\n\"Project\": " + json_project + ",\n")
-            file.write("\"Nodes\": " + json_nodes + ",\n")
-            file.write("\"Packets\": " + json_packets + "}\n")
+            with open(file, 'w') as file:
+                file.write("{\n\"Project\": " + json_project + ",\n")
+                file.write("\"Nodes\": " + json_nodes + ",\n")
+                file.write("\"Packets\": " + json_packets + "}\n")
+        #elif type == 'csv':
+
         return
 
-    def merge_JsonFiles(filenames):
-        result = list()
-        for f1 in filenames:
-            with open(f1, 'r') as infile:
-                result.extend(json.load(infile))
+    def merge_JsonFilesToDB(eventName, eventName2):
+        f = open('../Projects/'+ eventName2 + '.json')
+        data = json.load(f)
 
-        with open('counseling3.json', 'w') as output_file:
-            json.dump(result, output_file)
-
-    def syncProject(eventName, eventName2):
-        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
-        _myDB = _myClient["TestDB"]
-        _myCol = _myDB["TestCol"]
-
-        # creates a Json file of the current project
-        getCurrentProject(_myCol.find({"eventName": eventName}))
-        merge_JsonFiles([eventName, eventName2])
-
+        # We are kepeing the Original Project configuration
         
+        _newNodes = data["Nodes"]
+        _newPackets = data["Packets"]
+
+        for i in _newNodes:
+            del i['_id']
+            i["projectId"] = eventName
+
+        for i in _newPackets:
+            del i['_id']
+            i["projectId"] = eventName
+
+        dataSaver.storeNodes(_newNodes)
+        dataSaver.storePackets(_newPackets)
+        return
+            
+    def merge_CSVFilesToDB(eventName, eventName2):
+        return 
+
+    def syncProject(self, eventName, eventName2):
+        # creates a Json file of the current project
+        self.exportCurrentProject(eventName, 'json')
+
+        #This is assuming the other systems json file is in the "Projects" file
+        self.merge_JsonFilesToDB(eventName, eventName2)
         return
