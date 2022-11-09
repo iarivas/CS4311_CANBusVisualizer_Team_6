@@ -1,18 +1,27 @@
-import { Node } from "react-flow-renderer"
+import { Edge, Node } from "react-flow-renderer"
 import CustomNodeData from "../visualizer/nodeMap/CustomNodeData"
 import NodeData from "./NodeData"
 
 class NodeUtils {
     // Returns a list containing:
     // [newNodes, newEdges]
-    parseNodesData(nodesData: NodeData[]) {
+    parseNodesData(nodesData: NodeData[]): [Node<CustomNodeData>[], Edge[]] {
         const nodes: Node<CustomNodeData>[] = []
-        const edges: any[] = []
+        const edges: Edge[] = []
+        const hiddenNodes = new Set()
 
         nodesData.forEach((nodeData: NodeData) => {
             const [newNode, newEdges]: any = this._parseNodeData(nodeData)
+            if (newNode.hidden) {
+                hiddenNodes.add(newNode.id)
+            }
             nodes.push(newNode)
             newEdges.forEach((newEdge: any) => edges.push(newEdge))            
+        })
+
+        // Mark edges as hidden if applicable
+        edges.forEach((edge) => {
+            edge.hidden = hiddenNodes.has(edge.source) || hiddenNodes.has(edge.data)
         })
 
         return [nodes, edges]
@@ -33,6 +42,7 @@ class NodeUtils {
                     flag: nodeData.data?.flag || 'none',
                     hidden: nodeData.data?.hidden || false
                 },
+                hidden: nodeData.data?.hidden || false,
                 position: nodeData.position
             },
             nodeData.relationships.map((target: string) => {

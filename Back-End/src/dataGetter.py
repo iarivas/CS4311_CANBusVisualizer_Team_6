@@ -1,9 +1,9 @@
 from dataSaver import dataSaver
-import pymongo
-from dataSaver import dataSaver
+import pymongo, re, json
 from typing import Final
 from datetime import datetime
-import re
+from bson.json_util import dumps
+from pymongo import MongoClient
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
@@ -82,7 +82,6 @@ class dataGetter:
         x = _myCol.find_one({
             "_id": projectID
         })
-
         print(x)
 
     #return name of project matching projectID
@@ -237,3 +236,64 @@ class dataGetter:
             store.append(x)
         
         return store
+
+    def exportCurrentProject(_projName, type):
+        client = MongoClient('localhost', 27017)
+        
+        db = client.TestDB
+        projCollection = db.TestCol
+        projCursor = list(projCollection.find({'eventName': _projName}))
+
+        pdb = client.TestPDB
+        nodeCollection = pdb.TestColNodes
+        nodeCursor = list(nodeCollection.find({'projectId': _projName}))
+
+        packetCollection = pdb.TestCol
+        packetCursor = list(packetCollection.find({'projectId': _projName}))
+
+        json_project = dumps(projCursor, indent = 2) 
+        json_nodes = dumps(nodeCursor, indent = 2) 
+        json_packets = dumps(packetCursor, indent = 2) 
+
+        if type == 'json':
+            file = '/../Projects/' + _projName +'.json'
+
+            with open(file, 'w') as file:
+                file.write("{\n\"Project\": " + json_project + ",\n")
+                file.write("\"Nodes\": " + json_nodes + ",\n")
+                file.write("\"Packets\": " + json_packets + "}\n")
+        #elif type == 'csv':
+
+        return
+
+    def merge_JsonFilesToDB(eventName, eventName2):
+        f = open('../Projects/'+ eventName2 + '.json')
+        data = json.load(f)
+
+        # We are kepeing the Original Project configuration
+        
+        _newNodes = data["Nodes"]
+        _newPackets = data["Packets"]
+
+        for i in _newNodes:
+            del i['_id']
+            i["projectId"] = eventName
+
+        for i in _newPackets:
+            del i['_id']
+            i["projectId"] = eventName
+
+        dataSaver.storeNodes(_newNodes)
+        dataSaver.storePackets(_newPackets)
+        return
+            
+    def merge_CSVFilesToDB(eventName, eventName2):
+        return 
+
+    def syncProject(self, eventName, eventName2):
+        # creates a Json file of the current project
+        self.exportCurrentProject(eventName, 'json')
+
+        #This is assuming the other systems json file is in the "Projects" file
+        self.merge_JsonFilesToDB(eventName, eventName2)
+        return
