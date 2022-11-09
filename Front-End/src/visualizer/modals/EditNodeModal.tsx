@@ -86,6 +86,7 @@ function EditNodeModal({
           <Form.Group className="mb-3" controlId="node-id">
               <Form.Label className='node-id'>ID</Form.Label>
                 <Form.Control
+                  required
                   type="text"
                   placeholder="12345678"
                   value={nodeBeingEdited?.id}
@@ -99,6 +100,7 @@ function EditNodeModal({
           <Form.Group className="mb-3" controlId="node-name">
             <Form.Label className='label'>Name</Form.Label>
               <Form.Control
+                required
                 type="text"
                 placeholder="Node name"
                 value={nodeBeingEdited?.data?.label}
@@ -243,7 +245,7 @@ function EditNodeModal({
         <Button variant="secondary" onClick={setHide} className='rounded-pill'>
           Close
         </Button>
-        <Button variant="primary" onClick={setHide} className='rounded-pill' type="submit">
+        <Button variant="primary" className='rounded-pill' type="submit">
           Apply
         </Button>
       </Modal.Footer>
