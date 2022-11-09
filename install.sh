@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#variables...just variables
 declare arguement1=$1;
 declare installOption="install";
 declare runOption="run";
@@ -43,7 +44,7 @@ function installMongoDbCommunity {
     sudo systemctl start mongod;
     sudo systemctl enable mongod;
 }
-runner() {
+function runProgram {
     #setup vcan for testing.
     sudo modprobe vcan
     sudo ip link add dev vcan0 type vcan
@@ -55,12 +56,13 @@ runner() {
     cd Front-End/src && npm start &
     frontEndId=$!
 }
-exit() {
+function exit {
     #kill background processes and kill current script;
-    kill -2 ${backendId}
-    kill -2 ${frontEndId}
-    kill $$
-    exit;
+    kill -9 ${backendId};
+    kill -9 ${frontEndId};
+    kill $$;
+    exit
+    
 }
 trap exit SIGINT;
 
@@ -70,7 +72,7 @@ then
 elif [ $arguement1 = $runOption ]
 then
     #start runner
-    runner;
+    runProgram;
     echo "press CTRL-C to quit program";
     #this is necessary, without this the script terminates and leaves background tasks.
     while true;
