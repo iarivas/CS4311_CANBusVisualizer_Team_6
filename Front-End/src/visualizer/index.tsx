@@ -237,6 +237,7 @@ function Visualizer() {
                 return edge
             }
         }))
+        setEditNodeModal(false)
     }
 
     const saveNodes = () => {
@@ -391,11 +392,18 @@ function Visualizer() {
     };
 
     const onNodeCreateApply = (createdNode: Node<CustomNodeData>) => {
-        console.log('Creating node')
-        setNodes(nodes.concat({
-            ...createdNode,
-            position: {x: 0, y: 400}
-        }))
+        const newNodeData = nodeUtils.parseToData([createdNode], [], projectId)
+        api.createNode(projectId, newNodeData[0])
+            .then(() => {
+                setEditNodeModal(false)
+                setNodes(nodes.concat({
+                    ...createdNode,
+                    position: {x: 0, y: 400}
+                }))
+            })
+            .catch(() => {
+                alert('There was an issue in the server. Could not create the node')
+            })
     }
     
     const onConnect = (params: any) => {
