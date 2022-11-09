@@ -5,7 +5,6 @@ import {
     useEdgesState,
     addEdge,
     Node,
-    Edge
 } from 'react-flow-renderer';
 import { Menu, Item, useContextMenu } from 'react-contexify';
 import PacketContainer from './packetContainer'
@@ -23,6 +22,7 @@ import EditNodeModal from './modals/EditNodeModal'
 import "react-contexify/dist/ReactContexify.css";
 import ReplayPacketModal from './modals/ReplayPacketModal';
 import CustomNodeData from './nodeMap/CustomNodeData';
+import HideNodesModal from './modals/HideNodesModal';
 
 const MENU_ID = 'packet-context-menu';
 
@@ -82,6 +82,20 @@ function Visualizer() {
     let [editNodeModal, setEditNodeModal] = useState(false)
     const showNodeModal = () => setEditNodeModal(true)
     const hideNodeModal = () => setEditNodeModal(false)
+
+    // Modal for hiding nodes
+    const [isShownHideNodeModal, setIsShownHideNodeModal] = useState(false)
+    const onHideNodesApply = (selected: string[]) => {
+        const nodeHiddenSet = new Set()
+        selected.forEach((id) => nodeHiddenSet.add(id))
+
+        setNodes(nodes.map((node) => {
+            return {...node, hidden: nodeHiddenSet.has(node.id), data: {...node.data, hidden: nodeHiddenSet.has(node.id)}}
+        }))
+        setEdges(edges.map((edge) => {
+            return {...edge, hidden: nodeHiddenSet.has(edge.source) || nodeHiddenSet.has(edge.target)}
+        }))
+    }
 
     // Packet retrieval and infinite list
     const packetPage = useRef(1)
@@ -185,6 +199,7 @@ function Visualizer() {
             if (node.id === updatedNode.id) {
                 return {
                     ...node,
+                    hidden: updatedNode.data.hidden,
                     data: {
                         label: updatedNode.data.label,
                         icon: updatedNode.data.icon,
@@ -196,6 +211,17 @@ function Visualizer() {
                 }
             } else {
                 return node
+            }
+        }))
+
+        setEdges(edges.map((edge) => {
+            if (edge.source === updatedNode.id || edge.target === updatedNode.id) {
+                return {
+                    ...edge,
+                    hidden: updatedNode.data.hidden
+                }
+            } else {
+                return edge
             }
         }))
     }
@@ -255,10 +281,15 @@ function Visualizer() {
                 const newNodesData = response.data
 
                 const [newNodes, newEdges] = nodeUtils.parseNodesData(newNodesData)
-                console.log(nodeDictRef.current)
-                console.log(edgesRef.current)
                 const nodesToAdd: any[] = []
                 const edgesToAdd: any[] = []
+
+                const hiddenNodes = new Set()
+                nodesRef.current.forEach((node) => {
+                    if (node.hidden) {
+                        hiddenNodes.add(node.id)
+                    }
+                });
 
                 newNodes.forEach((node, idx) => {
                     // If node not in dict, add it
@@ -287,6 +318,11 @@ function Visualizer() {
                 newEdges.forEach((edge) => {
                     // If edge not in list, add it
                     if (!(edge.id in edgeDictRef.current)) {
+                        // Add hidden property
+                        if (hiddenNodes.has(edge.source) || hiddenNodes.has(edge.target)) {
+                            edge.hidden = true
+                        }
+
                         edgeDictRef.current[edge.id] = true
                         setEdgeDict(edgeDictRef.current)
 
@@ -375,6 +411,12 @@ function Visualizer() {
                 packetViewSettings={packetViewSettings}
                 onApply={onPacketViewModalApply}
             />
+            <HideNodesModal
+                isShown={isShownHideNodeModal}
+                onHide={() => setIsShownHideNodeModal(false)}
+                nodes={nodes}
+                onApply={onHideNodesApply}
+            />
             <ReplayPacketModal
                 isShown={isShownReplayPacketsModal}
                 onHide={() => setIsShownReplayPacketsModal(false)}
@@ -388,6 +430,7 @@ function Visualizer() {
                 hidePacketViewSettingsModal={hidePacketViewSettingsModal}
                 showReplayPacketsModal={() => setIsShownReplayPacketsModal(true)}
                 onAddNode={addNode}
+                showHideNodeModal={() => setIsShownHideNodeModal(true)}
             />
             <div className='visualizer-content'>
                 <div className='packet-container-content'>
