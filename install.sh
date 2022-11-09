@@ -79,4 +79,7 @@ then
     do
         sleep 5;
     done
+else
+then
+    echo "Command not found. Input either install or run"
 fi
