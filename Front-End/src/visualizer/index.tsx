@@ -330,26 +330,18 @@ function Visualizer() {
         return () => clearInterval(saveInterval)
     }, [nodes, edges])
 
-    const addNode = () => {
-        const nodeId = Math.random().toString()
-        nodeDictRef.current[nodeId] = true
-        setNodeDict(nodeDictRef.current)
-        setNodes(nodes.concat(
-          {
-            id: nodeId,
-            type: 'custom',
-            position: {x: 100, y: 0},
-            data: {
-                label: 'test',
-                icon: '',
-                isBlacklisted: false,
-                flag: 'none',
-                annotation: '',
-                hidden: false
-            },
-          }
-        ))
-      };
+    const onOpenAddNodeModal = () => {
+        nodeInFocus.current = undefined
+        setEditNodeModal(true)
+    };
+
+    const onNodeCreateApply = (createdNode: Node<CustomNodeData>) => {
+        console.log('Creating node')
+        setNodes(nodes.concat({
+            ...createdNode,
+            position: {x: 0, y: 400}
+        }))
+    }
     
     const onConnect = (params: any) => {
         edgeDictRef.current[params.source + '->' + params.target] = true
@@ -366,7 +358,7 @@ function Visualizer() {
             <EditNodeModal
                 isShow={editNodeModal}
                 setHide={hideNodeModal}
-                onApply={onNodeEditApply}
+                onApply={nodeInFocus.current ? onNodeEditApply : onNodeCreateApply}
                 node={nodeInFocus.current}
             />
             <PacketViewSettingsModal
@@ -387,7 +379,7 @@ function Visualizer() {
                 showPacketViewSettingsModal={showPacketViewSettingsModal}
                 hidePacketViewSettingsModal={hidePacketViewSettingsModal}
                 showReplayPacketsModal={() => setIsShownReplayPacketsModal(true)}
-                onAddNode={addNode}
+                onAddNode={onOpenAddNodeModal}
             />
             <div className='visualizer-content'>
                 <div className='packet-container-content'>
@@ -401,7 +393,6 @@ function Visualizer() {
                 </div>
                 <div className='node-map-container-content'>
                     <NodeMap
-                        
                         nodes={nodes}
                         edges={edges}
                         onNodesChange={onNodesChange}
