@@ -1,4 +1,5 @@
 import pymongo
+import cantools
 from typing import Final
 
 localDB: Final[str] = "mongodb://localhost:27017"
@@ -51,7 +52,7 @@ class dataSaver:
             "blacklistFile": blacklistFile,
             "archive": False
         }
-        
+
         x = _myCol.insert_one(doc)
 
         print(x.inserted_id)
