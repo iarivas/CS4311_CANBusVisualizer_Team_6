@@ -3,6 +3,8 @@
 declare arguement1=$1;
 declare installOption="install";
 declare runOption="run";
+declare backendId=$backendId;
+declare frontEndId=$frontEndId;
 
 function installer {
     #install mongodb community edition.
@@ -41,31 +43,38 @@ function installMongoDbCommunity {
     sudo systemctl start mongod;
     sudo systemctl enable mongod;
 }
-function runner {
-    echo "running";
+runner() {
+    #setup vcan for testing.
     sudo modprobe vcan
     sudo ip link add dev vcan0 type vcan
     sudo ip link set up vcan0
-    cd Back-End/src && python3 -m main && export BackendId=$!;
-    #cd ../..;
-    #cd Front-End/src && npm start && export frontEndId=$!;
+    #start Back-End
+    cd Back-End/src && python3 -m main &
+    backendId=$!;
+    #start Front-End
+    cd Front-End/src && npm start &
+    frontEndId=$!
 }
 exit() {
-    #kill frontEndId;
-    kill -2 $BackendId;
-    exit
+    #kill background processes and kill current script;
+    kill -2 ${backendId}
+    kill -2 ${frontEndId}
+    kill $$
+    exit;
 }
-trap exit SIGINT EXIT
+trap exit SIGINT;
 
 if [ $arguement1 = $installOption ] 
 then 
-    installer
+    installer;
 elif [ $arguement1 = $runOption ]
 then
+    #start runner
     runner;
+    echo "press CTRL-C to quit program";
+    #this is necessary, without this the script terminates and leaves background tasks.
     while true;
     do
-        echo "press CTRL-C to quit program";
         sleep 5;
     done
 fi
