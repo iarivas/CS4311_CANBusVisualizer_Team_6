@@ -46,15 +46,15 @@ function installMongoDbCommunity {
 }
 function runProgram {
     #setup vcan for testing.
-    sudo modprobe vcan
-    sudo ip link add dev vcan0 type vcan
-    sudo ip link set up vcan0
+    sudo modprobe vcan;
+    sudo ip link add dev vcan0 type vcan;
+    sudo ip link set up vcan0;
     #start Back-End
-    cd Back-End/src && python3 -m main &
+    cd Back-End/src && python3 -m main & 
     backendId=$!;
     #start Front-End
-    cd Front-End/src && npm start &
-    frontEndId=$!
+    cd Front-End/src && npm start & 
+    frontEndId=$!;
 }
 function exit {
     #kill background processes and kill current script;
@@ -80,6 +80,5 @@ then
         sleep 5;
     done
 else
-then
     echo "Command not found. Input either install or run"
 fi
