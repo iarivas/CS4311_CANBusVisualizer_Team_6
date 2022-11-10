@@ -201,9 +201,12 @@ class dataGetter:
         packetList = []
 
         for packet in _myCol.find(filterBy, {'_id': False}).sort(sortByField, sortByType).skip(((page - 1) * size) if page > 0 else 0).limit(size):
-            packet['timestamp'] = packet['timestamp'].strftime('%Y-%m-%dT%H:%M:%S.%f')
+            if(isinstance(packet['timestamp'], datetime)):
+                packet['timestamp'] = packet['timestamp'].strftime('%Y-%m-%dT%H:%M:%S.%f')
+            else:
+                packet['timestamp'] = packet['timestamp']["$date"]
             packetList.append(packet)
-        
+            
         return packetList
 
     def getNodes(projectID: str):
