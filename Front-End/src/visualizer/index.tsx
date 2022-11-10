@@ -21,6 +21,7 @@ import './modals/index.css'
 import EditNodeModal from './modals/EditNodeModal'
 import "react-contexify/dist/ReactContexify.css";
 import ReplayPacketModal from './modals/ReplayPacketModal';
+import EditPacketModal from './modals/EditPacketModal';
 import CustomNodeData from './nodeMap/CustomNodeData';
 import HideNodesModal from './modals/HideNodesModal';
 
@@ -50,6 +51,11 @@ function Visualizer() {
         setPacketsToReplay([])
     }
 
+    const sendPackets = (packetsToSend: PacketState[]) => {
+        api.sendPackets(packetsToSend, projectId, false)
+            .catch((error) => console.log(error))
+    }
+
     const replayPackets = (packets: PacketState[]) => {
         api.sendPackets(packets, projectId, true)
             .catch((error) => console.log(error))
@@ -71,9 +77,15 @@ function Visualizer() {
       }
 
     const onEditPacket = () => {
-        console.log('TODO: Implement edit packet')
-        console.log(packetInFocus.current)
+        setIsShownEditPacketModal(true)
     }
+
+    const [isShownEditPacketsModal, setIsShownEditPacketModal] = useState(false)
+    const hideEditPacketModal = () => {
+        setIsShownEditPacketModal(false)
+    }
+
+
     const onAddToQueuePacket = () => {
         setPacketsToReplay(packetsToReplay.concat(packetInFocus.current!))
     }
@@ -423,6 +435,12 @@ function Visualizer() {
                 packets={packetsToReplay}
                 replayPackets={replayPackets}
                 clear={clearPacketsToReplay}
+            />
+            <EditPacketModal
+                isShown={isShownEditPacketsModal}
+                onHide={hideEditPacketModal}
+                packetInFocus={packetInFocus.current}
+                sendPackets={sendPackets}
             />
             <h1 className='visualizer-title'>{projectId}</h1>
             <Menubar
