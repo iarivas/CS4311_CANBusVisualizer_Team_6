@@ -16,32 +16,31 @@ class dataSaver:
     def saveCANLocal(self, canBus):
         ...
 
-    def updateIndivial(projectID, baudRate=None, initials=None, eventName=None, dbcFile=None, blacklistFile=None, archive=None):
+    def updateIndivial(projectID, baudRate, initials, eventName, dbcFile, blacklistFile, archive):
         _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestDB"]
         _myCol = _myDB["TestCol"]
 
-        toChange = {}
+        toChange = {"$set": {}}
         if baudRate:
-            toChange['baudRate'] = baudRate
+            toChange['$set']['baudRate'] = baudRate
 
         if initials != None:
-            toChange['initials'] = initials
+            toChange['$set']['initials'] = initials
 
         if eventName != None:
-            toChange['eventName'] = eventName
+            toChange['$set']['eventName'] = eventName
 
         if dbcFile != None:
-            toChange['dbcFile'] = dbcFile
+            toChange['$set']['dbcFile'] = dbcFile
 
         if blacklistFile != None:
-            toChange['blacklistFile'] = blacklistFile
+            toChange['$set']['blacklistFile'] = blacklistFile
 
         if archive != None:
-            toChange['archive'] = archive
+            toChange['$set']['archive'] = archive
 
         x = _myCol.update_many({"_id": projectID}, toChange)
-        
 
     def update(projectID, baudRate, initials, eventName, dbcFile, blacklistFile, archive):
         _myClient = pymongo.MongoClient(localDB)
