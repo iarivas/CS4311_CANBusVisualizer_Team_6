@@ -1,6 +1,5 @@
 import ProjectState from "../projects/new/ProjectState"
 import PacketViewSettingsState from "../visualizer/modals/PacketViewSettingsState"
-import PacketState from "../visualizer/packetContainer/PacketState"
 import axios from 'axios'
 
 
@@ -18,15 +17,13 @@ class APIUtil {
     }
 
     gatherTraffic(play: boolean, projectId: string) {
-        return axios.put(this.url + '/projects/' + projectId + '/play', {
-            play: play
-        })
-            .then(function(response) {
-                console.log(response)
-            })
-            .catch(function(error) {
-                console.log(error)
-            })
+        return axios.put(
+            this.url + '/projects/' + projectId + '/play',
+            null, {
+            params: {
+                packetFeedStatus: play
+            }}
+        )
     }
 
     getProjects(isArchived: boolean | undefined) {
