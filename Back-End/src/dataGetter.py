@@ -1,5 +1,5 @@
 from dataSaver import dataSaver
-import pymongo, re, json
+import pymongo, re, json, csv
 from typing import Final
 from datetime import datetime
 from bson.json_util import dumps
@@ -275,12 +275,36 @@ class dataGetter:
 
         if type == 'json':
             file = '/../Projects/' + _projName +'.json'
-
             with open(file, 'w') as file:
                 file.write("{\n\"Project\": " + json_project + ",\n")
                 file.write("\"Nodes\": " + json_nodes + ",\n")
                 file.write("\"Packets\": " + json_packets + "}\n")
-        #elif type == 'csv':
+
+        elif type == 'csv':
+            with open('../Projects/' + _projName + '.csv', 'w') as f:
+                w = csv.DictWriter(f, ['Project'])
+                w.writeheader()
+                w = csv.DictWriter(f, projCursor[0].keys())
+                w.writeheader()
+                for i in projCursor:
+                    w = csv.DictWriter(f, i.keys())
+                    w.writerow(i)  
+
+                w = csv.DictWriter(f, ['Nodes'])
+                w.writeheader()
+                w = csv.DictWriter(f, nodeCursor[0].keys())
+                w.writeheader()
+                for i in nodeCursor:
+                    w = csv.DictWriter(f, i.keys())
+                    w.writerow(i) 
+
+                w = csv.DictWriter(f, ['Packets'])
+                w.writeheader()
+                w = csv.DictWriter(f, packetCursor[0].keys())
+                w.writeheader()
+                for i in packetCursor:
+                    w = csv.DictWriter(f, i.keys())
+                    w.writerow(i) 
 
         return
 
@@ -307,6 +331,14 @@ class dataGetter:
             
     def merge_CSVFilesToDB(eventName, eventName2):
         return 
+
+    def importCurrentProject(self, _projPath, type):
+        if type == 'json':
+            self.merge_JsonFilesToDB(_projPath, _projPath)
+        elif type == 'csv':
+            self.merge_CSVFilesToDB(_projPath, _projPath)
+        return
+        
 
     def syncProject(self, eventName, eventName2):
         # creates a Json file of the current project
