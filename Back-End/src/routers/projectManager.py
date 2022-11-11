@@ -75,11 +75,16 @@ class projectManager():
     def getProjects(isArchived: Union[bool, None] = None):
         return dataGetter.getAllProjects(isArchived)
 
+
     # TODO Christian
     @router.put("/projects/{projectId}/", tags=["project"])
     def setProjectData(projectId: str, projectInfo: ProjectInfo):
         dataSaver.updateIndivial(projectId, projectInfo.baudRate, projectInfo.initials,
                                  projectInfo.eventName, projectInfo.dbcFile, projectInfo.blacklistFile, projectInfo.archieve)
+
+    #@router.post("/projects/{projectId}/Export", tags=["Export"])
+    def exportProject(projectInfo: ProjectInfo):
+        return dataGetter.exportCurrentProject(projectInfo.eventName, 'json')
 
     # TODO FOR JUSTUS (thx!)
     # @router.post("/projects/", tags=["project"])
