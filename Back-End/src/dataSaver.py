@@ -32,11 +32,19 @@ class dataSaver:
             "eventName": eventName,
             "dbcFile": dbcFile,
             "blacklistFile": blacklistFile,
-            "archive": archive
+            "archive": archive,
+            "packetFeedStatus": False,
             }
         }
 
         x = _myCol.update_one(oldDoc, newDoc)
+
+    def updateProjectPacketFeedStatus(projectID, packetFeedStatus):
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
+
+        _myCol.update_one({"_id": projectID}, {"$set": {"packetFeedStatus": packetFeedStatus }})
 
     def createInitialProject(projectID, baudRate, initials, eventName, dbcFile, blacklistFile):
         _myClient = pymongo.MongoClient(localDB)
@@ -50,7 +58,8 @@ class dataSaver:
             "eventName": eventName,
             "dbcFile": dbcFile,
             "blacklistFile": blacklistFile,
-            "archive": False
+            "archive": False,
+            "packetFeedStatus": False,
         }
 
         x = _myCol.insert_one(doc)
