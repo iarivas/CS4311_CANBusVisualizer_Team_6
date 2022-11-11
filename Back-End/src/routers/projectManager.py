@@ -75,6 +75,10 @@ class projectManager():
     def exportProject(projectInfo: ProjectInfo):
         return dataGetter.exportCurrentProject(projectInfo.eventName, 'json')
 
+    #@router.post("/projects/{projectId}/import", tags=["import"])
+    def importProject(projectInfo: ProjectInfo):
+        return dataGetter.importCurrentProject(projectInfo.eventName, 'json')
+
 
     # TODO FOR JUSTUS (thx!)
     # @router.post("/projects/", tags=["project"])

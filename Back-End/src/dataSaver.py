@@ -1,5 +1,4 @@
 import pymongo
-import cantools
 from typing import Final
 
 localDB: Final[str] = "mongodb://localhost:27017"
