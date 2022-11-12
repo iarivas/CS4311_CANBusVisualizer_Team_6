@@ -196,6 +196,8 @@ class dataGetter:
         for packet in _myCol.find(filterBy, {'_id': False}).sort(sortByField, sortByType).skip(((page - 1) * size) if page > 0 else 0).limit(size):
             if(isinstance(packet['timestamp'], datetime)):
                 packet['timestamp'] = packet['timestamp'].strftime('%Y-%m-%dT%H:%M:%S.%f')
+            elif(isinstance(packet['timestamp'], str)):
+                return packetList
             else:
                 packet['timestamp'] = packet['timestamp']["$date"]
             packetList.append(packet)
@@ -363,13 +365,27 @@ class dataGetter:
                 res = {keys[j]: csv_reader[k][j] for j in range(len(keys))}
                 _newPackets.append(res)
 
+        for i in _newProject:
+            i["baudRate"] = int(i["baudRate"])
+            i["eventName"] = eventName
+            i["blacklistFile"] = None
+            if i["archive"] == "\"True\"":
+                i["archive"] = True
+            else: i["archive"] = False
+
         for i in _newNodes:
             del i['_id']
             i["projectId"] = eventName
+            i["position"] = json.loads((i["position"].replace("\'", "\"" )))
+            if i["isBlacklisted"] == "\"True\"":
+                i["isBlacklisted"] = True
+            else: i["isBlacklisted"] = False
+            i["relationships"] = []
 
         for i in _newPackets:
             del i['_id']
             i["projectId"] = eventName
+            i['timestamp'] = json.loads(i['timestamp'].replace("\'", "\"" ))
         
         localDB: Final[str] = "mongodb://localhost:27017"
 
@@ -419,6 +435,28 @@ class dataGetter:
             for k in range(i, len(csv_reader)):
                 res = {keys[j]: csv_reader[k][j] for j in range(len(keys))}
                 _newPackets.append(res)
+
+        for i in _newProject:
+            i["baudRate"] = int(i["baudRate"])
+            i["eventName"] = eventName
+            i["blacklistFile"] = None
+            if i["archive"] == "\"True\"":
+                i["archive"] = True
+            else: i["archive"] = False
+
+        for i in _newNodes:
+            del i['_id']
+            i["projectId"] = eventName
+            i["position"] = json.loads((i["position"].replace("\'", "\"" )))
+            if i["isBlacklisted"] == "\"True\"":
+                i["isBlacklisted"] = True
+            else: i["isBlacklisted"] = False
+            i["relationships"] = []
+
+        for i in _newPackets:
+            del i['_id']
+            i["projectId"] = eventName
+            i['timestamp'] = json.loads(i['timestamp'].replace("\'", "\"" ))
 
         localDB: Final[str] = "mongodb://localhost:27017"
 
