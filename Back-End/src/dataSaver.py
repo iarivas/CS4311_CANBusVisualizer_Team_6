@@ -56,6 +56,13 @@ class dataSaver:
 
         print(x.inserted_id)
 
+    def storeProject(project):
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
+
+        _myCol.insert_many(project)
+
     def storePackets(packets):
         _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestPDB"]

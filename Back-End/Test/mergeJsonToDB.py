@@ -8,8 +8,8 @@ data = json.load(f)
 
 # We are kepeing the Original Project configuration
 
-eventName = 'Test_11_8'
-
+eventName = 'Test_11_5'
+_newProject = data["Project"]
 _newNodes = data["Nodes"]
 _newPackets = data["Packets"]
 
@@ -24,6 +24,12 @@ for i in _newPackets:
 localDB: Final[str] = "mongodb://localhost:27017"
 
 _myClient = pymongo.MongoClient(localDB)
+_myDB = _myClient["TestDB"]
+_myCol = _myDB["TestCol"]
+
+_myCol.insert_many(_newProject)
+
+_myClient = pymongo.MongoClient(localDB)
 _myDB = _myClient["TestPDB"]
 _myCol = _myDB["TestColNodes"]
 
@@ -34,4 +40,3 @@ _myDB = _myClient["TestPDB"]
 _myCol = _myDB["TestCol"]
 
 _myCol.insert_many(_newPackets)
-

@@ -4,6 +4,7 @@ from typing import Final
 from datetime import datetime
 from bson.json_util import dumps
 from pymongo import MongoClient
+import pandas as pd
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
@@ -266,7 +267,7 @@ class dataGetter:
                 file.write("\"Packets\": " + json_packets + "}\n")
 
         elif type == 'csv':
-            with open('../Projects/' + _projName + '.csv', 'w') as f:
+            with open('../Projects/' + _projName + '.csv', 'r') as f:
                 w = csv.DictWriter(f, ['Project'])
                 w.writeheader()
                 w = csv.DictWriter(f, projCursor[0].keys())
@@ -313,22 +314,145 @@ class dataGetter:
         dataSaver.storeNodes(_newNodes)
         dataSaver.storePackets(_newPackets)
         return
+    
+    def import_JsonFilesToDB(eventName):
+        f = open('../Projects/'+ eventName + '.json')
+        data = json.load(f)
+
+        _newProject = data["Project"]
+        _newNodes = data["Nodes"]
+        _newPackets = data["Packets"]
+        dataSaver.storeProject(_newProject)
+        dataSaver.storeNodes(_newNodes)
+        dataSaver.storePackets(_newPackets)
+        return
             
     def merge_CSVFilesToDB(eventName, eventName2):
-        return 
+        with open('../Projects/' + eventName2 + '.csv') as csv_file:
+            csv_reader = list(csv.reader(csv_file, delimiter=','))
+            keys = []
+            _newProject = []
+            _newNodes = []
+            _newPackets = []
+            i = 0
+
+            # Gets to the project keys
+            while(csv_reader[i] != ['Project']):
+                i = i + 1
+            i = i + 1
+            keys = csv_reader[i]
+            i = i + 1
+
+            while(csv_reader[i] != ['Nodes']):
+                res = {keys[j]: csv_reader[i][j] for j in range(len(keys))}
+                _newProject.append(res)
+                i = i + 1
+            i = i + 1
+            keys = csv_reader[i]
+            i = i + 1
+
+            while(csv_reader[i] != ['Packets']):
+                res = {keys[j]: csv_reader[i][j] for j in range(len(keys))}
+                _newNodes.append(res)
+                i = i + 1
+            i = i + 1
+            keys = csv_reader[i]
+            i = i + 1
+
+            for k in range(i, len(csv_reader)):
+                res = {keys[j]: csv_reader[k][j] for j in range(len(keys))}
+                _newPackets.append(res)
+
+        for i in _newNodes:
+            del i['_id']
+            i["projectId"] = eventName
+
+        for i in _newPackets:
+            del i['_id']
+            i["projectId"] = eventName
+        
+        localDB: Final[str] = "mongodb://localhost:27017"
+
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
+        _myCol = _myDB["TestColNodes"]
+        _myCol.insert_many(_newNodes)
+
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
+        _myCol = _myDB["TestCol"]
+        _myCol.insert_many(_newPackets)
+        return
+
+    def import_CSVFilesToDB(eventName):
+        with open('../Projects/' + eventName + '.csv') as csv_file:
+            csv_reader = list(csv.reader(csv_file, delimiter=','))
+            keys = []
+            _newProject = []
+            _newNodes = []
+            _newPackets = []
+            i = 0
+
+            # Gets to the project keys
+            while(csv_reader[i] != ['Project']):
+                i = i + 1
+            i = i + 1
+            keys = csv_reader[i]
+            i = i + 1
+
+            while(csv_reader[i] != ['Nodes']):
+                res = {keys[j]: csv_reader[i][j] for j in range(len(keys))}
+                _newProject.append(res)
+                i = i + 1
+            i = i + 1
+            keys = csv_reader[i]
+            i = i + 1
+
+            while(csv_reader[i] != ['Packets']):
+                res = {keys[j]: csv_reader[i][j] for j in range(len(keys))}
+                _newNodes.append(res)
+                i = i + 1
+            i = i + 1
+            keys = csv_reader[i]
+            i = i + 1
+
+            for k in range(i, len(csv_reader)):
+                res = {keys[j]: csv_reader[k][j] for j in range(len(keys))}
+                _newPackets.append(res)
+
+        localDB: Final[str] = "mongodb://localhost:27017"
+
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
+        _myCol.insert_many(_newProject)
+
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
+        _myCol = _myDB["TestColNodes"]
+        _myCol.insert_many(_newNodes)
+
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
+        _myCol = _myDB["TestCol"]
+        _myCol.insert_many(_newPackets)
+        return
 
     def importCurrentProject(self, _projPath, type):
         if type == 'json':
-            self.merge_JsonFilesToDB(_projPath, _projPath)
+            self.import_JsonFilesToDB(_projPath, _projPath)
         elif type == 'csv':
-            self.merge_CSVFilesToDB(_projPath, _projPath)
+            self.import_CSVFilesToDB(_projPath)
         return
         
 
-    def syncProject(self, eventName, eventName2):
+    def syncProject(self, eventName, eventName2, type):
         # creates a Json file of the current project
-        self.exportCurrentProject(eventName, 'json')
+        self.exportCurrentProject(eventName, type)
 
         #This is assuming the other systems json file is in the "Projects" file
-        self.merge_JsonFilesToDB(eventName, eventName2)
+        if type == 'json':
+            self.merge_JsonFilesToDB(eventName, eventName2)
+        elif type == 'csv':
+            self.merge_CSVFilesToDB(eventName, eventName2)
         return
