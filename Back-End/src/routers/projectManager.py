@@ -19,18 +19,21 @@ from typing import Union
 
 router = APIRouter()
 
+
 class ProjectInfo(BaseModel):
-    baudRate: int
-    initials: str
-    eventName: str
+    baudRate: int = None
+    initials: str = None
+    eventName: str = None
     dbcFile: str = None
     blacklistFile: str = None
+    archieve: bool = None
+
 
 class projectManager():
 
-    currentProject = None #Will create project object to store information off file
-    projectState = None #temp file call
-    
+    currentProject = None  # Will create project object to store information off file
+    projectState = None  # temp file call
+
     def __init__(self) -> None:
         pass
 
@@ -44,37 +47,44 @@ class projectManager():
     def createProject(projectInfo: ProjectInfo):
         if len(projectInfo.initials) == 0:
             raise HTTPException(
-                status_code = status.HTTP_400_BAD_REQUEST,
-                detail = "Analyst initials were not provided"
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Analyst initials were not provided"
             )
         if projectInfo.baudRate is None:
             raise HTTPException(
-                status_code = status.HTTP_400_BAD_REQUEST,
-                detail = "Baud rate was not provided"
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Baud rate was not provided"
             )
         if len(projectInfo.eventName) == 0:
             raise HTTPException(
-                status_code = status.HTTP_400_BAD_REQUEST,
-                detail = "Project name was not provided"
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Project name was not provided"
             )
-        currentProject = projectConfig.project(projectInfo.baudRate, projectInfo.initials, projectInfo.eventName, projectInfo.dbcFile, projectInfo.blacklistFile)
-        # createInitialPoject is the mongoDB saving definition from dataSaver.py 
+        currentProject = projectConfig.project(
+            projectInfo.baudRate, projectInfo.initials, projectInfo.eventName, projectInfo.dbcFile, projectInfo.blacklistFile)
+        # createInitialPoject is the mongoDB saving definition from dataSaver.py
         dataSaver.createInitialProject(currentProject.projectId,
-                                    currentProject.baudRate,
-                                    currentProject.analystInitials,
-                                    currentProject.eventName,
-                                    currentProject.dbcFileName,
-                                    currentProject.blackListFileName)
+                                       currentProject.baudRate,
+                                       currentProject.analystInitials,
+                                       currentProject.eventName,
+                                       currentProject.dbcFileName,
+                                       currentProject.blackListFileName)
         return currentProject
 
     @router.get("/projects/", tags=["project"])
     def getProjects(isArchived: Union[bool, None] = None):
         return dataGetter.getAllProjects(isArchived)
 
+
+    # TODO Christian
+    @router.put("/projects/{projectId}/", tags=["project"])
+    def setProjectData(projectId: str, projectInfo: ProjectInfo):
+        dataSaver.updateIndivial(projectId, projectInfo.baudRate, projectInfo.initials,
+                                 projectInfo.eventName, projectInfo.dbcFile, projectInfo.blacklistFile, projectInfo.archieve)
+
     @router.post("/projects/{projectId}/Export", tags=["Export"])
     def exportProject(projectInfo: ProjectInfo):
-        return dataGetter.exportCurrentProject(projectInfo.eventName, 'json')
-
+        return dataGetter.exportCurrentProject(projectInfo.projectId, 'json')
 
     # TODO FOR JUSTUS (thx!)
     # @router.post("/projects/", tags=["project"])
