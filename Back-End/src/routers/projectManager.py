@@ -73,12 +73,20 @@ class projectManager():
 
     #@router.post("/projects/{projectId}/Export", tags=["Export"])
     def exportProject(projectInfo: ProjectInfo):
-        return dataGetter.exportCurrentProject(projectInfo.eventName, 'json')
+        return dataGetter.exportSelectedProject(projectInfo.eventName, 'json')
+        #return dataGetter.exportSelectedProject(projectInfo.eventName, 'csv')
 
     #@router.post("/projects/{projectId}/import", tags=["import"])
     def importProject(projectInfo: ProjectInfo):
-        return dataGetter.importCurrentProject(projectInfo.eventName, 'json')
+        return dataGetter.importSelectedProject(projectInfo.eventName, 'json')
+        #return dataGetter.importSelectedProject(projectInfo.eventName, 'csv')
 
+    #@router.post("/projects/{projectId}/sync", tags=["sync"])
+    def syncProject(projectInfo: ProjectInfo):
+        # Needs to be changed to (eventName, eventName2, 'json')
+        # Not sure were we would get eventName 2 from ATM
+        return dataGetter.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'json')
+        #return dataGetter.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'csv')
 
     # TODO FOR JUSTUS (thx!)
     # @router.post("/projects/", tags=["project"])
