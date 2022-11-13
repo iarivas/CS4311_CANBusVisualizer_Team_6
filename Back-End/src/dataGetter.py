@@ -317,8 +317,8 @@ class dataGetter:
         dataSaver.storePackets(_newPackets)
         return
     
-    def import_JsonFilesToDB(eventName):
-        f = open('../Projects/'+ eventName + '.json')
+    def import_JsonFilesToDB(_projPath):
+        f = open(_projPath)
         data = json.load(f)
 
         _newProject = data["Project"]
@@ -400,8 +400,8 @@ class dataGetter:
         _myCol.insert_many(_newPackets)
         return
 
-    def import_CSVFilesToDB(eventName):
-        with open('../Projects/' + eventName + '.csv') as csv_file:
+    def import_CSVFilesToDB(_projPath):
+        with open(_projPath) as csv_file:
             csv_reader = list(csv.reader(csv_file, delimiter=','))
             keys = []
             _newProject = []
@@ -438,7 +438,6 @@ class dataGetter:
 
         for i in _newProject:
             i["baudRate"] = int(i["baudRate"])
-            i["eventName"] = eventName
             i["blacklistFile"] = None
             if i["archive"] == "\"True\"":
                 i["archive"] = True
@@ -446,7 +445,6 @@ class dataGetter:
 
         for i in _newNodes:
             del i['_id']
-            i["projectId"] = eventName
             i["position"] = json.loads((i["position"].replace("\'", "\"" )))
             if i["isBlacklisted"] == "\"True\"":
                 i["isBlacklisted"] = True
@@ -455,7 +453,6 @@ class dataGetter:
 
         for i in _newPackets:
             del i['_id']
-            i["projectId"] = eventName
             i['timestamp'] = json.loads(i['timestamp'].replace("\'", "\"" ))
 
         localDB: Final[str] = "mongodb://localhost:27017"
@@ -478,7 +475,7 @@ class dataGetter:
 
     def importCurrentProject(self, _projPath, type):
         if type == 'json':
-            self.import_JsonFilesToDB(_projPath, _projPath)
+            self.import_JsonFilesToDB(_projPath)
         elif type == 'csv':
             self.import_CSVFilesToDB(_projPath)
         return
