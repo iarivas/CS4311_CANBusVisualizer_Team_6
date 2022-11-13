@@ -56,6 +56,7 @@ function Projects() {
     )
   })
 
+  
   const archivedProjectCards = archivedProjects.map((project) => {
     return (
       <Dropdown as={ButtonGroup} className='mock-project'>
