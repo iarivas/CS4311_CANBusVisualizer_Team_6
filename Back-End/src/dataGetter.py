@@ -261,7 +261,7 @@ class dataGetter:
             json_project = dumps(projCursor, indent = 2) 
             json_nodes = dumps(nodeCursor, indent = 2) 
             json_packets = dumps(packetCursor, indent = 2)
-            
+
             file = '/../Projects/' + _projName +'.json'
             with open(file, 'w') as file:
                 file.write("{\n\"Project\": " + json_project + ",\n")
@@ -363,7 +363,7 @@ class dataGetter:
         dataSaver.storePackets(_newPackets)
         return
 
-    def mergeSelectedProject(eventName, eventName2):
+    def mergeSelectedProject(eventName, eventName2, type):
         if type == 'json':
             f = open('../Projects/'+ eventName2 + '.json')
             data = json.load(f)
@@ -450,5 +450,5 @@ class dataGetter:
         # Still need to send my file to other computer
 
         # Merges eventName2 file in /Back-End/Projects
-        self.mergeSelectedProject(eventName2, type)
+        self.mergeSelectedProject(eventName, eventName2, type)
         return
