@@ -21,8 +21,6 @@ for i in _newPackets:
     del i['_id']
     i["projectId"] = eventName
 
-print(_newProject[0])
-
 localDB: Final[str] = "mongodb://localhost:27017"
 
 _myClient = pymongo.MongoClient(localDB)
