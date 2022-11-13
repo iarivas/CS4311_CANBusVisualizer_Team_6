@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ButtonGroup, ToggleButton } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -14,25 +14,43 @@ interface Props {
   node: Node<CustomNodeData>
 }
 
+const dropdownOptions = {
+  ac: '../images/ac.png',
+  engine: '../images/engine.png',
+  brake: '../images/brake.png',
+  wheel: '../images/steering_wheel.png',
+}
+
 function EditNodeModal({
   isShow,
   setHide,
   onApply,
   node
 }: Props) {
+  
+  const defaultNodeInfo = useRef<Node<CustomNodeData>>({
+    id: '',
+    type: 'custom',
+    data: {
+      label: '',
+      icon: dropdownOptions.ac,
+      isBlacklisted: false,
+      hidden: false,
+      annotation: '',
+      flag: 'none'
+    },
+    position: {
+      x: 0,
+      y: 0
+    },
+    hidden: false,
+  })
 
   const [nodeBeingEdited, setNodeBeingEdited] = useState<Node<CustomNodeData>>()
 
   useEffect(() => {
-    setNodeBeingEdited(node) 
-  }, [node])
-    
-  const dropdownOptions = {
-    ac: '../images/ac.png',
-    engine: '../images/engine.png',
-    brake: '../images/brake.png',
-    wheel: '../images/steering_wheel.png',
-  }
+    setNodeBeingEdited(node ?? defaultNodeInfo.current) 
+  }, [isShow])
 
   const flagRadios: {name: string, value: string | null}[] = [
     {name: 'None', value: FlagOptions.NONE},
@@ -52,27 +70,39 @@ function EditNodeModal({
     {name: 'Hidden', value: 'hidden'},
   ]
 
-  console.log('NODE:')
-  console.log(nodeBeingEdited)
-
-  console.log('NOTE:')
-  console.log(nodeBeingEdited?.data.annotation)
-
   return (
     <Modal show={isShow} onHide={setHide} className='edit-node-modal' onSubmit={(e: any) => {
       e.preventDefault()
       onApply(nodeBeingEdited!)
     }}>
       <Modal.Header closeButton>
-        <Modal.Title>Edit Node</Modal.Title>
+        <Modal.Title>{node ? 'Edit Node' : 'Create Node'}</Modal.Title>
       </Modal.Header>
       <Form>
       <Modal.Body>
+        {
+          node ? 
+          undefined : (
+          <Form.Group className="mb-3" controlId="node-id">
+              <Form.Label className='node-id'>ID</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  placeholder="12345678"
+                  value={nodeBeingEdited?.id}
+                  onChange={(e) => {
+                    setNodeBeingEdited({...nodeBeingEdited!, id: e.target.value})
+                  }}
+                  autoFocus
+                />
+            </Form.Group>)
+          }
           <Form.Group className="mb-3" controlId="node-name">
             <Form.Label className='label'>Name</Form.Label>
               <Form.Control
+                required
                 type="text"
-                placeholder=""
+                placeholder="Node name"
                 value={nodeBeingEdited?.data?.label}
                 onChange={(e) => {
                   setNodeBeingEdited({...nodeBeingEdited!, data: {
@@ -198,6 +228,7 @@ function EditNodeModal({
             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
               <Form.Control
                 as="textarea"
+                placeholder='Notes'
                 rows={3}
                 value={nodeBeingEdited?.data.annotation}
                 onChange={(e) => setNodeBeingEdited({...nodeBeingEdited!, data: {
@@ -214,7 +245,7 @@ function EditNodeModal({
         <Button variant="secondary" onClick={setHide} className='rounded-pill'>
           Close
         </Button>
-        <Button variant="primary" onClick={setHide} className='rounded-pill' type="submit">
+        <Button variant="primary" className='rounded-pill' type="submit">
           Apply
         </Button>
       </Modal.Footer>
