@@ -22,7 +22,7 @@ export default function Menubar({
             
             <NavDropdown title="File" id="basic-nav-dropdown" >
               <NavDropdown.Item id="action" href="#action/3.2">Export Project </NavDropdown.Item>
-              
+              <NavDropdown.Item id="action" href='/projects/'>Exit</NavDropdown.Item>
             </NavDropdown>
 
             <NavDropdown title="Packets" id="basic-nav-dropdown" >

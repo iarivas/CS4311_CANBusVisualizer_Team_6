@@ -33,7 +33,9 @@ class APIUtil {
             }
         })
     }
-
+    getProject(projectId: string) {
+        return axios.get(this.url + '/projects/' + projectId)
+    }
     getPackets(filters: PacketViewSettingsState, projectId: string, page: number, size: number) {
         return axios.get(this.url + '/projects/' + projectId + '/packets', {
             params: {
