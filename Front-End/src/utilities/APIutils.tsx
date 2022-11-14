@@ -37,14 +37,24 @@ class APIUtil {
         })
     }
 
-    exportProject(projectInfo: ProjectState, projectId: string) {
+    exportProject( projectId: string, eventName: string) {
         return axios.post(this.url +'/projects/' + projectId + '/Export',{
             params: {
-                projectInfo: projectInfo
+                eventName: eventName
             }
 
         })
 
+    }
+
+    turnArchived(projectId: string){
+        return axios.put(this.url +'/projects/' + projectId + '/',{
+            
+            params: {
+                archive: true
+            }
+
+        })
     }
 
     getPackets(filters: PacketViewSettingsState, projectId: string, page: number, size: number) {

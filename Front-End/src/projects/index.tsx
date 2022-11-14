@@ -15,6 +15,40 @@ function Projects() {
     navigate(path)
   }
 
+  const exportProject=()=> {
+    api.exportProject("rjitscflbm", "Christian")
+    .then((response) => {
+      setActiveProjects(response.data)
+    })
+    .catch((error: any) => console.log(error))
+
+  }
+
+  const turnArchive=()=> {
+    api.turnArchived("rjitscflbm")
+    .then((response) => {
+      setArchivedProjects(response.data)
+    })
+    .catch((error: any) => console.log(error))
+
+  }
+
+  useEffect(() => {
+    // Get active projects
+    api.getProjects(false)
+    .then((response) => {
+      setActiveProjects(response.data)
+    })
+    .catch((error: any) => console.log(error))
+
+    // Get archied projects
+    api.getProjects(true)
+    .then((response) => {
+      setArchivedProjects(response.data)
+    })
+    .catch((error: any) => console.log(error))
+  }, [])
+
   const onNavigateProject = (path: string) => {
     navigate(path)
   }
@@ -48,9 +82,9 @@ function Projects() {
         <Dropdown.Toggle className='inside-mock-dropdown'split variant="warning" id="dropdown-split-basic"/>
 
         <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">Archive</Dropdown.Item>
+        <Dropdown.Item onClick={turnArchive}>Archive</Dropdown.Item>
         <Dropdown.Item href="#/action-2">Duplicate</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">Export </Dropdown.Item>
+        <Dropdown.Item onClick={exportProject}>Export </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     )
