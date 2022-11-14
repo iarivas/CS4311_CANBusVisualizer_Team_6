@@ -12,11 +12,12 @@ function installer {
     installMongoDbCommunity;
     #install mongodb compass
     installMongoDbCompass;
+    #install SSH Service for Rsync
+    installSsh;
     #install python modules
     installPythonModules;
     #install NPM
     installNpm;
-
     echo "installing";
 }
 function installNpm {
@@ -43,6 +44,11 @@ function installMongoDbCommunity {
     sudo apt-get install -y mongodb-org;
     sudo systemctl start mongod;
     sudo systemctl enable mongod;
+}
+function installSsh {
+    sudo apt install -y openssh-server;
+    sudo service ssh start;
+    sudo service ssh restart;
 }
 function runProgram {
     #setup vcan for testing.
