@@ -13,7 +13,7 @@ function installer {
     #install mongodb compass
     installMongoDbCompass;
     #install SSH Service for Rsync
-    installSsh;
+    #installSsh;
     #install python modules
     installPythonModules;
     #install NPM
