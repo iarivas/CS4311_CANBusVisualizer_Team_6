@@ -1,7 +1,7 @@
 import ProjectState from "../projects/new/ProjectState"
 import PacketViewSettingsState from "../visualizer/modals/PacketViewSettingsState"
-import PacketState from "../visualizer/packetContainer/PacketState"
 import axios from 'axios'
+import NodeData from "./NodeData"
 
 
 class APIUtil {
@@ -69,6 +69,10 @@ class APIUtil {
 
     updateNodes(projectId: string, nodes: any) {
         return axios.put(this.url + '/projects/' + projectId + '/nodes', nodes)
+    }
+
+    createNode(projectId: string, node: NodeData) {
+        return axios.post(this.url + '/projects/' + projectId + '/nodes', node)
     }
 }
 
