@@ -23,6 +23,7 @@ import "react-contexify/dist/ReactContexify.css";
 import ReplayPacketModal from './modals/ReplayPacketModal';
 import CustomNodeData from './nodeMap/CustomNodeData';
 import HideNodesModal from './modals/HideNodesModal';
+import ProjectState from '../projects/new/ProjectState';
 
 const MENU_ID = 'packet-context-menu';
 
@@ -31,7 +32,7 @@ function Visualizer() {
 
     const api = new APIUtil()
     const nodeUtils = new NodeUtils()
-
+    let [project,setProject] = useState<ProjectState|undefined>(undefined)
     // Modal for changing packet view settings
     let [isShownPacketsModal, setIsShownPacketsModal] = useState(false)
     let packetViewSettings = useRef<PacketViewSettingsState>({
@@ -341,6 +342,12 @@ function Visualizer() {
     useEffect(() => {edgesRef.current = edges}, [edges])
     useEffect(() => {nodeDictRef.current = nodeDict}, [nodeDict])
     useEffect(() => {edgeDictRef.current = edgeDict}, [edgeDict])
+    useEffect(() => {
+        api.getProject(projectId).then((response)=>{
+            const projectInfo = response.data
+            setProject(projectInfo)
+    })
+    }, [project])
 
     // This will call the API once to get the list of nodes
     // once when going to this screen. Afterwards, it will
@@ -424,7 +431,7 @@ function Visualizer() {
                 replayPackets={replayPackets}
                 clear={clearPacketsToReplay}
             />
-            <h1 className='visualizer-title'>{projectId}</h1>
+            <h1 className='visualizer-title'>{project?.eventName}</h1>
             <Menubar
                 showPacketViewSettingsModal={showPacketViewSettingsModal}
                 hidePacketViewSettingsModal={hidePacketViewSettingsModal}
