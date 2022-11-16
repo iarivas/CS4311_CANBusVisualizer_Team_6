@@ -228,7 +228,14 @@ class dataGetter:
             store.append(x)
         
         return store
-    
+    def retrieveSingleProject(projectId):
+        client = MongoClient('localhost', 27017)
+        
+        db = client.TestDB
+        projCollection = db.TestCol
+        project = projCollection.find_one({"_id": projectId})
+        return project
+        
     #return projects matching eventName
     def retrieveProjects(eventName):
         _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")

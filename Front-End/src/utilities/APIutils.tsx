@@ -36,7 +36,9 @@ class APIUtil {
             }
         })
     }
-
+    getProject(projectId: string) {
+        return axios.get(this.url + '/projects/' + projectId)
+    }
 
     editProjectInfo(projectId: string, projectInfo: ProjectState){
         return axios.put(this.url +'/projects/' + projectId + '/', projectInfo)
