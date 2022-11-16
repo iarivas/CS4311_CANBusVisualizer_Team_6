@@ -1,5 +1,5 @@
 '''
-Last Updated 10/92/2022 by Montse
+Last Updated 10/16/2022 by Mau
  
 Will update project settings and state as more
 information becomes available to us
@@ -95,3 +95,4 @@ class projectManager():
 
     #     while True:
     #         c,a = s.accept()
+

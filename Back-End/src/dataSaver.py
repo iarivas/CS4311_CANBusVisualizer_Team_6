@@ -1,5 +1,4 @@
 import pymongo
-import cantools
 from typing import Final
 
 localDB: Final[str] = "mongodb://localhost:27017"
@@ -83,6 +82,13 @@ class dataSaver:
         x = _myCol.insert_one(doc)
 
         print(x.inserted_id)
+
+    def storeProject(project):
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
+
+        _myCol.insert_many(project)
 
     def storePackets(packets):
         _myClient = pymongo.MongoClient(localDB)
