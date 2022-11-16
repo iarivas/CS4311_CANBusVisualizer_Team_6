@@ -3,7 +3,8 @@ import { useEffect, useRef, useState} from 'react'
 import {
     useNodesState,
     useEdgesState,
-    addEdge
+    addEdge,
+    Node,
 } from 'react-flow-renderer';
 import { Menu, Item, useContextMenu } from 'react-contexify';
 import PacketContainer from './packetContainer'
@@ -20,6 +21,9 @@ import './modals/index.css'
 import EditNodeModal from './modals/EditNodeModal'
 import "react-contexify/dist/ReactContexify.css";
 import ReplayPacketModal from './modals/ReplayPacketModal';
+import EditPacketModal from './modals/EditPacketModal';
+import CustomNodeData from './nodeMap/CustomNodeData';
+import HideNodesModal from './modals/HideNodesModal';
 
 const MENU_ID = 'packet-context-menu';
 
@@ -47,8 +51,14 @@ function Visualizer() {
         setPacketsToReplay([])
     }
 
+    const sendPackets = (packetsToSend: PacketState[]) => {
+        api.sendPackets(packetsToSend, projectId, false)
+            .catch((error) => console.log(error))
+    }
+
     const replayPackets = (packets: PacketState[]) => {
-        api.sendPackets(packets, projectId)
+        api.sendPackets(packets, projectId, true)
+            .catch((error) => console.log(error))
     }
 
     // Packet context menu
@@ -67,9 +77,15 @@ function Visualizer() {
       }
 
     const onEditPacket = () => {
-        console.log('TODO: Implement edit packet')
-        console.log(packetInFocus.current)
+        setIsShownEditPacketModal(true)
     }
+
+    const [isShownEditPacketsModal, setIsShownEditPacketModal] = useState(false)
+    const hideEditPacketModal = () => {
+        setIsShownEditPacketModal(false)
+    }
+
+
     const onAddToQueuePacket = () => {
         setPacketsToReplay(packetsToReplay.concat(packetInFocus.current!))
     }
@@ -78,6 +94,20 @@ function Visualizer() {
     let [editNodeModal, setEditNodeModal] = useState(false)
     const showNodeModal = () => setEditNodeModal(true)
     const hideNodeModal = () => setEditNodeModal(false)
+
+    // Modal for hiding nodes
+    const [isShownHideNodeModal, setIsShownHideNodeModal] = useState(false)
+    const onHideNodesApply = (selected: string[]) => {
+        const nodeHiddenSet = new Set()
+        selected.forEach((id) => nodeHiddenSet.add(id))
+
+        setNodes(nodes.map((node) => {
+            return {...node, hidden: nodeHiddenSet.has(node.id), data: {...node.data, hidden: nodeHiddenSet.has(node.id)}}
+        }))
+        setEdges(edges.map((edge) => {
+            return {...edge, hidden: nodeHiddenSet.has(edge.source) || nodeHiddenSet.has(edge.target)}
+        }))
+    }
 
     // Packet retrieval and infinite list
     const packetPage = useRef(1)
@@ -116,12 +146,15 @@ function Visualizer() {
             })
     }
     const refreshPackets = () => {
+        packetPage.current = 1
         api.getPackets(packetViewSettings.current, projectId, packetPage.current, PACKET_PAGE_SIZE)
             .then((response) => {
                 const newPackets = response.data
                 if (newPackets.length > 0) {
                     // Append to list
+                    packetPage.current = packetPage.current + 1
                     setPacketList(newPackets)
+                    setHasMorePackets(true)
                 } else {
                     setHasMorePackets(false)
                 }
@@ -158,19 +191,53 @@ function Visualizer() {
 
     const [nodeDict, setNodeDict] = useState<any>({})
     const [edgeDict, setEdgeDict] = useState<any>({})
-    
-    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+
+    const [nodes, setNodes, onNodesChange] = useNodesState<CustomNodeData>(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const nodesRef = useRef(nodes)
     const edgesRef = useRef(edges)
     const nodeDictRef = useRef(nodeDict)
     const edgeDictRef = useRef(edgeDict)
 
+    const nodeInFocus = useRef<any>()
     const onNodeContextMenu = (event: React.MouseEvent, node: Node) => {
         event.preventDefault()
+        nodeInFocus.current = node
         showNodeModal()
-        console.log('node clicked', node)
-      }
+    }
+
+    const onNodeEditApply = (updatedNode: Node<CustomNodeData>) => {
+        setNodes(nodes.map((node) => {
+            if (node.id === updatedNode.id) {
+                return {
+                    ...node,
+                    hidden: updatedNode.data.hidden,
+                    data: {
+                        label: updatedNode.data.label,
+                        icon: updatedNode.data.icon,
+                        isBlacklisted: updatedNode.data.isBlacklisted,
+                        flag: updatedNode.data.flag,
+                        annotation: updatedNode.data.annotation,
+                        hidden: updatedNode.data.hidden
+                    }
+                }
+            } else {
+                return node
+            }
+        }))
+        setEdges(edges.map((edge) => {
+            if (edge.source === updatedNode.id || edge.target === updatedNode.id) {
+                return {
+                    ...edge,
+                    hidden: updatedNode.data.hidden
+                }
+            } else {
+                return edge
+            }
+        }))
+
+        setEditNodeModal(false)
+    }
 
     const saveNodes = () => {
         const data = nodeUtils.parseToData(nodes, edges, projectId)
@@ -193,10 +260,19 @@ function Visualizer() {
                     nodeDictRef.current[node.id] = true
                     setNodeDict(nodeDictRef.current)
                     if (!node.position) {
-                        node.position = {
-                            x: idx * 200,
-                            y: 0
+                        if (idx%2 === 0){
+                            node.position = {
+                                x: idx * 200,
+                                y: 200
+                            }
                         }
+                        else{
+                            node.position = {
+                                x: (idx-1) * 200,
+                                y: 0
+                            }
+                        }
+                        
                     }
                 })
 
@@ -218,10 +294,15 @@ function Visualizer() {
                 const newNodesData = response.data
 
                 const [newNodes, newEdges] = nodeUtils.parseNodesData(newNodesData)
-                console.log(nodeDictRef.current)
-                console.log(edgeDictRef.current)
                 const nodesToAdd: any[] = []
                 const edgesToAdd: any[] = []
+
+                const hiddenNodes = new Set()
+                nodesRef.current.forEach((node) => {
+                    if (node.hidden) {
+                        hiddenNodes.add(node.id)
+                    }
+                });
 
                 newNodes.forEach((node, idx) => {
                     // If node not in dict, add it
@@ -230,9 +311,17 @@ function Visualizer() {
                         nodeDictRef.current[node.id] = true
                         setNodeDict(nodeDictRef.current)
     
-                        node.position = {
-                            x: (idx + nodesRef.current.length) * 200,
-                            y: 0
+                        if (idx%2 === 0){
+                            node.position = {
+                                x: idx * 200,
+                                y: 200
+                            }
+                        }
+                        else{
+                            node.position = {
+                                x: (idx-1) * 200,
+                                y: 0
+                            }
                         }
 
                         nodesToAdd.push(node)
@@ -242,6 +331,11 @@ function Visualizer() {
                 newEdges.forEach((edge) => {
                     // If edge not in list, add it
                     if (!(edge.id in edgeDictRef.current)) {
+                        // Add hidden property
+                        if (hiddenNodes.has(edge.source) || hiddenNodes.has(edge.target)) {
+                            edge.hidden = true
+                        }
+
                         edgeDictRef.current[edge.id] = true
                         setEdgeDict(edgeDictRef.current)
 
@@ -285,21 +379,28 @@ function Visualizer() {
         return () => clearInterval(saveInterval)
     }, [nodes, edges])
 
-    const addNode = () => {
-        const nodeId = Math.random().toString()
-        nodeDictRef.current[nodeId] = true
-        setNodeDict(nodeDictRef.current)
-        setNodes(nodes.concat(
-          {
-            id: nodeId,
-            type: 'custom',
-            position: {x: 100, y: 0},
-            data: {label: 'test'}
-          }
-        ))
-      };
+    const onOpenAddNodeModal = () => {
+        nodeInFocus.current = undefined
+        setEditNodeModal(true)
+    };
+
+    const onNodeCreateApply = (createdNode: Node<CustomNodeData>) => {
+        const newNodeData = nodeUtils.parseToData([createdNode], [], projectId)
+        api.createNode(projectId, newNodeData[0])
+            .then(() => {
+                setEditNodeModal(false)
+                setNodes(nodes.concat({
+                    ...createdNode,
+                    position: {x: 0, y: 400}
+                }))
+            })
+            .catch(() => {
+                alert('There was an issue in the server. Could not create the node')
+            })
+    }
     
     const onConnect = (params: any) => {
+        edgeDictRef.current[params.source + '->' + params.target] = true
         setEdges((eds) => addEdge(params, eds))
     }
     // Other stuff
@@ -313,12 +414,20 @@ function Visualizer() {
             <EditNodeModal
                 isShow={editNodeModal}
                 setHide={hideNodeModal}
+                onApply={nodeInFocus.current ? onNodeEditApply : onNodeCreateApply}
+                node={nodeInFocus.current}
             />
             <PacketViewSettingsModal
                 isShown={isShownPacketsModal}
                 setHide={hidePacketViewSettingsModal}
                 packetViewSettings={packetViewSettings}
                 onApply={onPacketViewModalApply}
+            />
+            <HideNodesModal
+                isShown={isShownHideNodeModal}
+                onHide={() => setIsShownHideNodeModal(false)}
+                nodes={nodes}
+                onApply={onHideNodesApply}
             />
             <ReplayPacketModal
                 isShown={isShownReplayPacketsModal}
@@ -327,12 +436,19 @@ function Visualizer() {
                 replayPackets={replayPackets}
                 clear={clearPacketsToReplay}
             />
+            <EditPacketModal
+                isShown={isShownEditPacketsModal}
+                onHide={hideEditPacketModal}
+                packetInFocus={packetInFocus.current}
+                sendPackets={sendPackets}
+            />
             <h1 className='visualizer-title'>{projectId}</h1>
             <Menubar
                 showPacketViewSettingsModal={showPacketViewSettingsModal}
                 hidePacketViewSettingsModal={hidePacketViewSettingsModal}
                 showReplayPacketsModal={() => setIsShownReplayPacketsModal(true)}
-                onAddNode={addNode}
+                onAddNode={onOpenAddNodeModal}
+                showHideNodeModal={() => setIsShownHideNodeModal(true)}
             />
             <div className='visualizer-content'>
                 <div className='packet-container-content'>
@@ -346,7 +462,6 @@ function Visualizer() {
                 </div>
                 <div className='node-map-container-content'>
                     <NodeMap
-                        
                         nodes={nodes}
                         edges={edges}
                         onNodesChange={onNodesChange}

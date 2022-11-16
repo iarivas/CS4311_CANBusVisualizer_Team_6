@@ -1,9 +1,10 @@
 from dataSaver import dataSaver
-import pymongo
-from dataSaver import dataSaver
+import pymongo, re, json, csv
 from typing import Final
 from datetime import datetime
-import re
+from bson.json_util import dumps
+from pymongo import MongoClient
+import pandas as pd
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
@@ -82,7 +83,6 @@ class dataGetter:
         x = _myCol.find_one({
             "_id": projectID
         })
-
         print(x)
 
     #return name of project matching projectID
@@ -194,9 +194,14 @@ class dataGetter:
         packetList = []
 
         for packet in _myCol.find(filterBy, {'_id': False}).sort(sortByField, sortByType).skip(((page - 1) * size) if page > 0 else 0).limit(size):
-            packet['timestamp'] = packet['timestamp'].strftime('%Y-%m-%dT%H:%M:%S.%f')
+            if(isinstance(packet['timestamp'], datetime)):
+                packet['timestamp'] = packet['timestamp'].strftime('%Y-%m-%dT%H:%M:%S.%f')
+            elif(isinstance(packet['timestamp'], str)):
+                return packetList
+            else:
+                packet['timestamp'] = packet['timestamp']["$date"]
             packetList.append(packet)
-        
+            
         return packetList
 
     def getNodes(projectID: str):
@@ -237,3 +242,213 @@ class dataGetter:
             store.append(x)
         
         return store
+
+    def exportSelectedProject(_projName, type):
+        client = MongoClient('localhost', 27017)
+        
+        db = client.TestDB
+        projCollection = db.TestCol
+        projCursor = list(projCollection.find({'eventName': _projName}))
+
+        pdb = client.TestPDB
+        nodeCollection = pdb.TestColNodes
+        nodeCursor = list(nodeCollection.find({'projectId': _projName}))
+
+        packetCollection = pdb.TestCol
+        packetCursor = list(packetCollection.find({'projectId': _projName}))
+
+        if type == 'json':
+            json_project = dumps(projCursor, indent = 2) 
+            json_nodes = dumps(nodeCursor, indent = 2) 
+            json_packets = dumps(packetCursor, indent = 2)
+
+            file = '/../Projects/' + _projName +'.json'
+            with open(file, 'w') as file:
+                file.write("{\n\"Project\": " + json_project + ",\n")
+                file.write("\"Nodes\": " + json_nodes + ",\n")
+                file.write("\"Packets\": " + json_packets + "}\n")
+
+        elif type == 'csv':
+            with open('../Projects/' + _projName + '.csv', 'r') as f:
+                w = csv.DictWriter(f, ['Project'])
+                w.writeheader()
+                w = csv.DictWriter(f, projCursor[0].keys())
+                w.writeheader()
+                for i in projCursor:
+                    w = csv.DictWriter(f, i.keys())
+                    w.writerow(i)  
+
+                w = csv.DictWriter(f, ['Nodes'])
+                w.writeheader()
+                w = csv.DictWriter(f, nodeCursor[0].keys())
+                w.writeheader()
+                for i in nodeCursor:
+                    w = csv.DictWriter(f, i.keys())
+                    w.writerow(i) 
+
+                w = csv.DictWriter(f, ['Packets'])
+                w.writeheader()
+                w = csv.DictWriter(f, packetCursor[0].keys())
+                w.writeheader()
+                for i in packetCursor:
+                    w = csv.DictWriter(f, i.keys())
+                    w.writerow(i) 
+        return
+
+    def importSelectedProject(_projPath, type):
+        if type == 'json':
+            f = open(_projPath)
+            data = json.load(f)
+
+            _newProject = data["Project"]
+            _newNodes = data["Nodes"]
+            _newPackets = data["Packets"]
+        elif type == 'csv':
+            with open(_projPath) as csv_file:
+                csv_reader = list(csv.reader(csv_file, delimiter=','))
+                keys = []
+                _newProject = []
+                _newNodes = []
+                _newPackets = []
+                i = 0
+
+                # Gets to the project keys
+                while(csv_reader[i] != ['Project']):
+                    i = i + 1
+                i = i + 1
+                keys = csv_reader[i]
+                i = i + 1
+
+                while(csv_reader[i] != ['Nodes']):
+                    res = {keys[j]: csv_reader[i][j] for j in range(len(keys))}
+                    _newProject.append(res)
+                    i = i + 1
+                i = i + 1
+                keys = csv_reader[i]
+                i = i + 1
+
+                while(csv_reader[i] != ['Packets']):
+                    res = {keys[j]: csv_reader[i][j] for j in range(len(keys))}
+                    _newNodes.append(res)
+                    i = i + 1
+                i = i + 1
+                keys = csv_reader[i]
+                i = i + 1
+
+                for k in range(i, len(csv_reader)):
+                    res = {keys[j]: csv_reader[k][j] for j in range(len(keys))}
+                    _newPackets.append(res)
+
+            for i in _newProject:
+                i["baudRate"] = int(i["baudRate"])
+                i["blacklistFile"] = None
+                if i["archive"] == "\"True\"":
+                    i["archive"] = True
+                else: i["archive"] = False
+
+            for i in _newNodes:
+                del i['_id']
+                i["position"] = json.loads((i["position"].replace("\'", "\"" )))
+                if i["isBlacklisted"] == "\"True\"":
+                    i["isBlacklisted"] = True
+                else: i["isBlacklisted"] = False
+                i["relationships"] = []
+
+            for i in _newPackets:
+                del i['_id']
+                i['timestamp'] = json.loads(i['timestamp'].replace("\'", "\"" ))
+
+        dataSaver.storeProject(_newProject)
+        dataSaver.storeNodes(_newNodes)
+        dataSaver.storePackets(_newPackets)
+        return
+
+    def mergeSelectedProject(eventName, eventName2, type):
+        if type == 'json':
+            f = open('../Projects/'+ eventName2 + '.json')
+            data = json.load(f)
+            
+            _newNodes = data["Nodes"]
+            _newPackets = data["Packets"]
+
+            for i in _newNodes:
+                del i['_id']
+                i["projectId"] = eventName
+
+            for i in _newPackets:
+                del i['_id']
+                i["projectId"] = eventName
+        elif type == 'csv':
+            with open('../Projects/' + eventName2 + '.csv') as csv_file:
+                csv_reader = list(csv.reader(csv_file, delimiter=','))
+                keys = []
+                _newProject = []
+                _newNodes = []
+                _newPackets = []
+                i = 0
+
+                # Gets to the project keys
+                while(csv_reader[i] != ['Project']):
+                    i = i + 1
+                i = i + 1
+                keys = csv_reader[i]
+                i = i + 1
+
+                while(csv_reader[i] != ['Nodes']):
+                    res = {keys[j]: csv_reader[i][j] for j in range(len(keys))}
+                    _newProject.append(res)
+                    i = i + 1
+                i = i + 1
+                keys = csv_reader[i]
+                i = i + 1
+
+                while(csv_reader[i] != ['Packets']):
+                    res = {keys[j]: csv_reader[i][j] for j in range(len(keys))}
+                    _newNodes.append(res)
+                    i = i + 1
+                i = i + 1
+                keys = csv_reader[i]
+                i = i + 1
+
+                for k in range(i, len(csv_reader)):
+                    res = {keys[j]: csv_reader[k][j] for j in range(len(keys))}
+                    _newPackets.append(res)
+
+                for i in _newProject:
+                    i["baudRate"] = int(i["baudRate"])
+                    i["eventName"] = eventName
+                    i["blacklistFile"] = None
+                    if i["archive"] == "\"True\"":
+                        i["archive"] = True
+                    else: i["archive"] = False
+
+                for i in _newNodes:
+                    del i['_id']
+                    i["projectId"] = eventName
+                    i["position"] = json.loads((i["position"].replace("\'", "\"" )))
+                    if i["isBlacklisted"] == "\"True\"":
+                        i["isBlacklisted"] = True
+                    else: i["isBlacklisted"] = False
+                    i["relationships"] = []
+
+                for i in _newPackets:
+                    del i['_id']
+                    i["projectId"] = eventName
+                    i['timestamp'] = json.loads(i['timestamp'].replace("\'", "\"" ))
+        
+        # We are assuming we keep our original projects configuration
+        #dataSaver.storeProject(_newProject)
+        dataSaver.storeNodes(_newNodes)
+        dataSaver.storePackets(_newPackets)
+        return
+
+    def syncSelectedProject(self, eventName, eventName2, type):
+        # creates a Json file of the current project
+        self.exportSelectedProject(eventName, type)
+
+        # TODO
+        # Still need to send my file to other computer
+
+        # Merges eventName2 file in /Back-End/Projects
+        self.mergeSelectedProject(eventName, eventName2, type)
+        return

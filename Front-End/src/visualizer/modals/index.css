@@ -1,4 +1,4 @@
-.edit-packet-modal .modal-content, .edit-node-modal .modal-content{
+.edit-packet-modal .modal-content, .edit-node-modal .modal-content, .hide-nodes-modal .modal-content{
     background-color: #17161b;
 }
 
@@ -10,7 +10,6 @@
 
 .packet-view-modal .modal-content, .mb-3{
     background-color: #17161b;
-    margin: 3%;
 }
 
 
@@ -55,4 +54,11 @@
 
 .replay-packet-table {
     overflow: scroll;
+    white-space: nowrap;
+}
+
+.rdl-filter, .rdl-control {
+    color: #edeff3 !important;
+    background-color: #17161b;
+    border-color: rgba(255, 255, 255, 0.2) !important;
 }

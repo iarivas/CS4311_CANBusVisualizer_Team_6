@@ -5,4 +5,12 @@ export const PacketSortOptions = {
     ID_DESC: 'idDesc'
 }
 
+export const FlagOptions = {
+    NONE: 'none',
+    ALIVE: 'alive',
+    SCANNED: 'scanned',
+    ENUMERATED: 'enumerated',
+    DOSED: 'dosed'
+}
+
 export const PACKET_PAGE_SIZE = 100
