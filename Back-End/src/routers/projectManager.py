@@ -16,6 +16,7 @@ from dataGetter import *
 from pydantic import BaseModel
 #from socket import *
 from typing import Union
+from Synchronizer import Synchronizer as sync
 
 router = APIRouter()
 
@@ -96,7 +97,10 @@ class projectManager():
     def syncProject(projectInfo: ProjectInfo):
         # Needs to be changed to (eventName, eventName2, 'json')
         # Not sure were we would get eventName 2 from ATM
-        return dataGetter.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'json')
+        Un, Pw, Ip = "kali", "kali", "192.168.98.128"  
+        return sync.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'json', Un, Ip, Pw)
+
+        # return sync.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'json', projectInfo.Un, projectInfo.Ip, projectInfo.Pw)
         #return dataGetter.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'csv')
 
     # TODO FOR JUSTUS (thx!)
