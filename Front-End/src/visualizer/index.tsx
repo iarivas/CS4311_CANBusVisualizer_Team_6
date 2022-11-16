@@ -360,7 +360,7 @@ function Visualizer() {
             const projectInfo = response.data
             setProject(projectInfo)
     })
-    }, [project])
+    }, [])
 
     // This will call the API once to get the list of nodes
     // once when going to this screen. Afterwards, it will
