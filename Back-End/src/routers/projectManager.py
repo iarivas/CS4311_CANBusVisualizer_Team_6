@@ -84,7 +84,7 @@ class projectManager():
 
     @router.post("/projects/{projectId}/export", tags=["export"])
     def exportProject(projectInfo: ProjectInfo):
-        return dataGetter.exportCurrentProject(projectInfo.eventName, 'json')
+        return dataGetter.exportSelectedProject(projectInfo.eventName, 'json')
 
     # TODO FOR JUSTUS (thx!)
     # @router.post("/projects/", tags=["project"])
