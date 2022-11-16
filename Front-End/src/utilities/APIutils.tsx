@@ -37,6 +37,11 @@ class APIUtil {
         })
     }
 
+
+    editProjectInfo(projectId: string, projectInfo: ProjectState){
+        return axios.put(this.url +'/projects/' + projectId + '/', projectInfo)
+    }
+
     getPackets(filters: PacketViewSettingsState, projectId: string, page: number, size: number) {
         return axios.get(this.url + '/projects/' + projectId + '/packets', {
             params: {

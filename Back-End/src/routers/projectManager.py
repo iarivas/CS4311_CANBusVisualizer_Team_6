@@ -1,5 +1,5 @@
 '''
-Last Updated 10/92/2022 by Montse
+Last Updated 10/16/2022 by Mau
  
 Will update project settings and state as more
 information becomes available to us
@@ -75,18 +75,18 @@ class projectManager():
     def getProjects(isArchived: Union[bool, None] = None):
         return dataGetter.getAllProjects(isArchived)
 
-    # TODO Christian
 
+    # TODO Christian
     @router.put("/projects/{projectId}/", tags=["project"])
     def setProjectData(projectId: str, projectInfo: ProjectInfo):
         dataSaver.updateIndivial(projectId, projectInfo.baudRate, projectInfo.initials,
                                  projectInfo.eventName, projectInfo.dbcFile, projectInfo.blacklistFile, projectInfo.archive)
 
-    # @router.post("/projects/{projectId}/Export", tags=["Export"])
+    @router.post("/projects/{projectId}/export", tags=["export"])
     def exportProject(projectInfo: ProjectInfo):
         return dataGetter.exportSelectedProject(projectInfo.eventName, 'json')
         #return dataGetter.exportSelectedProject(projectInfo.eventName, 'csv')
-
+        
     #@router.post("/projects/{projectId}/import", tags=["import"])
     def importProject(projectInfo: ProjectInfo):
         return dataGetter.importSelectedProject(projectInfo.eventName, 'json')
@@ -99,6 +99,7 @@ class projectManager():
         return dataGetter.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'json')
         #return dataGetter.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'csv')
 
+
     # TODO FOR JUSTUS (thx!)
     # @router.post("/projects/", tags=["project"])
     # def sync():
@@ -108,3 +109,4 @@ class projectManager():
 
     #     while True:
     #         c,a = s.accept()
+
