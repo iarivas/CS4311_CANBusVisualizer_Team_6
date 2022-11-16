@@ -8,6 +8,8 @@ declare backendId=$backendId;
 declare frontEndId=$frontEndId;
 
 function installer {
+    #install mongodb dependencies.
+    installMongoDependencies;
     #install mongodb community edition.
     installMongoDbCommunity;
     #install mongodb compass
@@ -19,6 +21,10 @@ function installer {
     #install NPM
     installNpm;
     echo "installing";
+}
+function installMongoDependencies {
+    sudo apt-get install -y libgconf-2-4;
+    sudo apt-get install -y libgconf2-4;
 }
 function installNpm {
     sudo apt-get install -y npm;
