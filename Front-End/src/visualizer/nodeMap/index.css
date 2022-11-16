@@ -11,12 +11,15 @@
     border-width: 1px;
     border-style: solid;
 }
-
+path.react-flow__edge-path {
+    stroke-width: 4;
+    stroke: black;
+}
 .react-flow {
     flex: 1 0 auto;
     min-width: 700px;
     min-height: 400px;
-    background-color: rgb(168, 92, 168);
+    background-color: #63738C;
 }
 
 .map-flow {

@@ -11,6 +11,7 @@ function NewProject() {
         initials: '',
         dbcFile: null,
         blacklistFile: null,
+        archive: false,
     })
 
     return (

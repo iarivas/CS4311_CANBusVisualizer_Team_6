@@ -15,6 +15,56 @@ function Projects() {
     navigate(path)
   }
 
+  
+
+  const setArchive=(projectId: string, projectInfo: ProjectState)=> {
+    const updatedProject: ProjectState = {...projectInfo, archive: true}
+    api.editProjectInfo(projectId, updatedProject)
+    .then((response) => {
+      getActiveProjects()
+      getArchiveProjects()
+    })
+    .catch((error: any) => console.log(error))
+
+  }
+
+  const getActiveProjects = () => {
+    // Get active projects
+    api.getProjects(false)
+    .then((response) => {
+      setActiveProjects(response.data)
+    })
+    .catch((error: any) => console.log(error))
+  }
+
+  const getArchiveProjects = () => {
+    // Get archied projects
+    api.getProjects(true)
+    .then((response) => {
+      setArchivedProjects(response.data)
+    })
+    .catch((error: any) => console.log(error))
+
+  }
+
+  const setActive=(projectId: string, projectInfo: ProjectState)=> {
+    const updatedProject: ProjectState = {...projectInfo, archive: false}
+    api.editProjectInfo(projectId, updatedProject)
+    .then((response) => {
+      getActiveProjects()
+      getArchiveProjects()
+      
+    })
+    .catch((error: any) => console.log(error))
+
+  }
+
+  useEffect(() => {
+    getActiveProjects()
+    getArchiveProjects()
+    
+  }, [])
+
   const onNavigateProject = (path: string) => {
     navigate(path)
   }
@@ -48,13 +98,14 @@ function Projects() {
         <Dropdown.Toggle className='inside-mock-dropdown'split variant="warning" id="dropdown-split-basic"/>
 
         <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">Archive</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Duplicate</Dropdown.Item>
+        <Dropdown.Item onClick={() => setArchive(project._id!, project)}>Archive</Dropdown.Item>
+        <Dropdown.Item >Export </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     )
   })
 
+  
   const archivedProjectCards = archivedProjects.map((project) => {
     return (
       <Dropdown as={ButtonGroup} className='mock-project'>
@@ -77,8 +128,7 @@ function Projects() {
         <Dropdown.Toggle className='inside-mock-dropdown'split variant="secondary" id="dropdown-split-basic"/>
 
         <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">Move to Active</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Duplicate</Dropdown.Item>
+        <Dropdown.Item onClick={() => setActive(project._id!, project)}>Move to Active</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     )

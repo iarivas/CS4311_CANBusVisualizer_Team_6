@@ -5,6 +5,7 @@ interface ProjectState {
     initials: string,
     dbcFile: string | null,
     blacklistFile: string | null,
+    archive: boolean,
 }
 
 export default ProjectState
