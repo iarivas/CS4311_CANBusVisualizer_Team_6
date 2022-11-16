@@ -37,15 +37,6 @@ class APIUtil {
         })
     }
 
-    exportProject( projectId: string, eventName: string) {
-        return axios.post(this.url +'/projects/' + projectId + '/Export',{
-            params: {
-                eventName: eventName
-            }
-
-        })
-
-    }
 
     editProjectInfo(projectId: string, projectInfo: ProjectState){
         return axios.put(this.url +'/projects/' + projectId + '/', projectInfo)
