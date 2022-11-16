@@ -100,6 +100,7 @@ class projectManager():
         Un, Pw, Ip = "kali", "kali", "192.168.98.128"  
         return sync.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'json', Un, Ip, Pw)
 
+
         # return sync.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'json', projectInfo.Un, projectInfo.Ip, projectInfo.Pw)
         #return dataGetter.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'csv')
 
