@@ -26,7 +26,7 @@ class ProjectInfo(BaseModel):
     eventName: str = None
     dbcFile: str = None
     blacklistFile: str = None
-    archieve: bool = None
+    archive: bool = None
 
 
 class projectManager():
@@ -80,7 +80,7 @@ class projectManager():
     @router.put("/projects/{projectId}/", tags=["project"])
     def setProjectData(projectId: str, projectInfo: ProjectInfo):
         dataSaver.updateIndivial(projectId, projectInfo.baudRate, projectInfo.initials,
-                                 projectInfo.eventName, projectInfo.dbcFile, projectInfo.blacklistFile, projectInfo.archieve)
+                                 projectInfo.eventName, projectInfo.dbcFile, projectInfo.blacklistFile, projectInfo.archive)
 
     @router.post("/projects/{projectId}/Export", tags=["Export"])
     def exportProject(projectInfo: ProjectInfo):

@@ -47,14 +47,8 @@ class APIUtil {
 
     }
 
-    turnArchived(projectId: string){
-        return axios.put(this.url +'/projects/' + projectId + '/',{
-            
-            params: {
-                archive: true
-            }
-
-        })
+    editProjectInfo(projectId: string, projectInfo: ProjectState){
+        return axios.put(this.url +'/projects/' + projectId + '/', projectInfo)
     }
 
     getPackets(filters: PacketViewSettingsState, projectId: string, page: number, size: number) {
