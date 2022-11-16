@@ -87,11 +87,6 @@ class projectManager():
         dataSaver.updateIndivial(projectId, projectInfo.baudRate, projectInfo.initials,
                                  projectInfo.eventName, projectInfo.dbcFile, projectInfo.blacklistFile, projectInfo.archive)
 
-<<<<<<< HEAD
-    @router.post("/projects/{projectId}/Export", tags=["Export"])
-    def exportProject(projectInfo: ProjectInfo):
-        return dataGetter.exportCurrentProject(projectInfo.projectId, 'json')
-=======
     @router.post("/projects/{projectId}/export", tags=["export"])
     def exportProject(projectInfo: ProjectInfo):
         return dataGetter.exportSelectedProject(projectInfo.eventName, 'json')
@@ -109,7 +104,6 @@ class projectManager():
         return dataGetter.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'json')
         #return dataGetter.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'csv')
 
->>>>>>> 54429b3eac8d96e7857b8d03b95cd221eb2f3de6
 
     # TODO FOR JUSTUS (thx!)
     # @router.post("/projects/", tags=["project"])

@@ -98,14 +98,8 @@ function Projects() {
         <Dropdown.Toggle className='inside-mock-dropdown'split variant="warning" id="dropdown-split-basic"/>
 
         <Dropdown.Menu>
-<<<<<<< HEAD
-        <Dropdown.Item href="#/action-1">Archive</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Duplicate</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">Export </Dropdown.Item>
-=======
         <Dropdown.Item onClick={() => setArchive(project._id!, project)}>Archive</Dropdown.Item>
         <Dropdown.Item >Export </Dropdown.Item>
->>>>>>> 54429b3eac8d96e7857b8d03b95cd221eb2f3de6
         </Dropdown.Menu>
       </Dropdown>
     )
