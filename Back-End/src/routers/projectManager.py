@@ -85,7 +85,8 @@ class projectManager():
     @router.post("/projects/{projectId}/export", tags=["export"])
     def exportProject(projectInfo: ProjectInfo):
         return dataGetter.exportSelectedProject(projectInfo.eventName, 'json')
-    
+        #return dataGetter.exportSelectedProject(projectInfo.eventName, 'csv')
+        
     #@router.post("/projects/{projectId}/import", tags=["import"])
     def importProject(projectInfo: ProjectInfo):
         return dataGetter.importSelectedProject(projectInfo.eventName, 'json')
