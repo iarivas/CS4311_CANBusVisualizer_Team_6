@@ -4,7 +4,7 @@ from typing import Final
 from datetime import datetime
 from bson.json_util import dumps
 from pymongo import MongoClient
-import pandas as pd
+#import pandas as pd
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
