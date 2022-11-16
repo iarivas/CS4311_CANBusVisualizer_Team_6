@@ -99,7 +99,6 @@ function Projects() {
 
         <Dropdown.Menu>
         <Dropdown.Item onClick={() => setArchive(project._id!, project)}>Archive</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Duplicate</Dropdown.Item>
         <Dropdown.Item >Export </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -130,7 +129,6 @@ function Projects() {
 
         <Dropdown.Menu>
         <Dropdown.Item onClick={() => setActive(project._id!, project)}>Move to Active</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Duplicate</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     )
