@@ -74,6 +74,11 @@ class projectManager():
     @router.get("/projects/", tags=["project"])
     def getProjects(isArchived: Union[bool, None] = None):
         return dataGetter.getAllProjects(isArchived)
+        
+    @router.get("/projects/{projectId}", tags=["project"])
+    def getSingleProject(projectId: str):
+        return dataGetter.retrieveSingleProject(projectId)
+        
 
 
     # TODO Christian

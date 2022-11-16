@@ -36,7 +36,9 @@ class APIUtil {
             }
         })
     }
-
+    getProject(projectId: string) {
+        return axios.get(this.url + '/projects/' + projectId)
+    }
 <<<<<<< HEAD
     exportProject(projectInfo: ProjectState, projectId: string) {
         return axios.post(this.url +'/projects/' + projectId + '/Export',{
