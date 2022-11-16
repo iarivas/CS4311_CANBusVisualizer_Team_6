@@ -84,7 +84,7 @@ class dataSaver:
         _myCol = _myDB["TestColNodes"]
 
         _myCol.insert_many(nodes)
-
+    
     def updateNodes(projectID, updatedNodeList):
         _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestPDB"]
