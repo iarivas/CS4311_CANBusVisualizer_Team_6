@@ -47,6 +47,35 @@ function Projects() {
 
   }
 
+  const downloadFile = ({ data, fileName, fileType }:any) => {
+    const blob = new Blob([data], { type: fileType });
+  
+    const a = document.createElement("a");
+    a.download = fileName;
+    a.href = window.URL.createObjectURL(blob);
+    const clickEvt = new MouseEvent("click", {
+      view: window,
+      bubbles: true,
+      cancelable: true,
+    });
+    a.dispatchEvent(clickEvt);
+    a.remove();
+  };
+
+  const exportToJSON = (projectId: string, projectInfo: ProjectState) => {
+    // Export project to JSON
+    api.exportProject(projectId, projectInfo)
+    .then((response) => {
+      downloadFile({
+        data: JSON.stringify(projectInfo),
+        fileName: "project.json",
+        fileType: "text/json",
+      });
+    })
+    .catch((error: any) => console.log(error))
+
+  }
+
   const setActive=(projectId: string, projectInfo: ProjectState)=> {
     const updatedProject: ProjectState = {...projectInfo, archive: false}
     api.editProjectInfo(projectId, updatedProject)
@@ -100,7 +129,8 @@ function Projects() {
 
         <Dropdown.Menu>
         <Dropdown.Item onClick={() => setArchive(project._id!, project)}>Archive</Dropdown.Item>
-        <Dropdown.Item >Export </Dropdown.Item>
+        <Dropdown.Item onClick={() => exportToJSON(project._id!, project)}>Export to JSON </Dropdown.Item>
+        <Dropdown.Item >Export to CSV </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     )
