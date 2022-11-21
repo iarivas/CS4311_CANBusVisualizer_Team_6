@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from routers import projectManager, packetManager, nodeManager
 from fastapi.middleware.cors import CORSMiddleware
-
+import uvicorn
 app = FastAPI()
 
 origins = ["*"]
@@ -21,3 +21,6 @@ app.include_router(nodeManager.router)
 @app.get("/")
 async def root():
     return{"message": "application started..."}
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", reload=True)
