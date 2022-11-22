@@ -70,7 +70,7 @@ class dataSaver:
         _myDB = _myClient["TestDB"]
         _myCol = _myDB["TestCol"]
 
-        _myCol.update_one({"_id": projectID}, {"$set": {"packetFeedStatus": packetFeedStatus }})
+        _myCol.update_one({"eventName": projectID}, {"$set": {"packetFeedStatus": packetFeedStatus }})
 
     def createInitialProject(projectID, baudRate, initials, eventName, dbcFile, blacklistFile):
         _myClient = pymongo.MongoClient(localDB)
