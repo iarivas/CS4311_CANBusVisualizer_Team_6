@@ -156,7 +156,7 @@ class dataGetter:
         return initials
 
     def getProjectPacketFeedStatus(projectID):
-        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestDB"]
         _myCol = _myDB["TestCol"]
 
