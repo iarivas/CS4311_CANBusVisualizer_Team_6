@@ -160,7 +160,7 @@ class dataGetter:
         _myDB = _myClient["TestDB"]
         _myCol = _myDB["TestCol"]
 
-        project = _myCol.find_one({"_id": projectID})
+        project = _myCol.find_one({"eventName": projectID})
         return project['packetFeedStatus']
 
     ##return packets of project matching projectID
