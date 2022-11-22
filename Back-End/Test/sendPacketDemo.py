@@ -24,13 +24,17 @@ dbc = cantools.database.load_file('/home/cbvs/Desktop/dbcFile.dbc')
 # # bus.send(final)
 
 
-s = list(line.strip() for line in open('../packets.log'))
+#s = list(line.strip() for line in open('../packets.log'))
+s = list(line.strip() for line in open('/home/cbvs/Desktop/original.log'))
+print(len(s))
+i = 0
 
 for p in range(len(s)):
         sleep(0.1)
         try:
             packet = re.split(' |#|\n',s[p])
-            id = int(packet[2], 16)-2147483648
+            #id = int(packet[2], 16)-2147483648
+            id = int(packet[2], 16)+254
             msg = dbc.get_message_by_frame_id(id)
             b = bytes(packet[3], 'utf-8')
             db = dbc.decode_message(id, b)
@@ -39,7 +43,7 @@ for p in range(len(s)):
             t = packet[0][1:-1]
             final = can.Message(timestamp = float(t), arbitration_id = id+2147483648, data = msg_data, is_extended_id = False) 
             bus.send(final)
-            print(" Packet #:",p, end='\r')
+            print("Valid Packet #:",p," Invalid Packet #:",i, end='\r')
         except:
             i = 1
     

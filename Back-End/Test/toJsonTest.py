@@ -3,9 +3,9 @@ from pymongo import MongoClient
 import json
 import os
 
-if __name__ == '__main__':
+def export(proj):
 
-    proj = "Test_11_5"
+    #proj = "Test_11_5"
 
     client = MongoClient('localhost', 27017)
     

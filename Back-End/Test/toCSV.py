@@ -1,8 +1,9 @@
 import csv
 from pymongo import MongoClient
 
-if __name__ == '__main__':
-    proj = "Test_11_8"
+def export(proj):
+
+    #proj = "Test_11_8"
 
     client = MongoClient('localhost', 27017)
 
