@@ -62,16 +62,10 @@ function Projects() {
     a.remove();
   };
 
-  const exportToJSON = (projectId: string, projectInfo: ProjectState) => {
+  const exportFile = (projectId: string, projectInfo: ProjectState, fileType: string) => {
     // Export project to JSON
-    api.exportProject(projectId, projectInfo)
-    .then((response) => {
-      downloadFile({
-        data: JSON.stringify(projectInfo),
-        fileName: "project.json",
-        fileType: "text/json",
-      });
-    })
+    api.exportProject(projectId, projectInfo, fileType)
+    
     .catch((error: any) => console.log(error))
 
   }
@@ -129,8 +123,8 @@ function Projects() {
 
         <Dropdown.Menu>
         <Dropdown.Item onClick={() => setArchive(project._id!, project)}>Archive</Dropdown.Item>
-        <Dropdown.Item onClick={() => exportToJSON(project._id!, project)}>Export to JSON </Dropdown.Item>
-        <Dropdown.Item >Export to CSV </Dropdown.Item>
+        <Dropdown.Item onClick={() => exportFile(project._id!, project, "json")}>Export to JSON </Dropdown.Item>
+        <Dropdown.Item onClick={() => exportFile(project._id!, project, "csv")}>Export to CSV </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     )

@@ -251,6 +251,7 @@ class dataGetter:
         return store
 
     def exportSelectedProject(_projName, type):
+        print(type)
         client = MongoClient('localhost', 27017)
         
         db = client.TestDB
@@ -269,7 +270,8 @@ class dataGetter:
             json_nodes = dumps(nodeCursor, indent = 2) 
             json_packets = dumps(packetCursor, indent = 2)
 
-            file = '/../Projects/' + _projName +'.json'
+            file = '../Projects/' + _projName +'.json'
+            print("#######################", file)
             with open(file, 'w') as file:
                 file.write("{\n\"Project\": " + json_project + ",\n")
                 file.write("\"Nodes\": " + json_nodes + ",\n")

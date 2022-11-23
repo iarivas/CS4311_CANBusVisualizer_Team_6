@@ -17,6 +17,7 @@ from pydantic import BaseModel
 #from socket import *
 from typing import Union
 from Synchronizer import Synchronizer as sync
+from typing import Union
 
 router = APIRouter()
 
@@ -89,11 +90,13 @@ class projectManager():
                                  projectInfo.eventName, projectInfo.dbcFile, projectInfo.blacklistFile, projectInfo.archive)
 
     @router.post("/projects/{projectId}/export", tags=["export"])
-    def exportProject(projectInfo: ProjectInfo):
-        return dataGetter.exportSelectedProject(projectInfo.eventName, 'json')
+    def exportProject(projectInfo: ProjectInfo, fileType: Union[str, None] = None):
+        if fileType is None:
+            fileType = 'json'
+        return dataGetter.exportSelectedProject(projectInfo.eventName, fileType)
         #return dataGetter.exportSelectedProject(projectInfo.eventName, 'csv')
         
-    #@router.post("/projects/{projectId}/import", tags=["import"])
+    @router.post("/projects/{projectId}/import", tags=["import"])
     def importProject(projectInfo: ProjectInfo):
         return dataGetter.importSelectedProject(projectInfo.eventName, 'json')
         #return dataGetter.importSelectedProject(projectInfo.eventName, 'csv')

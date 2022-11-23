@@ -44,8 +44,13 @@ class APIUtil {
         return axios.put(this.url +'/projects/' + projectId + '/', projectInfo)
     }
 
-    exportProject(projectId: string, projectInfo: ProjectState){
-        return axios.put(this.url +'/projects/' + projectId + '/export', projectInfo)
+    exportProject(projectId: string, projectInfo: ProjectState, fileType: string){
+        return axios.post(this.url +'/projects/' + projectId + '/export', projectInfo, {
+            params: {
+                projectInfo: projectInfo,
+                fileType: fileType
+            }
+        })
     }
 
     getPackets(filters: PacketViewSettingsState, projectId: string, page: number, size: number) {
