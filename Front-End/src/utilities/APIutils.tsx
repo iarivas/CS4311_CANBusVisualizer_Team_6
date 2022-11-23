@@ -18,9 +18,11 @@ class APIUtil {
     }
 
     gatherTraffic(play: boolean, projectId: string) {
-        return axios.put(this.url + '/projects/' + projectId + '/play', {
-            play: play
-        })
+        return axios.put(
+            this.url + '/projects/' + projectId + '/play',
+            null,
+            {params: {packetFeedStatus: play}}
+        )
             .then(function(response) {
                 console.log(response)
             })
