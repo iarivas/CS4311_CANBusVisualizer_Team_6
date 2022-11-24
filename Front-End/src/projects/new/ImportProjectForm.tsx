@@ -34,9 +34,16 @@ function ImportProjectForm({state, setState}: stateProps) {
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>Project file</Form.Label>
                         <Form.Control
-                            type="file"
-                            onChange={(e) => {
-                                
+                            type='text'
+                            name='projectFile'
+                            placeholder='/home/<username>/Desktop/<filename>'
+                            value={state.dbcFile ?? ''}
+                            onChange={e=>{
+                                if(!e.target.value) {
+                                    
+                                } else {
+                                    
+                                }
                             }}
                         />
                     </Form.Group>
