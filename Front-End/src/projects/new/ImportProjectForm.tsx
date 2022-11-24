@@ -37,7 +37,7 @@ function ImportProjectForm({state, setState}: stateProps) {
                             type='text'
                             name='projectFile'
                             placeholder='/home/<username>/Desktop/<filename>'
-                            value={state.dbcFile ?? ''}
+                            
                             onChange={e=>{
                                 if(!e.target.value) {
                                     
