@@ -10,7 +10,7 @@ from dataSaver import dataSaver
 from dataGetter import dataGetter
 from typing import Union, List
 
-#bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
+bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
 dbc = cantools.database.load_file('../CSS-Electronics-SAE-J1939-2018-08_v1.2.dbc')
 router = APIRouter()
 
