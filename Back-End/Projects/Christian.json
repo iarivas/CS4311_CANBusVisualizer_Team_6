@@ -1,0 +1,14 @@
+{
+"Project": [
+  {
+    "_id": "rjitscflbm",
+    "baudRate": 9600,
+    "initials": "CC",
+    "eventName": "Christian",
+    "dbcFile": null,
+    "blacklistFile": null,
+    "archive": false
+  }
+],
+"Nodes": [],
+"Packets": []}

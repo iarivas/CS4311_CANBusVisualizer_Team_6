@@ -1,0 +1,23 @@
+{
+"Project": [
+  {
+    "_id": "bfsoyuxvam",
+    "baudRate": 9600,
+    "initials": "MG",
+    "eventName": "IDK",
+    "dbcFile": null,
+    "blacklistFile": null,
+    "archive": false
+  },
+  {
+    "_id": "xjdanjgjsa",
+    "baudRate": 9600,
+    "initials": "MG",
+    "eventName": "IDK",
+    "dbcFile": null,
+    "blacklistFile": null,
+    "archive": false
+  }
+],
+"Nodes": [],
+"Packets": []}

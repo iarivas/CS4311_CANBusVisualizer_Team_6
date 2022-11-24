@@ -1,0 +1,14 @@
+{
+"Project": [
+  {
+    "_id": "arlhrovqbu",
+    "baudRate": 9600,
+    "initials": "JSJSNJ",
+    "eventName": "KK",
+    "dbcFile": null,
+    "blacklistFile": null,
+    "archive": false
+  }
+],
+"Nodes": [],
+"Packets": []}

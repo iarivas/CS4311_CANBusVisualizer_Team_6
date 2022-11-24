@@ -3,7 +3,6 @@ import PacketViewSettingsState from "../visualizer/modals/PacketViewSettingsStat
 import axios from 'axios'
 import NodeData from "./NodeData"
 
-
 class APIUtil {
     url = 'http://localhost:8000'
 
@@ -47,7 +46,6 @@ class APIUtil {
     exportProject(projectId: string, projectInfo: ProjectState, fileType: string){
         return axios.post(this.url +'/projects/' + projectId + '/export', projectInfo, {
             params: {
-                projectInfo: projectInfo,
                 fileType: fileType
             }
         })
