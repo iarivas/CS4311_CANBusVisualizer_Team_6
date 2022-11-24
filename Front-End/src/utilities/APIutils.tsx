@@ -47,7 +47,6 @@ class APIUtil {
     exportProject(projectId: string, projectInfo: ProjectState, fileType: string){
         return axios.post(this.url +'/projects/' + projectId + '/export', projectInfo, {
             params: {
-                projectInfo: projectInfo,
                 fileType: fileType
             }
         })

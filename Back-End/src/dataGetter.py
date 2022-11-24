@@ -278,7 +278,7 @@ class dataGetter:
                 file.write("\"Packets\": " + json_packets + "}\n")
 
         elif type == 'csv':
-            with open('../Projects/' + _projName + '.csv', 'r') as f:
+            with open('../Projects/' + _projName + '.csv', 'w') as f:
                 w = csv.DictWriter(f, ['Project'])
                 w.writeheader()
                 w = csv.DictWriter(f, projCursor[0].keys())
@@ -289,19 +289,21 @@ class dataGetter:
 
                 w = csv.DictWriter(f, ['Nodes'])
                 w.writeheader()
-                w = csv.DictWriter(f, nodeCursor[0].keys())
-                w.writeheader()
-                for i in nodeCursor:
-                    w = csv.DictWriter(f, i.keys())
-                    w.writerow(i) 
+                if nodeCursor != []:
+                    w = csv.DictWriter(f, nodeCursor[0].keys())
+                    w.writeheader()
+                    for i in nodeCursor:
+                        w = csv.DictWriter(f, i.keys())
+                        w.writerow(i) 
 
                 w = csv.DictWriter(f, ['Packets'])
                 w.writeheader()
-                w = csv.DictWriter(f, packetCursor[0].keys())
-                w.writeheader()
-                for i in packetCursor:
-                    w = csv.DictWriter(f, i.keys())
-                    w.writerow(i) 
+                if packetCursor != []:
+                    w = csv.DictWriter(f, packetCursor[0].keys())
+                    w.writeheader()
+                    for i in packetCursor:
+                        w = csv.DictWriter(f, i.keys())
+                        w.writerow(i) 
         return
 
     def importSelectedProject(_projPath, type):

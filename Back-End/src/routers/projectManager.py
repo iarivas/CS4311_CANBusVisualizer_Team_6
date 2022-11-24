@@ -91,6 +91,7 @@ class projectManager():
 
     @router.post("/projects/{projectId}/export", tags=["export"])
     def exportProject(projectInfo: ProjectInfo, fileType: Union[str, None] = None):
+        print("##########", projectInfo, fileType)
         if fileType is None:
             fileType = 'json'
         return dataGetter.exportSelectedProject(projectInfo.eventName, fileType)
