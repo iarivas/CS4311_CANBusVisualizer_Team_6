@@ -155,6 +155,14 @@ class dataGetter:
         
         return initials
 
+    def getProjectPacketFeedStatus(projectID):
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["TestCol"]
+
+        project = _myCol.find_one({"eventName": projectID})
+        return project['packetFeedStatus']
+
     ##return packets of project matching projectID
     def getPackets(projectID: str, size: int, sort: str, page: int, node=None, before=None, after=None):
         _myClient = pymongo.MongoClient(localDB)
