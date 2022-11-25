@@ -3,8 +3,12 @@ from fastapi import APIRouter
 from dataSaver import dataSaver
 from dataGetter import dataGetter
 from Node import Node
+from pydantic import BaseModel
 
 router = APIRouter()
+
+class ImageInfo(BaseModel):
+    fileName: str = None
 
 class nodeManager:
     def __init__(self, nodeList: List[Node] = []):
@@ -72,3 +76,7 @@ class nodeManager:
     @router.put("/projects/{projectId}/nodes", tags=["nodes"])
     def updateNodesList(projectId: str, nodeList: list):
         dataSaver.updateNodes(projectId, nodeList)
+
+    @router.post("/images/{publicId}", tags=["images"])
+    def addImageData(publicId: str, fileName: ImageInfo):
+        dataSaver.addImage(publicId, fileName.fileName)

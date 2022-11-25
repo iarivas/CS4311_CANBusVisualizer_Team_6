@@ -25,6 +25,7 @@ import EditPacketModal from './modals/EditPacketModal';
 import CustomNodeData from './nodeMap/CustomNodeData';
 import HideNodesModal from './modals/HideNodesModal';
 import ProjectState from '../projects/new/ProjectState';
+import ImportImageModal from './modals/ImportImageModal';
 
 const MENU_ID = 'packet-context-menu';
 
@@ -36,14 +37,22 @@ function Visualizer() {
     let [project,setProject] = useState<ProjectState|undefined>(undefined)
     // Modal for changing packet view settings
     let [isShownPacketsModal, setIsShownPacketsModal] = useState(false)
+
+    //Modal for importing images for nodes
+    let [isShownImportImageModal, setIsShownImportImageModal] = useState(false)
+
     let packetViewSettings = useRef<PacketViewSettingsState>({
         before: undefined,
         after: undefined,
         node: undefined,
         sort: PacketSort.TIME_DESC
     })
+
     const showPacketViewSettingsModal = () => setIsShownPacketsModal(true)
     const hidePacketViewSettingsModal = () => setIsShownPacketsModal(false)
+
+    const showImportImageModal = () => setIsShownImportImageModal(true)
+    const hideImportImageModal = () => setIsShownImportImageModal(false)
 
     // Modal for replay packets
     const [isShownReplayPacketsModal, setIsShownReplayPacketsModal] = useState<boolean>(false)
@@ -449,6 +458,13 @@ function Visualizer() {
                 packetInFocus={packetInFocus.current}
                 sendPackets={sendPackets}
             />
+            <ImportImageModal
+                isShown={isShownImportImageModal}
+                onHide={hideImportImageModal}
+            />
+            
+
+
             <h1 className='visualizer-title'>{project?.eventName}</h1>
             <Menubar
                 showPacketViewSettingsModal={showPacketViewSettingsModal}
@@ -456,6 +472,8 @@ function Visualizer() {
                 showReplayPacketsModal={() => setIsShownReplayPacketsModal(true)}
                 onAddNode={onOpenAddNodeModal}
                 showHideNodeModal={() => setIsShownHideNodeModal(true)}
+                showImportImageModal={showImportImageModal}
+                hideImportImageModal={hideImportImageModal}
             />
             <div className='visualizer-content'>
                 <div className='packet-container-content'>

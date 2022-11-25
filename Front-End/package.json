@@ -13,6 +13,7 @@
     "@types/react-router-dom": "^5.3.3",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.1",
+    "cloudinary-react": "^1.8.1",
     "font-awesome": "^4.7.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",

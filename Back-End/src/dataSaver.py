@@ -129,6 +129,13 @@ class dataSaver:
             _myCol.update_one({"projectId": projectID, "nodeID": node["nodeID"]}, {"$set": {
                               "data": node["data"], "name": node["name"], "position": node["position"], "relationships": node["relationships"]}})
 
+    def addImage(publicId, fileName):
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestDB"]
+        _myI = _myDB["Images"]
+
+        _myI.insert_one({'_id': publicId, 'fileName': fileName})
+
 
 # This is meant for testing purposes only, in order to allow the quick and
 # easy deletiong of all packets from the db, uncomment as needed
