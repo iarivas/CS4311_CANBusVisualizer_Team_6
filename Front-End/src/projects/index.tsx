@@ -5,6 +5,7 @@ import {NewProject, ImportProject} from './new';
 import { Button, ButtonGroup, Col, Nav, Dropdown, Row, Tab, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import ProjectState from './new/ProjectState';
 import { useEffect, useState } from 'react';
+import swal from 'sweetalert'
 
 function Projects() {
 
@@ -47,25 +48,16 @@ function Projects() {
 
   }
 
-  const downloadFile = ({ data, fileName, fileType }:any) => {
-    const blob = new Blob([data], { type: fileType });
-  
-    const a = document.createElement("a");
-    a.download = fileName;
-    a.href = window.URL.createObjectURL(blob);
-    const clickEvt = new MouseEvent("click", {
-      view: window,
-      bubbles: true,
-      cancelable: true,
-    });
-    a.dispatchEvent(clickEvt);
-    a.remove();
-  };
 
   const exportFile = (projectId: string, projectInfo: ProjectState, fileType: string) => {
     // Export project to JSON
     api.exportProject(projectId, projectInfo, fileType)
-    
+    .then((response) => {
+      swal({
+        
+        text: 'Exported to: Back-End/Projects/' + projectInfo.eventName + '.' +fileType
+      });
+    })
     .catch((error: any) => console.log(error))
 
   }
