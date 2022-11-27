@@ -1,8 +1,8 @@
-.node-map-container-content {
+#download-image .node-map-container-content {
     padding-left: 30px;
 }
 
-.node-map-container {
+#download-image .node-map-container {
     flex: 1 0 auto;
     display: flex;
     flex-direction: column;
@@ -11,29 +11,46 @@
     border-width: 1px;
     border-style: solid;
 }
-path.react-flow__edge-path {
+#download-image path.react-flow__edge-path {
     stroke-width: 4;
     stroke: black;
 }
-.react-flow {
+#download-image .react-flow {
     flex: 1 0 auto;
     min-width: 700px;
     min-height: 400px;
     background-color: #63738C;
 }
 
-.map-flow {
+#download-image.map-flow {
     flex: 1 0 auto;
     flex-direction: column;
 }
 
-.custom-node-content {
+#download-image .custom-node-content {
     padding: 10px;
     display: flex;
 }
 
-.custom-node-info {
+#download-image .custom-node-info {
     padding-left: 20px;
     text-align: left;
     color: black
 }
+
+#download-image .download-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    border: 1px solid #eee;
+    background: #ebf8ff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  
+  #download-image .download-btn:hover {
+    opacity: 0.9;
+  }

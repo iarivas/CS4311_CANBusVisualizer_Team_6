@@ -10,14 +10,14 @@ export function downloadImage({
     a.setAttribute('href', dataUrl)
     a.click()
 }
-export function downloadButton(){
+export function DownloadButton(){
     const onClick = () => {
         var map = document.querySelector('.react-flow') as HTMLElement
         toPng(map, {
-            filter: (Node) => {
+            filter: (node) => {
                 if(
-                    Node?.classList?.contains('react-flow__minimap') ||
-                    Node?.classList?.contains('react-flow__controls')
+                    node?.classList?.contains('react-flow__minimap') ||
+                    node?.classList?.contains('react-flow__controls')
                 ) {
                     return false
                 }
@@ -31,3 +31,4 @@ export function downloadButton(){
         </Button>
     );
 }
+export default DownloadButton
