@@ -21,6 +21,7 @@ function mapToPng() {
       download(dataUrl, 'nodeMap.png')
   });
 }
+
 function mapToJpeg() {
   var map = document.getElementById('download-image') as HTMLElement
   toJpeg(map, {
@@ -58,23 +59,22 @@ export default function Menubar({
             
             <NavDropdown title="File" id="basic-nav-dropdown" >
               <NavDropdown.Item id="action" href="#action/3.2">Export Project </NavDropdown.Item>
-              <NavDropdown title="Download Map">
-                <NavDropdown.Item id="action" onClick={mapToPng}>As Jpeg</NavDropdown.Item>
-                <NavDropdown.Item id="action" onClick={mapToJpeg}></NavDropdown.Item>
-              </NavDropdown>
               <NavDropdown.Item id="action" href='/projects/'>Exit</NavDropdown.Item>
             </NavDropdown>
 
             <NavDropdown title="Packets" id="basic-nav-dropdown" >
               <NavDropdown.Item id="action" onClick={showReplayPacketsModal}> Replay Packets </NavDropdown.Item>
               <NavDropdown.Item id='action' onClick={showPacketViewSettingsModal}>Filter and Sort</NavDropdown.Item>
-              
             </NavDropdown>
 
             <NavDropdown title="Node" id="basic-nav-dropdown" >
               <NavDropdown.Item id="action" onClick={() => onAddNode()}> Add Node  </NavDropdown.Item>
               <NavDropdown.Item id="action" onClick={showHideNodeModal}>Hide/Show</NavDropdown.Item>
+            </NavDropdown>
 
+            <NavDropdown title="Download Map" id="basic-nav-dropdown">
+              <NavDropdown.Item id="action" onClick={mapToPng}>As Jpeg</NavDropdown.Item>
+              <NavDropdown.Item id="action" onClick={mapToJpeg}>As Png</NavDropdown.Item>
             </NavDropdown>
 
           </Nav>
