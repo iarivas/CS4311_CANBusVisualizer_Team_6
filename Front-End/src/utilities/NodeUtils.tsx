@@ -1,8 +1,7 @@
 import { Edge, Node } from "react-flow-renderer"
 import CustomNodeData from "../visualizer/nodeMap/CustomNodeData"
 import NodeData from "./NodeData"
-import { toPng, toJpeg } from "html-to-image";
-import download from "downloadjs";
+
 
 class NodeUtils {
     // Returns a list containing:
