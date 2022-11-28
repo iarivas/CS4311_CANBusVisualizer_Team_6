@@ -25,7 +25,7 @@ import EditPacketModal from './modals/EditPacketModal';
 import CustomNodeData from './nodeMap/CustomNodeData';
 import HideNodesModal from './modals/HideNodesModal';
 import ProjectState from '../projects/new/ProjectState';
-
+import DownloadButton from '../components/DownloadButton';
 const MENU_ID = 'packet-context-menu';
 
 function Visualizer() {
@@ -467,7 +467,8 @@ function Visualizer() {
                     onPlay={onPlay}
                     />
                 </div>
-                <div className='node-map-container-content'>
+                <div className='node-map-container-content' id='download-image'>
+                    <DownloadButton/>
                     <NodeMap
                         nodes={nodes}
                         edges={edges}

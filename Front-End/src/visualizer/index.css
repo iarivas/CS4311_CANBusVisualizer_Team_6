@@ -26,7 +26,7 @@ div.packet-container-content {
     flex: 0 0 auto;
 }
 
-div.node-map-container-content {
+#download-image.div.node-map-container-content {
     display: flex;
     flex: 1 0 auto;
 }
