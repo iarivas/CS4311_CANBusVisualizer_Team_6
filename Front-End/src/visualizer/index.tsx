@@ -410,7 +410,8 @@ function Visualizer() {
                     position: {x: 0, y: 400}
                 }))
             })
-            .catch(() => {
+            .catch((error) => {
+                console.log(error)
                 alert('There was an issue in the server. Could not create the node')
             })
     }

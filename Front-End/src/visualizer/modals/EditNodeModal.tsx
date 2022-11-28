@@ -46,7 +46,7 @@ function EditNodeModal({
     hidden: false,
   })
 
-  const [nodeBeingEdited, setNodeBeingEdited] = useState<Node<CustomNodeData>>()
+  const [nodeBeingEdited, setNodeBeingEdited] = useState<Node<CustomNodeData>>(defaultNodeInfo.current)
 
   useEffect(() => {
     setNodeBeingEdited(node ?? defaultNodeInfo.current) 
