@@ -2,7 +2,6 @@ import { Edge, Node } from "react-flow-renderer"
 import CustomNodeData from "../visualizer/nodeMap/CustomNodeData"
 import NodeData from "./NodeData"
 
-
 class NodeUtils {
     // Returns a list containing:
     // [newNodes, newEdges]

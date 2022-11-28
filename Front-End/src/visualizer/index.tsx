@@ -25,6 +25,7 @@ import EditPacketModal from './modals/EditPacketModal';
 import CustomNodeData from './nodeMap/CustomNodeData';
 import HideNodesModal from './modals/HideNodesModal';
 import ProjectState from '../projects/new/ProjectState';
+
 const MENU_ID = 'packet-context-menu';
 
 function Visualizer() {
