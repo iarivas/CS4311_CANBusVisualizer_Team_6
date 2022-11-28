@@ -1,14 +1,6 @@
 import { toPng } from "html-to-image";
 import download from "downloadjs";
 
-export function downloadImage({
-    dataUrl
-}: any){
-    const a = document.createElement('a')
-    a.setAttribute('download', 'nodeMap.png')
-    a.setAttribute('href', dataUrl)
-    a.click()
-}
 export function DownloadMap(){
     var map = document.getElementById('download-image') as HTMLElement
     toPng(map, {

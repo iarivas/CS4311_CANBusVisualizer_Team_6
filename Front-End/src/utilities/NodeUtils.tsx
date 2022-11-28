@@ -1,6 +1,8 @@
 import { Edge, Node } from "react-flow-renderer"
 import CustomNodeData from "../visualizer/nodeMap/CustomNodeData"
 import NodeData from "./NodeData"
+import { toPng, toJpeg, toSvg } from "html-to-image";
+import download from "downloadjs";
 
 class NodeUtils {
     // Returns a list containing:
@@ -75,6 +77,39 @@ class NodeUtils {
         })
 
         return nodesData
+    }
+    mapToPng() {
+        var map = document.getElementById('download-image') as HTMLElement
+        toPng(map, {
+            filter: (node) => {
+                if(
+                    node?.classList?.contains('react-flow__minimap') ||
+                    node?.classList?.contains('react-flow__controls')
+                ) {
+                    return false
+                }
+                return true
+            },
+        }).then(function(dataUrl){
+            download(dataUrl, 'nodeMap.png')
+        });
+    }
+    mapToJpeg() {
+        var map = document.getElementById('download-image') as HTMLElement
+        toJpeg(map, {
+            filter: (node) => {
+                if(
+                    node?.classList?.contains('react-flow__minimap') ||
+                    node?.classList?.contains('react-flow__controls')
+                ) {
+                    return false
+                }
+                return true
+            },
+            quality: 0.95,
+        }).then(function(dataUrl){
+            download(dataUrl, 'nodeMap.jpeg')
+        });
     }
 }
 
