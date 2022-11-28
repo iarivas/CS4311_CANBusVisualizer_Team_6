@@ -6,7 +6,7 @@ import can,cantools,re
 # candump vcan0 | python3 -m cantools decode '/home/cbvs/Desktop/dbcFile.dbc'
 
 bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
-dbc = cantools.database.load_file('/home/cbvs/Desktop/dbcFile.dbc')
+dbc = cantools.database.load_file('../CSS-Electronics-SAE-J1939-2018-08_v1.2.dbc')
 
 # Hardcode
 

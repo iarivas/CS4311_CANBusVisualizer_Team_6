@@ -22,7 +22,7 @@
     background-color: #63738C;
 }
 
-#download-image .map-flow {
+#download-image.map-flow {
     flex: 1 0 auto;
     flex-direction: column;
 }
@@ -37,20 +37,3 @@
     text-align: left;
     color: black
 }
-
-#download-image .download-btn {
-    position: absolute;
-    top:300px;
-    right: 35px;
-    z-index: 10;
-    border: 1px solid #eee;
-    background: black;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-  
-  #download-image .download-btn:hover {
-    opacity: 0.9;
-  }

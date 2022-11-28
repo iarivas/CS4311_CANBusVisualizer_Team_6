@@ -4,7 +4,6 @@ import ReactFlow, {
 import './index.css'
 import React, { useCallback, useState, useRef } from "react";
 import CustomNode from './customNode'
-import DownloadButton from '../../components/DownloadButton';
 
 const nodeTypes = { custom: CustomNode};
 
@@ -25,7 +24,7 @@ function NodeMap({
             <div className='node-map-container-inner'>
                 <h3>CAN Bus Map</h3>
             </div>
-            <div className='map-flow'>
+            <div className='map-flow' id='download-image'>
                 <ReactFlow
                     className='rounded'
                     edges={edges}
