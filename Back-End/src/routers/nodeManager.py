@@ -10,6 +10,16 @@ router = APIRouter()
 class ImageInfo(BaseModel):
     fileName: str = None
 
+class nodeInfo(BaseModel):
+    isBlacklisted: bool
+    projectId: str
+    nodeID: str
+    name: str
+    data: object = None
+    position: object = None
+    relationships: list = None
+
+
 class nodeManager:
     def __init__(self, nodeList: List[Node] = []):
         self.nodeList = nodeList
@@ -76,6 +86,11 @@ class nodeManager:
     @router.put("/projects/{projectId}/nodes", tags=["nodes"])
     def updateNodesList(projectId: str, nodeList: list):
         dataSaver.updateNodes(projectId, nodeList)
+
+    # return axios.post(this.url + '/projects/' + projectId + '/nodes', node)
+    @router.post("/projects/{projectId}/nodes", tags=["nodes"])
+    def createNode(projectId: str, node: nodeInfo):
+        dataSaver.createNode(projectId, node)
 
     @router.post("/images/{publicId}", tags=["images"])
     def addImageData(publicId: str, fileName: ImageInfo):

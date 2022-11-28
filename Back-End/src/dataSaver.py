@@ -1,5 +1,7 @@
 import pymongo
 from typing import Final
+from Node import Node
+
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
@@ -138,6 +140,19 @@ class dataSaver:
             _myCol.update_one({"projectId": projectID, "nodeID": node["nodeID"]}, {"$set": {
                               "data": node["data"], "name": node["name"], "position": node["position"], "relationships": node["relationships"]}})
 
+    def createNode(projectID: str, node):
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestPDB"]
+        _myColNo = _myDB["TestColNodes"]
+
+        _myColNo.insert_one({"isBlacklisted": node.isBlacklisted, 
+                             "projectId": projectID,
+                             "nodeID": node.nodeID,
+                             "name": node.name,
+                             "data": node.data,
+                             "position": node.position,
+                             "relationships": node.relationships})
+    
     def addImage(publicId, fileName):
         _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestDB"]
