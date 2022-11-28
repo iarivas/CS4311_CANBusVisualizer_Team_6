@@ -3,7 +3,6 @@ import {useNavigate} from 'react-router-dom'
 import Form from 'react-bootstrap/Form'
 import ProjectState from './ProjectState'
 import APIUtil from '../../utilities/APIutils'
-import { read } from 'fs'
 
 interface stateProps {
     state: ProjectState
@@ -22,6 +21,9 @@ function NewProjectForm({state, setState}: stateProps) {
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         api.createProject(state)
+        .then((response) => {
+            navigate(`/projects/${response.data.projectId}`)
+        })
     }
 
     return (
@@ -61,27 +63,35 @@ function NewProjectForm({state, setState}: stateProps) {
                             min='1'
                         />
                     </Form.Group>
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>DBC file</Form.Label>
+                    <Form.Group className='mb-3' controlId='formDBC'>
+                        <Form.Label>DBC file path</Form.Label>
                         <Form.Control
-                            type="file"
-                            onChange={(e) => {
-                                let target = (e.target as HTMLInputElement)
-                                const reader = new FileReader()
-                                reader.readAsText(target.files![0])
-                                reader.onload = () => setState({...state, dbcFile: reader.result as string})
+                            type='text'
+                            name='dbcFile'
+                            placeholder='/home/<username>/Desktop/<filename>'
+                            value={state.dbcFile ?? ''}
+                            onChange={e=>{
+                                if(!e.target.value) {
+                                    setState({...state, dbcFile: null})
+                                } else {
+                                    setState({...state, dbcFile: e.target.value})
+                                }
                             }}
                         />
                     </Form.Group>
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>Blacklist</Form.Label>
+                    <Form.Group className='mb-3' controlId='formBlacklist'>
+                        <Form.Label>Blacklist file path</Form.Label>
                         <Form.Control
-                            type="file"
-                            onChange={(e) => {
-                                let target = (e.target as HTMLInputElement)
-                                const reader = new FileReader()
-                                reader.readAsText(target.files![0])
-                                reader.onload = () => setState({...state, blacklistFile: reader.result as string})
+                            type='text'
+                            name='blacklistFile'
+                            placeholder='/home/<username>/Desktop/<filename>'
+                            value={state.blacklistFile ?? ''}
+                            onChange={e=>{
+                                if(!e.target.value) {
+                                    setState({...state, blacklistFile: null})
+                                } else {
+                                    setState({...state, blacklistFile: e.target.value})
+                                }
                             }}
                         />
                     </Form.Group>
