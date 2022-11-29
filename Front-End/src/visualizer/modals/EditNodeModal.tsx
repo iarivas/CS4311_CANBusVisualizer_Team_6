@@ -6,34 +6,33 @@ import Modal from 'react-bootstrap/Modal';
 import { Node } from 'react-flow-renderer';
 import { FlagOptions } from '../../common/Constants';
 import CustomNodeData from '../nodeMap/CustomNodeData';
+import APIUtil from '../../utilities/APIutils'
+import { List } from 'react-bootstrap-icons';
 
 interface Props {
+  imageOptions: never[]
   isShow: boolean,
   setHide: (() => void),
   onApply: ((node: Node<CustomNodeData>) => void),
   node: Node<CustomNodeData>
-}
-
-const dropdownOptions = {
-  ac: '../images/ac.png',
-  engine: '../images/engine.png',
-  brake: '../images/brake.png',
-  wheel: '../images/steering_wheel.png',
+  
 }
 
 function EditNodeModal({
+  imageOptions,
   isShow,
   setHide,
   onApply,
   node
 }: Props) {
+
   
   const defaultNodeInfo = useRef<Node<CustomNodeData>>({
     id: '',
     type: 'custom',
     data: {
       label: '',
-      icon: dropdownOptions.ac,
+      icon: 'ovhenvwzeet61ejetsxv',
       isBlacklisted: false,
       hidden: false,
       annotation: '',
@@ -125,11 +124,10 @@ function EditNodeModal({
                   icon: e.target!.value,
                 }})
               }
-            }>
-              <option value='../images/ac.png'>../images/ac.png</option>
-              <option value='../images/engine.png'>../images/engine.png</option>
-              <option value='../images/brake.png'>../images/brake.png</option>
-              <option value='../images/steering_wheel.png'>../images/steering_wheel.png</option>
+              }> 
+                  {imageOptions.map((value) => 
+                    <option value={value['_id']}>{value['fileName']}</option>)
+                  }
             </Form.Select>
           </Form.Group>
 

@@ -95,3 +95,7 @@ class nodeManager:
     @router.post("/images/{publicId}", tags=["images"])
     def addImageData(publicId: str, fileName: ImageInfo):
         dataSaver.addImage(publicId, fileName.fileName)
+
+    @router.get("/images/", tags=["images"])
+    def getImages():
+        return dataGetter.getImages()

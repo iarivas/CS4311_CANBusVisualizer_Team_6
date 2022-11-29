@@ -53,6 +53,14 @@ function Visualizer() {
 
     const showImportImageModal = () => setIsShownImportImageModal(true)
     const hideImportImageModal = () => setIsShownImportImageModal(false)
+    const [imageOptions, setImageOptions] =  useState([]);
+
+    const getImageOptions = () => {
+        api.getImages().then((response) => {
+             setImageOptions(response.data)})
+    }
+    
+
 
     // Modal for replay packets
     const [isShownReplayPacketsModal, setIsShownReplayPacketsModal] = useState<boolean>(false)
@@ -429,6 +437,7 @@ function Visualizer() {
                 <Item onClick={onAddToQueuePacket}>Add to play list</Item>
             </Menu>
             <EditNodeModal
+                imageOptions={imageOptions}
                 isShow={editNodeModal}
                 setHide={hideNodeModal}
                 onApply={nodeInFocus.current ? onNodeEditApply : onNodeCreateApply}
@@ -468,6 +477,7 @@ function Visualizer() {
 
             <h1 className='visualizer-title'>{project?.eventName}</h1>
             <Menubar
+                getImageOptions={getImageOptions}
                 showPacketViewSettingsModal={showPacketViewSettingsModal}
                 hidePacketViewSettingsModal={hidePacketViewSettingsModal}
                 showReplayPacketsModal={() => setIsShownReplayPacketsModal(true)}

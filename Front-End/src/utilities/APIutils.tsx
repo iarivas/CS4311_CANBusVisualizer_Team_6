@@ -79,6 +79,11 @@ class APIUtil {
     addImageData(fileName: string, publicId: string) {
         return axios.post(this.url + '/images/' + publicId, {fileName: fileName})
     }
+
+    //Get all id's and names of the images
+    getImages() {
+         return axios.get(this.url + '/images/')
+    }
 }
 
 export default APIUtil

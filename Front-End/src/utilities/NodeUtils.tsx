@@ -36,7 +36,7 @@ class NodeUtils {
                 type: 'custom',
                 data: {
                     label: nodeData.data?.label || nodeData.name,
-                    icon: nodeData.data?.icon || '../images/engine.png',
+                    icon: nodeData.data?.icon || 'ovhenvwzeet61ejetsxv',
                     isBlacklisted: nodeData.data?.isBlacklisted ?? nodeData.isBlacklisted,
                     annotation: nodeData.data?.annotation || '',
                     flag: nodeData.data?.flag || 'none',

@@ -467,3 +467,17 @@ class dataGetter:
         # Merges eventName2 file in /Back-End/Projects
         self.mergeSelectedProject(eventName, eventName2, type)
         return
+
+    def getImages():
+        _myClient = pymongo.MongoClient(localDB)
+        _myDB = _myClient["TestDB"]
+        _myCol = _myDB["Images"]
+
+        
+        result = []
+
+        for key in _myCol.find():
+            result.append(key)
+            
+        return result
+    
