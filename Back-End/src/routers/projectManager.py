@@ -99,8 +99,13 @@ class projectManager():
         
     @router.post("/projects/import", tags=["import"])
     def importProject(filePath: str):
-        return dataGetter.importSelectedProject(filePath, 'json')
-        #return dataGetter.importSelectedProject(projectInfo.eventName, 'csv')
+        if filePath.endswith(".json"):
+            return dataGetter.importSelectedProject(filePath, 'json')
+        elif filePath.endswith(".csv"):
+            return dataGetter.importSelectedProject(filePath, 'csv')
+        else:
+            print("File Type Error")
+            return
 
     #@router.post("/projects/{projectId}/sync", tags=["sync"])
     def syncProject(projectInfo: ProjectInfo):

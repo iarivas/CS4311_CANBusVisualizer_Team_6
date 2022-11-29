@@ -314,6 +314,12 @@ class dataGetter:
             _newProject = data["Project"]
             _newNodes = data["Nodes"]
             _newPackets = data["Packets"]
+            for i in _newNodes:
+                del i['_id']
+
+            for i in _newPackets:
+                del i['_id']
+                
         elif type == 'csv':
             with open(_projPath) as csv_file:
                 csv_reader = list(csv.reader(csv_file, delimiter=','))
