@@ -24,25 +24,4 @@ function NewProject() {
     )
 }
 
-function ImportProject() {
-    const [state, setState] = useState<ProjectState>({
-        
-        _id: undefined, 
-        eventName: '',
-        baudRate: 9600,
-        initials: '',
-        dbcFile: null,
-        blacklistFile: null,
-        archive: false, 
-    })
-
-    return (
-        <div className='new-project'>
-            <h1 className='new-project-title'>Import Project</h1>
-            <br/>
-            <ImportProjectForm state={state} setState={setState}/>
-        </div>
-    )
-}
-
-export {NewProject, ImportProject};
+export default NewProject

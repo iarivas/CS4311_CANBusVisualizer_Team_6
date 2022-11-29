@@ -1,18 +1,13 @@
 import Button from 'react-bootstrap/Button'
 import {useNavigate} from 'react-router-dom'
 import Form from 'react-bootstrap/Form'
-import ProjectState from './ProjectState'
 import APIUtil from '../../utilities/APIutils'
-import { read } from 'fs'
+import { useState } from 'react'
 
-
-interface stateProps {
-    state: ProjectState
-    setState: React.Dispatch<React.SetStateAction<ProjectState>>
-}
-
-function ImportProjectForm({state, setState}: stateProps) {
+function ImportProjectForm() {
     let navigate = useNavigate()
+
+    const [filePath, setFilePath] = useState('')
     const api = new APIUtil()
 
     const onCancel = ()=> {
@@ -22,7 +17,7 @@ function ImportProjectForm({state, setState}: stateProps) {
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        api.importProject()
+        api.importProject(filePath)
         .then((response) => {
             navigate(`/projects/${response.data.projectId}`)
         })
@@ -31,23 +26,21 @@ function ImportProjectForm({state, setState}: stateProps) {
 
     return (
         <div className='new-project-form'>
-            <Form onSubmit={e=>onSubmit(e)}>
+            <h1 className='new-project-title'>Import Project</h1>
+            <br/>
+            <Form onSubmit={onSubmit}>
                 <div className='new-project-fields'>
-
-
-
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>Project file</Form.Label>
                         <Form.Control
                             type='text'
                             name='projectFile'
                             placeholder='/home/<username>/Desktop/<filename>'
-                            
                             onChange={e=>{
                                 if(!e.target.value) {
-                                    
+                                    setFilePath('')
                                 } else {
-                                    
+                                    setFilePath(e.target.value)
                                 }
                             }}
                         />

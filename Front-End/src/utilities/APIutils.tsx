@@ -16,8 +16,12 @@ class APIUtil {
             })
     }
 
-    importProject() {
-        return axios.post(this.url + '/projects', )
+    importProject(filePath: string) {
+        return axios.post(
+            this.url + '/projects/import',
+            null,
+            {params: {filePath: filePath}}
+        )
     }
 
     gatherTraffic(play: boolean, projectId: string) {

@@ -97,9 +97,9 @@ class projectManager():
         return dataGetter.exportSelectedProject(projectInfo.eventName, fileType)
         #return dataGetter.exportSelectedProject(projectInfo.eventName, 'csv')
         
-    @router.post("/projects/{projectId}/import", tags=["import"])
-    def importProject(projectInfo: ProjectInfo):
-        return dataGetter.importSelectedProject(projectInfo.eventName, 'json')
+    @router.post("/projects/import", tags=["import"])
+    def importProject(filePath: str):
+        return dataGetter.importSelectedProject(filePath, 'json')
         #return dataGetter.importSelectedProject(projectInfo.eventName, 'csv')
 
     #@router.post("/projects/{projectId}/sync", tags=["sync"])

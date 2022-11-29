@@ -1,11 +1,12 @@
 import './index.css';
 import APIUtil from '../utilities/APIutils';
 import {useNavigate} from "react-router-dom";
-import {NewProject, ImportProject} from './new';
+import NewProject from './new';
 import { Button, ButtonGroup, Col, Nav, Dropdown, Row, Tab, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import ProjectState from './new/ProjectState';
 import { useEffect, useState } from 'react';
 import swal from 'sweetalert'
+import ImportProjectForm from './new/ImportProjectForm';
 
 function Projects() {
 
@@ -15,8 +16,6 @@ function Projects() {
     const path = '/'
     navigate(path)
   }
-
-  
 
   const setArchive=(projectId: string, projectInfo: ProjectState)=> {
     const updatedProject: ProjectState = {...projectInfo, archive: true}
@@ -90,7 +89,6 @@ function Projects() {
   const [archivedProjects, setArchivedProjects] = useState<ProjectState[]>([])
 
   let newProjectForm = NewProject()
-  let importProjectForm = ImportProject()
 
   const activeProjectCards = activeProjects.map((project) => {
     return (
@@ -207,7 +205,7 @@ function Projects() {
             </Tab.Pane>
             <Tab.Pane eventKey='importProject'>
               <h3 className='projectHeader3'> </h3>
-              {importProjectForm}
+              <ImportProjectForm/>
             </Tab.Pane>
             <Tab.Pane eventKey='activeProjects'>
               <h3 className='projectHeader3'>Active Projects</h3>
