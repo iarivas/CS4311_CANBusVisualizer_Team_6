@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button'
 import {useNavigate} from 'react-router-dom'
 import Form from 'react-bootstrap/Form'
-
+import './index.css';
 
 
 function Sync() {
@@ -60,7 +60,7 @@ function Sync() {
                     <Button onClick={onCancel} className='new-project-button-cancel rounded-pill'>Cancel
                     </Button>
                     <div className='space'></div>
-                    <Button type='submit' className='new-project-button-submit rounded-pill'>Create</Button>
+                    <Button type='submit' className='new-project-button-submit rounded-pill'>Sync</Button>
                 </div>
             </Form>
         </div>

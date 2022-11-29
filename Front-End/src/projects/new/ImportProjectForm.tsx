@@ -5,6 +5,7 @@ import ProjectState from './ProjectState'
 import APIUtil from '../../utilities/APIutils'
 import { read } from 'fs'
 
+
 interface stateProps {
     state: ProjectState
     setState: React.Dispatch<React.SetStateAction<ProjectState>>
@@ -21,7 +22,11 @@ function ImportProjectForm({state, setState}: stateProps) {
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        /*api. something*/
+        api.importProject()
+        .then((response) => {
+            navigate(`/projects/${response.data.projectId}`)
+        })
+        
     }
 
     return (

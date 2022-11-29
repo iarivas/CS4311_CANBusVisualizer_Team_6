@@ -16,6 +16,10 @@ class APIUtil {
             })
     }
 
+    importProject() {
+        return axios.post(this.url + '/projects', )
+    }
+
     gatherTraffic(play: boolean, projectId: string) {
         return axios.put(this.url + '/projects/' + projectId + '/play', {
             play: play
