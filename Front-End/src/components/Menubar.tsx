@@ -36,7 +36,7 @@ export default function Menubar({
             </NavDropdown>
 
             <NavDropdown title="Node" id="basic-nav-dropdown" >
-              <NavDropdown.Item id="action" onClick={() => {onAddNode(); getImageOptions()}}> Add Node  </NavDropdown.Item>
+              <NavDropdown.Item id="action" onClick={() => {onAddNode()}}> Add Node  </NavDropdown.Item>
               <NavDropdown.Item id="action" onClick={showHideNodeModal}>Hide/Show</NavDropdown.Item>
               <NavDropdown.Item id="action" onClick={showImportImageModal}>Import Image</NavDropdown.Item>
             </NavDropdown>

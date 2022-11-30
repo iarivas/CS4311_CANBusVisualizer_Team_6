@@ -11,7 +11,8 @@ import { List } from 'react-bootstrap-icons';
 
 
 interface Props {
-  imageOptions: never[]
+  imageOptions: never[],
+  updateImagesMethod: Function,
   isShow: boolean,
   setHide: (() => void),
   onApply: ((node: Node<CustomNodeData>) => void),
@@ -21,6 +22,7 @@ interface Props {
 
 function EditNodeModal({
   imageOptions,
+  updateImagesMethod,
   isShow,
   setHide,
   onApply,
@@ -48,6 +50,7 @@ function EditNodeModal({
   const [nodeBeingEdited, setNodeBeingEdited] = useState<Node<CustomNodeData>>(defaultNodeInfo.current)
 
   useEffect(() => {
+    updateImagesMethod()
     setNodeBeingEdited(node ?? defaultNodeInfo.current) 
   }, [isShow])
 

@@ -404,9 +404,9 @@ function Visualizer() {
     }, [nodes, edges])
 
     const onOpenAddNodeModal = () => {
-        getImageOptions()
         nodeInFocus.current = undefined
         setEditNodeModal(true)
+        //getImageOptions()
     };
 
     const onNodeCreateApply = (createdNode: Node<CustomNodeData>) => {
@@ -439,6 +439,7 @@ function Visualizer() {
             </Menu>
             <EditNodeModal
                 imageOptions={imageOptions}
+                updateImagesMethod={getImageOptions}
                 isShow={editNodeModal}
                 setHide={hideNodeModal}
                 onApply={nodeInFocus.current ? onNodeEditApply : onNodeCreateApply}
@@ -478,7 +479,7 @@ function Visualizer() {
 
             <h1 className='visualizer-title'>{project?.eventName}</h1>
             <Menubar
-                getImageOptions={getImageOptions()}
+                getImageOptions={setImageOptions}
                 showPacketViewSettingsModal={showPacketViewSettingsModal}
                 hidePacketViewSettingsModal={hidePacketViewSettingsModal}
                 showReplayPacketsModal={() => setIsShownReplayPacketsModal(true)}
