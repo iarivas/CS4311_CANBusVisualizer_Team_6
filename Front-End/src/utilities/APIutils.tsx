@@ -20,7 +20,7 @@ class APIUtil {
 
     syncProject(syncProjectvars: any){
         return axios.post(
-            this.url + '/projects/sync',
+            this.url + '/projects/sync', syncProjectvars
             
 
         )
