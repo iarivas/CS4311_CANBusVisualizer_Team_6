@@ -274,7 +274,7 @@ function Visualizer() {
                         }
                         else{
                             node.position = {
-                                x: (idx-1) * 200,
+                                x: idx * 200,
                                 y: 0
                             }
                         }
@@ -331,7 +331,7 @@ function Visualizer() {
                         }
                         else{
                             node.position = {
-                                x: (idx-1) * 200,
+                                x: idx * 200,
                                 y: 0
                             }
                         }
