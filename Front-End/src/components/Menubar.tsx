@@ -41,11 +41,15 @@ function mapToJpeg() {
 }
 
 export default function Menubar({
+      getImageOptions,
+      imageOptions,
       showPacketViewSettingsModal,
       hidePacketViewSettingsModal,
       showReplayPacketsModal,
       onAddNode,
       showHideNodeModal,
+      showImportImageModal,
+      hideImportImageModal
     } : any
     ){
   return (
@@ -68,8 +72,9 @@ export default function Menubar({
             </NavDropdown>
 
             <NavDropdown title="Node" id="basic-nav-dropdown" >
-              <NavDropdown.Item id="action" onClick={() => onAddNode()}> Add Node  </NavDropdown.Item>
+              <NavDropdown.Item id="action" onClick={() => {onAddNode()}}> Add Node  </NavDropdown.Item>
               <NavDropdown.Item id="action" onClick={showHideNodeModal}>Hide/Show</NavDropdown.Item>
+              <NavDropdown.Item id="action" onClick={showImportImageModal}>Import Image</NavDropdown.Item>
             </NavDropdown>
 
             <NavDropdown title="Download Map" id="basic-nav-dropdown">

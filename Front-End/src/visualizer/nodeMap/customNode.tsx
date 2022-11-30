@@ -2,30 +2,21 @@ import { Position, Handle } from "react-flow-renderer";
 import { FlagFill } from "react-bootstrap-icons";
 import { FlagOptions } from "../../common/Constants";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import {AdvancedImage} from '@cloudinary/react';
+import {Cloudinary} from "@cloudinary/url-gen";
 
-let pics = {
-  pic1: require('../images/ac.png'),
-  pic2: require('../images/engine.png'),
-  pic3: require('../images/brake.png'),
-  pic4: require('../images/steering_wheel.png')
-}
-
-function renderSwitch(param: any) {
-  switch(param) {
-    case '../images/ac.png':
-      return pics.pic1;
-    case '../images/engine.png':
-      return pics.pic2;
-    case '../images/brake.png':
-      return pics.pic3;
-    case '../images/steering_wheel.png':
-      return pics.pic4;
-    default:
-      return pics.pic2;
+const cld = new Cloudinary({
+  cloud: {
+    cloudName: 'dvigduckr'
   }
-}
+});
+
+
+
+
 
 function CustomNode({ id, data }: any) {
+  const myImage = cld.image(data.icon);
   return (
     <main
       style={{ backgroundColor: (data.isBlacklisted ? '#C0C0C0' : 'white'), overflow:'hidden'}}
@@ -33,7 +24,8 @@ function CustomNode({ id, data }: any) {
     >
       <Handle type="target" position={Position.Top} style={{ height:'12px', width:'12px' }} />
       <div className='custom-node-content'>
-        <img style={{ marginRight: 'auto', marginLeft: 'auto', height: '70px', width: '70px'}} src={renderSwitch(data.icon)} alt='icon'/>
+        <AdvancedImage cldImg={myImage} style={{marginRight: 'auto', marginLeft: 'auto', height: '70px', width: '70px'}}/>
+        {/* <img style={{ marginRight: 'auto', marginLeft: 'auto', height: '70px', width: '70px'}} src={renderSwitch(data.icon)} alt='icon'/> */}
         <div className='custom-node-info' style={{width:'150px'}}>
           <div style={{color: 'blue'}}>
             ID: {id}
