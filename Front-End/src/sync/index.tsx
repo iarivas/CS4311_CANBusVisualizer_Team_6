@@ -12,6 +12,8 @@ function Sync() {
         userName: " ",
         IP: " ",
         Pass: " ",
+        projectName: " ",
+        fileType: " ",
 
     })
     
@@ -66,6 +68,32 @@ function Sync() {
                         />
                     </Form.Group>
                     
+                    <Form.Group className='mb-3'>
+                        <Form.Label>Project Name</Form.Label>
+                        <Form.Control
+                            type='text'
+                            name='projectName'
+                            placeholder='project name'
+                            value={syncValues.projectName}
+                            onChange={(e)=>setSyncValues({...syncValues, projectName: e.target.value})}
+                            required
+                            
+                        />
+                    </Form.Group>
+
+                    <Form.Group className='mb-3'>
+                        <Form.Label>File type</Form.Label>
+                        <Form.Control
+                            type='text'
+                            name='fileType'
+                            placeholder='CSV / JSON'
+                            value={syncValues.fileType}
+                            onChange={(e)=>setSyncValues({...syncValues, fileType: e.target.value})}
+                            required
+                            
+                        />
+                        
+                    </Form.Group>
                     
                 </div>
                 <br />
