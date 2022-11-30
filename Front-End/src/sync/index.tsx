@@ -9,11 +9,11 @@ function Sync() {
     let navigate = useNavigate()
     const api = new APIUtil()
     const [syncValues, setSyncValues] = useState({
-        userName: " ",
-        IP: " ",
-        Pass: " ",
-        projectName: " ",
-        fileType: " ",
+        userName: "",
+        IP: "",
+        Pass: "",
+        projectName: "",
+        fileType: "",
 
     })
     
