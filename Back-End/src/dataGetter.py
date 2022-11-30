@@ -4,7 +4,7 @@ from typing import Final
 from datetime import datetime
 from bson.json_util import dumps
 from pymongo import MongoClient
-import pandas as pd
+#import pandas as pd
 
 localDB: Final[str] = "mongodb://localhost:27017"
 
@@ -259,6 +259,7 @@ class dataGetter:
         return store
 
     def exportSelectedProject(_projName, type):
+        print(type)
         client = MongoClient('localhost', 27017)
         
         db = client.TestDB
@@ -277,14 +278,15 @@ class dataGetter:
             json_nodes = dumps(nodeCursor, indent = 2) 
             json_packets = dumps(packetCursor, indent = 2)
 
-            file = '/../Projects/' + _projName +'.json'
+            file = '../Projects/' + _projName +'.json'
+            print("#######################", file)
             with open(file, 'w') as file:
                 file.write("{\n\"Project\": " + json_project + ",\n")
                 file.write("\"Nodes\": " + json_nodes + ",\n")
                 file.write("\"Packets\": " + json_packets + "}\n")
 
         elif type == 'csv':
-            with open('../Projects/' + _projName + '.csv', 'r') as f:
+            with open('../Projects/' + _projName + '.csv', 'w') as f:
                 w = csv.DictWriter(f, ['Project'])
                 w.writeheader()
                 w = csv.DictWriter(f, projCursor[0].keys())
@@ -295,19 +297,21 @@ class dataGetter:
 
                 w = csv.DictWriter(f, ['Nodes'])
                 w.writeheader()
-                w = csv.DictWriter(f, nodeCursor[0].keys())
-                w.writeheader()
-                for i in nodeCursor:
-                    w = csv.DictWriter(f, i.keys())
-                    w.writerow(i) 
+                if nodeCursor != []:
+                    w = csv.DictWriter(f, nodeCursor[0].keys())
+                    w.writeheader()
+                    for i in nodeCursor:
+                        w = csv.DictWriter(f, i.keys())
+                        w.writerow(i) 
 
                 w = csv.DictWriter(f, ['Packets'])
                 w.writeheader()
-                w = csv.DictWriter(f, packetCursor[0].keys())
-                w.writeheader()
-                for i in packetCursor:
-                    w = csv.DictWriter(f, i.keys())
-                    w.writerow(i) 
+                if packetCursor != []:
+                    w = csv.DictWriter(f, packetCursor[0].keys())
+                    w.writeheader()
+                    for i in packetCursor:
+                        w = csv.DictWriter(f, i.keys())
+                        w.writerow(i) 
         return
 
     def importSelectedProject(_projPath, type):
@@ -318,6 +322,12 @@ class dataGetter:
             _newProject = data["Project"]
             _newNodes = data["Nodes"]
             _newPackets = data["Packets"]
+            for i in _newNodes:
+                del i['_id']
+
+            for i in _newPackets:
+                del i['_id']
+                
         elif type == 'csv':
             with open(_projPath) as csv_file:
                 csv_reader = list(csv.reader(csv_file, delimiter=','))

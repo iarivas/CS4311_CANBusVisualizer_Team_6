@@ -1,0 +1,30 @@
+
+  div.new-project {
+    display: table;
+    padding: 10px;
+    width: 50%;
+    margin: 50px;
+}
+
+div.new-project-fields .mb-3 {
+    width: 800px;
+    margin:50px;
+}
+
+div.new-project-fields .mb-3 .form-control{
+    background-color: rgba(0, 0, 0, 0);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #edeff3;
+}
+
+div.new-project-buttons  {
+  margin:20px;
+}
+  
+
+div.new-project-buttons .space {
+    width: 20px;
+    margin: 10px;
+    height: auto;
+    
+}
