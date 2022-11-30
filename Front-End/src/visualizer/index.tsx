@@ -477,7 +477,7 @@ function Visualizer() {
             
 
 
-            <h1 className='visualizer-title'>{project?.eventName}</h1>
+            <h1 className='visualizer-title'>{projectId}</h1>
             <Menubar
                 getImageOptions={setImageOptions}
                 showPacketViewSettingsModal={showPacketViewSettingsModal}

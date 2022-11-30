@@ -3,12 +3,19 @@ import PacketViewSettingsState from "../visualizer/modals/PacketViewSettingsStat
 import axios from 'axios'
 import NodeData from "./NodeData"
 
-
 class APIUtil {
     url = 'http://localhost:8000'
 
     createProject(project: ProjectState) {
         return axios.post(this.url + '/projects', project)
+    }
+
+    importProject(filePath: string) {
+        return axios.post(
+            this.url + '/projects/import',
+            null,
+            {params: {filePath: filePath}}
+        )
     }
 
     gatherTraffic(play: boolean, projectId: string) {
@@ -38,6 +45,14 @@ class APIUtil {
 
     editProjectInfo(projectId: string, projectInfo: ProjectState){
         return axios.put(this.url +'/projects/' + projectId + '/', projectInfo)
+    }
+
+    exportProject(projectId: string, projectInfo: ProjectState, fileType: string){
+        return axios.post(this.url +'/projects/' + projectId + '/export', projectInfo, {
+            params: {
+                fileType: fileType
+            }
+        })
     }
 
     getPackets(filters: PacketViewSettingsState, projectId: string, page: number, size: number) {

@@ -5,6 +5,8 @@ import NewProject from './new';
 import { Button, ButtonGroup, Col, Nav, Dropdown, Row, Tab, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import ProjectState from './new/ProjectState';
 import { useEffect, useState } from 'react';
+import swal from 'sweetalert'
+import ImportProjectForm from './new/ImportProjectForm';
 
 function Projects() {
 
@@ -14,8 +16,6 @@ function Projects() {
     const path = '/'
     navigate(path)
   }
-
-  
 
   const setArchive=(projectId: string, projectInfo: ProjectState)=> {
     const updatedProject: ProjectState = {...projectInfo, archive: true}
@@ -42,6 +42,20 @@ function Projects() {
     api.getProjects(true)
     .then((response) => {
       setArchivedProjects(response.data)
+    })
+    .catch((error: any) => console.log(error))
+
+  }
+
+
+  const exportFile = (projectId: string, projectInfo: ProjectState, fileType: string) => {
+    // Export project to JSON
+    api.exportProject(projectId, projectInfo, fileType)
+    .then((response) => {
+      swal({
+        
+        text: 'Exported to: Back-End/Projects/' + projectInfo.eventName + '.' +fileType
+      });
     })
     .catch((error: any) => console.log(error))
 
@@ -88,7 +102,7 @@ function Projects() {
           className='inside-mock'
           variant='warning'
           onClick={() => {
-            const path = project._id
+            const path = project.eventName
             onNavigateProject('/projects/' + path)
           }}
         >
@@ -99,7 +113,8 @@ function Projects() {
 
         <Dropdown.Menu>
         <Dropdown.Item onClick={() => setArchive(project._id!, project)}>Archive</Dropdown.Item>
-        <Dropdown.Item >Export </Dropdown.Item>
+        <Dropdown.Item onClick={() => exportFile(project._id!, project, "json")}>Export to JSON </Dropdown.Item>
+        <Dropdown.Item onClick={() => exportFile(project._id!, project, "csv")}>Export to CSV </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     )
@@ -189,8 +204,8 @@ function Projects() {
               {newProjectForm}
             </Tab.Pane>
             <Tab.Pane eventKey='importProject'>
-              <h3 className='projectHeader3'>Import Project</h3>
-              Due to import project method not existing on backend this is empty
+              <h3 className='projectHeader3'> </h3>
+              <ImportProjectForm/>
             </Tab.Pane>
             <Tab.Pane eventKey='activeProjects'>
               <h3 className='projectHeader3'>Active Projects</h3>

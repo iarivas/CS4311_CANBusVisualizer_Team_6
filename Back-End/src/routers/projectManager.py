@@ -16,6 +16,8 @@ from dataGetter import *
 from pydantic import BaseModel
 #from socket import *
 from typing import Union
+from Synchronizer import Synchronizer as sync
+from typing import Union
 
 router = APIRouter()
 
@@ -88,20 +90,32 @@ class projectManager():
                                  projectInfo.eventName, projectInfo.dbcFile, projectInfo.blacklistFile, projectInfo.archive)
 
     @router.post("/projects/{projectId}/export", tags=["export"])
-    def exportProject(projectInfo: ProjectInfo):
-        return dataGetter.exportSelectedProject(projectInfo.eventName, 'json')
+    def exportProject(projectInfo: ProjectInfo, fileType: Union[str, None] = None):
+        print("##########", projectInfo, fileType)
+        if fileType is None:
+            fileType = 'json'
+        return dataGetter.exportSelectedProject(projectInfo.eventName, fileType)
         #return dataGetter.exportSelectedProject(projectInfo.eventName, 'csv')
         
-    #@router.post("/projects/{projectId}/import", tags=["import"])
-    def importProject(projectInfo: ProjectInfo):
-        return dataGetter.importSelectedProject(projectInfo.eventName, 'json')
-        #return dataGetter.importSelectedProject(projectInfo.eventName, 'csv')
+    @router.post("/projects/import", tags=["import"])
+    def importProject(filePath: str):
+        if filePath.endswith(".json"):
+            return dataGetter.importSelectedProject(filePath, 'json')
+        elif filePath.endswith(".csv"):
+            return dataGetter.importSelectedProject(filePath, 'csv')
+        else:
+            print("File Type Error")
+            return
 
     #@router.post("/projects/{projectId}/sync", tags=["sync"])
     def syncProject(projectInfo: ProjectInfo):
         # Needs to be changed to (eventName, eventName2, 'json')
         # Not sure were we would get eventName 2 from ATM
-        return dataGetter.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'json')
+        Un, Pw, Ip = "kali", "kali", "192.168.98.128"  
+        return sync.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'json', Un, Ip, Pw)
+
+
+        # return sync.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'json', projectInfo.Un, projectInfo.Ip, projectInfo.Pw)
         #return dataGetter.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'csv')
 
 
