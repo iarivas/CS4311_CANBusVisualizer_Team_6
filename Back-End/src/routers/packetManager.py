@@ -14,9 +14,6 @@ from typing import Union, List
 dbc = cantools.database.load_file('../CSS-Electronics-SAE-J1939-2018-08_v1.2.dbc')
 router = APIRouter()
 
-class Play(BaseModel):
-    play: bool
-
 class packet(BaseModel):
     timestamp: str
     nodeId: str
@@ -121,9 +118,12 @@ class packetManager():
         return dataGetter.getPackets(projectId, size, sort, page, node, before, after)
 
     @router.put("/projects/{projectId}/play", tags=["play"])
-    def getLivePackets(projectId: str, play: Play):
-        i = 1
-        while(play and i <= 50):
-            dataGetter.receiveTraffic(projectId, dbc, bus)
-            i += 1
-        return 
+    def setPacketFeedStatus(projectId: str, packetFeedStatus: bool):
+        dataSaver.updateProjectPacketFeedStatus(projectId, packetFeedStatus)
+        if packetFeedStatus:
+            getLivePackets(projectId)
+
+def getLivePackets(projectId: str):
+    while dataGetter.getProjectPacketFeedStatus(projectId):
+        dataGetter.receiveTraffic(projectId, dbc, bus)
+    return 

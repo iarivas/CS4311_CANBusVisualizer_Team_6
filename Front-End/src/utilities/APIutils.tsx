@@ -3,24 +3,35 @@ import PacketViewSettingsState from "../visualizer/modals/PacketViewSettingsStat
 import axios from 'axios'
 import NodeData from "./NodeData"
 
-
 class APIUtil {
     url = 'http://localhost:8000'
 
     createProject(project: ProjectState) {
         return axios.post(this.url + '/projects', project)
-            .then(function(response) {
-                console.log(response)
-            })
-            .catch(function(error) {
-                console.log(error)
-            })
+    }
+
+    importProject(filePath: string) {
+        return axios.post(
+            this.url + '/projects/import',
+            null,
+            {params: {filePath: filePath}}
+        )
+    }
+
+    syncProject(syncProjectvars: any){
+        return axios.post(
+            this.url + '/projects/sync',
+            
+
+        )
     }
 
     gatherTraffic(play: boolean, projectId: string) {
-        return axios.put(this.url + '/projects/' + projectId + '/play', {
-            play: play
-        })
+        return axios.put(
+            this.url + '/projects/' + projectId + '/play',
+            null,
+            {params: {packetFeedStatus: play}}
+        )
             .then(function(response) {
                 console.log(response)
             })
@@ -39,17 +50,17 @@ class APIUtil {
     getProject(projectId: string) {
         return axios.get(this.url + '/projects/' + projectId)
     }
-    exportProject(projectInfo: ProjectState, projectId: string) {
-        return axios.post(this.url +'/projects/' + projectId + '/Export',{
-            params: {
-                projectInfo: projectInfo
-            }
-
-        })
-    }
 
     editProjectInfo(projectId: string, projectInfo: ProjectState){
         return axios.put(this.url +'/projects/' + projectId + '/', projectInfo)
+    }
+
+    exportProject(projectId: string, projectInfo: ProjectState, fileType: string){
+        return axios.post(this.url +'/projects/' + projectId + '/export', projectInfo, {
+            params: {
+                fileType: fileType
+            }
+        })
     }
 
     getPackets(filters: PacketViewSettingsState, projectId: string, page: number, size: number) {
