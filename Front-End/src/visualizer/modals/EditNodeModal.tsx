@@ -9,6 +9,7 @@ import CustomNodeData from '../nodeMap/CustomNodeData';
 import APIUtil from '../../utilities/APIutils'
 import { List } from 'react-bootstrap-icons';
 
+
 interface Props {
   imageOptions: never[]
   isShow: boolean,
@@ -25,7 +26,6 @@ function EditNodeModal({
   onApply,
   node
 }: Props) {
-
   
   const defaultNodeInfo = useRef<Node<CustomNodeData>>({
     id: '',

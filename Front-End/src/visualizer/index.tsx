@@ -404,6 +404,7 @@ function Visualizer() {
     }, [nodes, edges])
 
     const onOpenAddNodeModal = () => {
+        getImageOptions()
         nodeInFocus.current = undefined
         setEditNodeModal(true)
     };
@@ -477,7 +478,7 @@ function Visualizer() {
 
             <h1 className='visualizer-title'>{project?.eventName}</h1>
             <Menubar
-                getImageOptions={getImageOptions}
+                getImageOptions={getImageOptions()}
                 showPacketViewSettingsModal={showPacketViewSettingsModal}
                 hidePacketViewSettingsModal={hidePacketViewSettingsModal}
                 showReplayPacketsModal={() => setIsShownReplayPacketsModal(true)}
