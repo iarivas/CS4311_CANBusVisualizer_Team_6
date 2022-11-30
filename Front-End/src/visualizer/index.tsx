@@ -5,6 +5,7 @@ import {
     useEdgesState,
     addEdge,
     Node,
+    Position,
 } from 'react-flow-renderer';
 import { Menu, Item, useContextMenu } from 'react-contexify';
 import PacketContainer from './packetContainer'
@@ -182,12 +183,16 @@ function Visualizer() {
         api.gatherTraffic(play, projectId)
     }
 
+    let rightMax = 0;
+    
     // Node map
     const initialNodes: any[] = [
- 
+        { id: '-1', data: {}, position: {x:0, y:400}, sourcePosition: Position.Right, type: 'input', style: {height: '20px', width: '50px', backgroundColor: 'black'}, draggable: false, selectable: false},
+        { id: '-2', data: {}, position: {x:3000, y:400}, targetPosition: Position.Left, type: 'output', style: {height: '20px', width: '50px', backgroundColor: 'black'}, draggable: false, selectable: false},
     ];
+    
     const initialEdges: any[] = [
-        
+        {id: 'e-1--2', source: '-1', target: '-2', type: 'smoothstep'},
     ]
 
     const [nodeDict, setNodeDict] = useState<any>({})
@@ -273,6 +278,12 @@ function Visualizer() {
                                 y: 0
                             }
                         }
+                        rightMax = idx * 300;
+                        nodes[1].position.x = 900;
+                        console.log(nodes[1])
+                        let stridx = idx.toString();
+                        let str = stridx + 'asf';
+                        edges.push({id: str, source: stridx, target: '-2', type: 'smoothstep'});
                         
                     }
                 })
@@ -283,8 +294,8 @@ function Visualizer() {
                     setEdgeDict(edgeDictRef.current)
                 })
 
-                setNodes(newNodes)
-                setEdges(newEdges)
+                setNodes([...nodes, ...newNodes])
+                setEdges([...edges, ...newEdges])
             })
             .catch(error => console.log(error))
     }
@@ -324,6 +335,8 @@ function Visualizer() {
                                 y: 0
                             }
                         }
+                        rightMax = idx * 300;
+                        nodes[1].position.y = 900;
 
                         nodesToAdd.push(node)
                     }
