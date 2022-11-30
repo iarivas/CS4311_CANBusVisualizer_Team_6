@@ -26,6 +26,9 @@ function Sync() {
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         api.syncProject(syncValues)
+        .catch((error) => {
+            console.log(error)
+        })
         
     }
 
