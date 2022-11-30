@@ -1,8 +1,8 @@
-#download-image .node-map-container-content {
+.node-map-container-content {
     padding-left: 30px;
 }
 
-#download-image .node-map-container {
+.node-map-container {
     flex: 1 0 auto;
     display: flex;
     flex-direction: column;
@@ -11,28 +11,28 @@
     border-width: 1px;
     border-style: solid;
 }
-#download-image path.react-flow__edge-path {
+path.react-flow__edge-path {
     stroke-width: 4;
     stroke: black;
 }
-#download-image .react-flow {
+.react-flow {
     flex: 1 0 auto;
     min-width: 700px;
     min-height: 400px;
     background-color: #63738C;
 }
 
-#download-image.map-flow {
+.map-flow {
     flex: 1 0 auto;
     flex-direction: column;
 }
 
-#download-image .custom-node-content {
+.custom-node-content {
     padding: 10px;
     display: flex;
 }
 
-#download-image .custom-node-info {
+.custom-node-info {
     padding-left: 20px;
     text-align: left;
     color: black
