@@ -102,7 +102,7 @@ function Projects() {
           className='inside-mock'
           variant='warning'
           onClick={() => {
-            const path = project._id
+            const path = project.eventName
             onNavigateProject('/projects/' + path)
           }}
         >
