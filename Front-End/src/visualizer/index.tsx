@@ -188,7 +188,7 @@ function Visualizer() {
     // Node map
     const initialNodes: any[] = [
         { id: '-1', data: {}, position: {x:0, y:400}, sourcePosition: Position.Right, type: 'input', style: {height: '20px', width: '50px', backgroundColor: 'black'}, draggable: false, selectable: false},
-        { id: '-2', data: {}, position: {x:3000, y:400}, targetPosition: Position.Left, type: 'output', style: {height: '20px', width: '50px', backgroundColor: 'black'}, draggable: false, selectable: false},
+        { id: '-2', data: {}, position: {x:300, y:400}, targetPosition: Position.Left, type: 'output', style: {height: '20px', width: '50px', backgroundColor: 'black'}, draggable: false, selectable: false},
     ];
     
     const initialEdges: any[] = [
@@ -279,11 +279,11 @@ function Visualizer() {
                             }
                         }
                         rightMax = idx * 300;
-                        nodes[1].position.x = 900;
+                        nodes[1].position.x = rightMax;
                         console.log(nodes[1])
-                        let stridx = idx.toString();
-                        let str = stridx + 'asf';
-                        edges.push({id: str, source: stridx, target: '-2', type: 'smoothstep'});
+                        let strid = node.id.toString();
+                        let str = strid + 'asf';
+                        edges.push({id: str, source: node.id, target: '-2', type: 'smoothstep'});
                         
                     }
                 })
@@ -336,7 +336,11 @@ function Visualizer() {
                             }
                         }
                         rightMax = idx * 300;
-                        nodes[1].position.y = 900;
+                        nodes[1].position.x = rightMax;
+                        console.log(nodes[1])
+                        let strid = node.id.toString();
+                        let str = strid + 'asf';
+                        edges.push({id: str, source: node.id, target: '-2', type: 'smoothstep'});
 
                         nodesToAdd.push(node)
                     }
