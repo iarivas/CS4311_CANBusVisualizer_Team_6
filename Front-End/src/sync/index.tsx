@@ -74,7 +74,7 @@ function Sync() {
                     <Form.Group className='mb-3'>
                         <Form.Label>Project Name</Form.Label>
                         <Form.Control
-                            type='text'
+                            
                             name='projectName'
                             placeholder='project name'
                             value={syncValues.projectName}
@@ -86,15 +86,19 @@ function Sync() {
 
                     <Form.Group className='mb-3'>
                         <Form.Label>File type</Form.Label>
-                        <Form.Control
-                            type='text'
+                        <Form.Select
+                            
                             name='fileType'
                             placeholder='CSV / JSON'
                             value={syncValues.fileType}
                             onChange={(e)=>setSyncValues({...syncValues, fileType: e.target.value})}
                             required
                             
-                        />
+                        >
+                        <option value='json'> json </option>
+                        <option value='csv'> csv </option>
+                        
+                        </Form.Select>
                         
                     </Form.Group>
                     
