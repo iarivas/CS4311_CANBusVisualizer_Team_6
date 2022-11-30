@@ -449,7 +449,7 @@ function Visualizer() {
                 packetInFocus={packetInFocus.current}
                 sendPackets={sendPackets}
             />
-            <h1 className='visualizer-title'>{project?.eventName}</h1>
+            <h1 className='visualizer-title'>{projectId}</h1>
             <Menubar
                 showPacketViewSettingsModal={showPacketViewSettingsModal}
                 hidePacketViewSettingsModal={hidePacketViewSettingsModal}

@@ -22,7 +22,7 @@ function NewProjectForm({state, setState}: stateProps) {
         e.preventDefault()
         api.createProject(state)
         .then((response) => {
-            navigate(`/projects/${response.data.projectId}`)
+            navigate(`/projects/${response.data.eventName}`)
         })
     }
 
