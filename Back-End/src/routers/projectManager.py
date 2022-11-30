@@ -30,6 +30,11 @@ class ProjectInfo(BaseModel):
     blacklistFile: str = None
     archive: bool = None
 
+class alanystInfo(BaseModel):
+    userName: str = None
+    IP: str = None
+    Pass: str = None
+
 
 class projectManager():
 
@@ -108,11 +113,8 @@ class projectManager():
             return
 
     @router.post("/projects/sync", tags=["sync"])
-    def syncProject(projectInfo: ProjectInfo):
-        # Needs to be changed to (eventName, eventName2, 'json')
-        # Not sure were we would get eventName 2 from ATM
-        Un, Pw, Ip = "kali", "kali", "192.168.98.128"  
-        return sync.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'json', Un, Ip, Pw)
+    def syncProject(alanystInfo: alanystInfo):
+        return sync.syncSelectedProject('json', alanystInfo.userName, alanystInfo.IP, alanystInfo.Pass)
 
 
         # return sync.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'json', projectInfo.Un, projectInfo.Ip, projectInfo.Pw)
