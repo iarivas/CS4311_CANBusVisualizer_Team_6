@@ -13,7 +13,7 @@ function Sync() {
         IP: "",
         Pass: "",
         projectName: "",
-        fileType: "",
+        type: "json",
 
     })
     
@@ -29,7 +29,8 @@ function Sync() {
         .catch((error) => {
             console.log(error)
         })
-        
+
+        console.log(syncValues)
     }
 
     return (
@@ -87,13 +88,11 @@ function Sync() {
                     <Form.Group className='mb-3'>
                         <Form.Label>File type</Form.Label>
                         <Form.Select
-                            
-                            name='fileType'
+                            name='type'
                             placeholder='CSV / JSON'
-                            value={syncValues.fileType}
-                            onChange={(e)=>setSyncValues({...syncValues, fileType: e.target.value})}
+                            value={syncValues.type}
+                            onChange={(e)=>setSyncValues({...syncValues, type: e.target.value})}
                             required
-                            
                         >
                         <option value='json'> json </option>
                         <option value='csv'> csv </option>
