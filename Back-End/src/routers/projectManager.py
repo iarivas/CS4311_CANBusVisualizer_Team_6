@@ -16,11 +16,12 @@ from dataGetter import *
 from pydantic import BaseModel
 #from socket import *
 from typing import Union
-from Synchronizer import Synchronizer as sync
+from Synchronizer import Synchronizer
 from typing import Union
 
 router = APIRouter()
 
+sync = Synchronizer()
 
 class ProjectInfo(BaseModel):
     baudRate: int = None
@@ -31,6 +32,8 @@ class ProjectInfo(BaseModel):
     archive: bool = None
 
 class alanystInfo(BaseModel):
+    projectName: str = None
+    type: str = None
     userName: str = None
     IP: str = None
     Pass: str = None
@@ -114,7 +117,12 @@ class projectManager():
 
     @router.post("/projects/sync", tags=["sync"])
     def syncProject(alanystInfo: alanystInfo):
-        return sync.syncSelectedProject('json', alanystInfo.userName, alanystInfo.IP, alanystInfo.Pass)
+        return sync.syncSelectedProject(
+            eventName = alanystInfo.projectName,
+            type = alanystInfo.type,
+            userName = alanystInfo.userName,
+            IP = alanystInfo.IP, 
+            Pass = alanystInfo.Pass)
 
 
         # return sync.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'json', projectInfo.Un, projectInfo.Ip, projectInfo.Pw)
