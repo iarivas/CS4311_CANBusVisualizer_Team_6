@@ -98,6 +98,15 @@ class APIUtil {
     createNode(projectId: string, node: NodeData) {
         return axios.post(this.url + '/projects/' + projectId + '/nodes', node)
     }
+
+    addImageData(fileName: string, publicId: string) {
+        return axios.post(this.url + '/images/' + publicId, {fileName: fileName})
+    }
+
+    //Get all id's and names of the images
+    getImages() {
+         return axios.get(this.url + '/images/')
+    }
 }
 
 export default APIUtil

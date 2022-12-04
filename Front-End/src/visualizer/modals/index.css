@@ -1,8 +1,8 @@
-.edit-packet-modal .modal-content, .edit-node-modal .modal-content, .hide-nodes-modal .modal-content{
+.edit-packet-modal .modal-content, .edit-node-modal .modal-content, .hide-nodes-modal .modal-content, .import-image-modal .modal-content{
     background-color: #17161b;
 }
 
-.edit-packet-modal .form-control, .edit-node-modal .form-control{
+.edit-packet-modal .form-control, .edit-node-modal .form-control {
     background-color: rgba(0, 0, 0, 0);
     border-color: rgba(255, 255, 255, 0.2) !important;
     color: #edeff3;
@@ -61,4 +61,8 @@
     color: #edeff3 !important;
     background-color: #17161b;
     border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.close {
+    color: #fff; 
 }

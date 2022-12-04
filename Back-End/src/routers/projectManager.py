@@ -18,6 +18,8 @@ from pydantic import BaseModel
 from typing import Union
 from Synchronizer import Synchronizer
 from typing import Union
+from Synchronizer import Synchronizer as sync
+from typing import Union
 
 router = APIRouter()
 

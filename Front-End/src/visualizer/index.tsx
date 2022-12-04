@@ -25,6 +25,7 @@ import EditPacketModal from './modals/EditPacketModal';
 import CustomNodeData from './nodeMap/CustomNodeData';
 import HideNodesModal from './modals/HideNodesModal';
 import ProjectState from '../projects/new/ProjectState';
+import ImportImageModal from './modals/ImportImageModal';
 
 const MENU_ID = 'packet-context-menu';
 
@@ -36,14 +37,30 @@ function Visualizer() {
     let [project,setProject] = useState<ProjectState|undefined>(undefined)
     // Modal for changing packet view settings
     let [isShownPacketsModal, setIsShownPacketsModal] = useState(false)
+
+    //Modal for importing images for nodes
+    let [isShownImportImageModal, setIsShownImportImageModal] = useState(false)
+
     let packetViewSettings = useRef<PacketViewSettingsState>({
         before: undefined,
         after: undefined,
         node: undefined,
         sort: PacketSort.TIME_DESC
     })
+
     const showPacketViewSettingsModal = () => setIsShownPacketsModal(true)
     const hidePacketViewSettingsModal = () => setIsShownPacketsModal(false)
+
+    const showImportImageModal = () => setIsShownImportImageModal(true)
+    const hideImportImageModal = () => setIsShownImportImageModal(false)
+    const [imageOptions, setImageOptions] =  useState([]);
+
+    const getImageOptions = () => {
+        api.getImages().then((response) => {
+             setImageOptions(response.data)})
+    }
+    
+
 
     // Modal for replay packets
     const [isShownReplayPacketsModal, setIsShownReplayPacketsModal] = useState<boolean>(false)
@@ -389,6 +406,7 @@ function Visualizer() {
     const onOpenAddNodeModal = () => {
         nodeInFocus.current = undefined
         setEditNodeModal(true)
+        //getImageOptions()
     };
 
     const onNodeCreateApply = (createdNode: Node<CustomNodeData>) => {
@@ -401,7 +419,8 @@ function Visualizer() {
                     position: {x: 0, y: 400}
                 }))
             })
-            .catch(() => {
+            .catch((error) => {
+                console.log(error)
                 alert('There was an issue in the server. Could not create the node')
             })
     }
@@ -419,6 +438,8 @@ function Visualizer() {
                 <Item onClick={onAddToQueuePacket}>Add to play list</Item>
             </Menu>
             <EditNodeModal
+                imageOptions={imageOptions}
+                updateImagesMethod={getImageOptions}
                 isShow={editNodeModal}
                 setHide={hideNodeModal}
                 onApply={nodeInFocus.current ? onNodeEditApply : onNodeCreateApply}
@@ -449,13 +470,23 @@ function Visualizer() {
                 packetInFocus={packetInFocus.current}
                 sendPackets={sendPackets}
             />
-            <h1 className='visualizer-title'>{project?.eventName}</h1>
+            <ImportImageModal
+                isShown={isShownImportImageModal}
+                onHide={hideImportImageModal}
+            />
+            
+
+
+            <h1 className='visualizer-title'>{projectId}</h1>
             <Menubar
+                getImageOptions={setImageOptions}
                 showPacketViewSettingsModal={showPacketViewSettingsModal}
                 hidePacketViewSettingsModal={hidePacketViewSettingsModal}
                 showReplayPacketsModal={() => setIsShownReplayPacketsModal(true)}
                 onAddNode={onOpenAddNodeModal}
                 showHideNodeModal={() => setIsShownHideNodeModal(true)}
+                showImportImageModal={showImportImageModal}
+                hideImportImageModal={hideImportImageModal}
             />
             <div className='visualizer-content'>
                 <div className='packet-container-content'>

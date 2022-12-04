@@ -36,8 +36,8 @@ class NodeUtils {
                 type: 'custom',
                 data: {
                     label: nodeData.data?.label || nodeData.name,
-                    icon: nodeData.data?.icon || '../images/engine.png',
-                    isBlacklisted: nodeData.data?.isBlacklisted || nodeData.isBlacklisted,
+                    icon: nodeData.data?.icon || 'ovhenvwzeet61ejetsxv',
+                    isBlacklisted: nodeData.data?.isBlacklisted ?? nodeData.isBlacklisted,
                     annotation: nodeData.data?.annotation || '',
                     flag: nodeData.data?.flag || 'none',
                     hidden: nodeData.data?.hidden || false
@@ -62,12 +62,12 @@ class NodeUtils {
         edges.forEach((edge: any) => nodeEdges[edge.source].push(edge.target))
         
         // Final parse
-        const nodesData: NodeData[] = nodes.map((node: any): NodeData => {
+        const nodesData: NodeData[] = nodes.map((node): NodeData => {
             return {
                 projectId: projectId,
                 nodeID: node.id,
                 name: node.data.label,
-                isBlacklisted: node.isBlacklisted,
+                isBlacklisted: node.data.isBlacklisted,
                 data: node.data,
                 position: node.position,
                 relationships: nodeEdges[node.id]
