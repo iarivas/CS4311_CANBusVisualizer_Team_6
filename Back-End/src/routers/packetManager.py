@@ -10,9 +10,7 @@ from dataSaver import dataSaver
 from dataGetter import dataGetter
 from typing import Union, List
 import pymongo
-from typing import Final
 
-_isPath = False
 dbc = None
 bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
 
@@ -136,8 +134,6 @@ def getLivePackets(projectId: str):
     _proj = _myCol.find_one({
         "eventName": projectId
     })
-    
-    print((_proj["dbcFile"]))
     dbc = cantools.database.load_file(_proj["dbcFile"])
     while dataGetter.getProjectPacketFeedStatus(projectId):
         dataGetter.receiveTraffic(projectId, dbc, bus)
