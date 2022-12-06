@@ -31,7 +31,7 @@ class dataGetter:
             _myCol = _myDB["TestColNodes"]
 
             # Checks if node is in testCol_Nodes
-            if _myCol.find_one({'nodeID': str(_msg.arbitration_id+2147483648)}) == None:
+            if _myCol.find_one({'nodeID': str(_msg.arbitration_id+2147483648), 'projectId': projectId}) == None:
                 node =    {'projectId': projectId,
                         'nodeID': str(_msg.arbitration_id+2147483648), #Note sure why but the 2147483648 is needed to match up with the cangen node ID
                         'name': str(_msgInfo.comment),
