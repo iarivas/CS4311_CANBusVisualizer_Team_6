@@ -9,9 +9,11 @@ import cantools
 from dataSaver import dataSaver
 from dataGetter import dataGetter
 from typing import Union, List
+import pymongo
 
+dbc = None
 bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
-dbc = cantools.database.load_file('../CSS-Electronics-SAE-J1939-2018-08_v1.2.dbc')
+
 router = APIRouter()
 
 class packet(BaseModel):
@@ -66,6 +68,7 @@ class packetManager():
     #needs to be updated to get packet from DB and modified before being sent
     #https://python-can.readthedocs.io/en/master/message.html?highlight=message
     def sendPackets(arbitrationID, data):
+        global dbc
         msg = dbc.get_message_by_frame_id(arbitrationID)
         msg = can.Message(arbitration_id=arbitrationID, data = msg.encode(data), is_extended_id = False)
         bus.send(msg)
@@ -124,6 +127,14 @@ class packetManager():
             getLivePackets(projectId)
 
 def getLivePackets(projectId: str):
+    global dbc
+    _myClient = pymongo.MongoClient("mongodb://localhost:27017")
+    _myDB = _myClient["TestDB"]
+    _myCol = _myDB["TestCol"]
+    _proj = _myCol.find_one({
+        "eventName": projectId
+    })
+    dbc = cantools.database.load_file(_proj["dbcFile"])
     while dataGetter.getProjectPacketFeedStatus(projectId):
         dataGetter.receiveTraffic(projectId, dbc, bus)
     return 
