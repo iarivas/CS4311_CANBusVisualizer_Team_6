@@ -57,6 +57,12 @@ function installSsh {
     sudo service ssh restart;
 }
 function runProgram {
+    #start up mongo
+    sudo systemctl start mongod;
+    sudo systemctl enable mongod;
+    #start up ssh
+    sudo service ssh start;
+    sudo service ssh restart;
     #setup vcan for testing.
     sudo modprobe vcan;
     sudo ip link add dev vcan0 type vcan;

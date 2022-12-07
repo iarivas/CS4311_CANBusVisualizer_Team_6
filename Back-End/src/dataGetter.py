@@ -31,7 +31,7 @@ class dataGetter:
             _myCol = _myDB["TestColNodes"]
 
             # Checks if node is in testCol_Nodes
-            if _myCol.find_one({'nodeID': str(_msg.arbitration_id+2147483648)}) == None:
+            if _myCol.find_one({'nodeID': str(_msg.arbitration_id+2147483648), 'projectId': projectId}) == None:
                 node =    {'projectId': projectId,
                         'nodeID': str(_msg.arbitration_id+2147483648), #Note sure why but the 2147483648 is needed to match up with the cangen node ID
                         'name': str(_msgInfo.comment),
@@ -76,7 +76,7 @@ class dataGetter:
 
     #return project matching projectID
     def retrieveProject(projectID):
-        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestDB"]
         _myCol = _myDB["TestCol"]
 
@@ -87,7 +87,7 @@ class dataGetter:
 
     #return name of project matching projectID
     def retrieveName(projectID):
-        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestDB"]
         _myCol = _myDB["TestCol"]
 
@@ -101,7 +101,7 @@ class dataGetter:
 
     #return baudRate of project matching projectID
     def retrieveBaudRate(projectID):
-        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestDB"]
         _myCol = _myDB["TestCol"]
 
@@ -115,7 +115,7 @@ class dataGetter:
     
     #return dbcFile of project matching projectID
     def retrieveDBCFile(projectID):
-        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestDB"]
         _myCol = _myDB["TestCol"]
 
@@ -129,7 +129,7 @@ class dataGetter:
 
     #return blacklistFile of project matching projectID
     def retrieveBlacklistFile(projectID):
-        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestDB"]
         _myCol = _myDB["TestCol"]
 
@@ -143,7 +143,7 @@ class dataGetter:
     
     #return initials of project matching projectID
     def retrieveInitials(projectID):
-        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestDB"]
         _myCol = _myDB["TestCol"]
 
@@ -226,7 +226,7 @@ class dataGetter:
     
     #return archived projects
     def retrieveArchivedProjects():
-        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestPDB"]
         _myCol = _myDB["TestCol"]
 
@@ -246,7 +246,7 @@ class dataGetter:
         
     #return projects matching eventName
     def retrieveProjects(eventName):
-        _myClient = pymongo.MongoClient("mongodb+srv://Dillon:v4nbq3GP8Cyb3p4@software2.akghm64.mongodb.net/test")
+        _myClient = pymongo.MongoClient(localDB)
         _myDB = _myClient["TestDB"]
         _myCol = _myDB["TestCol"]
 
