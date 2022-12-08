@@ -6,7 +6,7 @@ import can,cantools,re
 # candump vcan0 | python3 -m cantools decode '/home/kali/Desktop/CanBusTester/CS4311_CANBusVisualizer_Team_6/Back-End/CSS-Electronics-SAE-J1939-2018-08_v1.2.dbc'
 
 bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
-dbc = cantools.database.load_file('/home/cbvs/Desktop/dbcFile.dbc')
+dbc = cantools.database.load_file('../CSS-Electronics-SAE-J1939-2018-08_v1.2.dbc')
 
 # Hardcode
 
@@ -22,7 +22,7 @@ dbc = cantools.database.load_file('/home/cbvs/Desktop/dbcFile.dbc')
     
 # # final = can.Message(arbitration_id = 2566847742, data = msg_data, is_extended_id = False)
 
-s = list(line.strip() for line in open('/home/cbvs/Desktop/CS4311_CANBusVisualizer_Team_6/Back-End/Test/OriginalPackets.log'))
+s = list(line.strip() for line in open('OriginalPackets.log'))
 
 for p in range(len(s)):
         sleep(0.1)

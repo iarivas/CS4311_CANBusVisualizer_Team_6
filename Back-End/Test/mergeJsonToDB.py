@@ -27,7 +27,7 @@ _myClient = pymongo.MongoClient(localDB)
 _myDB = _myClient["TestDB"]
 _myCol = _myDB["TestCol"]
 
-_myCol.insert_many(_newProject)
+#_myCol.insert_many(_newProject)
 
 _myClient = pymongo.MongoClient(localDB)
 _myDB = _myClient["TestPDB"]
