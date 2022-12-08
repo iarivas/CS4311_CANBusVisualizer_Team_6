@@ -16,11 +16,14 @@ from dataGetter import *
 from pydantic import BaseModel
 #from socket import *
 from typing import Union
+from Synchronizer import Synchronizer
+from typing import Union
 from Synchronizer import Synchronizer as sync
 from typing import Union
 
 router = APIRouter()
 
+sync = Synchronizer()
 
 class ProjectInfo(BaseModel):
     baudRate: int = None
@@ -29,6 +32,13 @@ class ProjectInfo(BaseModel):
     dbcFile: str = None
     blacklistFile: str = None
     archive: bool = None
+
+class alanystInfo(BaseModel):
+    projectName: str = None
+    type: str = None
+    userName: str = None
+    IP: str = None
+    Pass: str = None
 
 
 class projectManager():
@@ -107,12 +117,14 @@ class projectManager():
             print("File Type Error")
             return
 
-    #@router.post("/projects/{projectId}/sync", tags=["sync"])
-    def syncProject(projectInfo: ProjectInfo):
-        # Needs to be changed to (eventName, eventName2, 'json')
-        # Not sure were we would get eventName 2 from ATM
-        Un, Pw, Ip = "kali", "kali", "192.168.98.128"  
-        return sync.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'json', Un, Ip, Pw)
+    @router.post("/projects/sync", tags=["sync"])
+    def syncProject(alanystInfo: alanystInfo):
+        return sync.syncSelectedProject(
+            eventName = alanystInfo.projectName,
+            type = alanystInfo.type,
+            userName = alanystInfo.userName,
+            IP = alanystInfo.IP, 
+            Pass = alanystInfo.Pass)
 
 
         # return sync.syncSelectedProject(projectInfo.eventName, projectInfo.eventName, 'json', projectInfo.Un, projectInfo.Ip, projectInfo.Pw)

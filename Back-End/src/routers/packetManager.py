@@ -11,6 +11,7 @@ from dataGetter import dataGetter
 from typing import Union, List
 import pymongo
 
+
 dbc = None
 bus = can.interface.Bus(bustype='socketcan', channel='vcan0', bitrate=250000)
 

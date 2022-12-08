@@ -1,12 +1,23 @@
 import Button from 'react-bootstrap/Button'
 import {useNavigate} from 'react-router-dom'
 import Form from 'react-bootstrap/Form'
+import APIUtil from '../utilities/APIutils';
+import {useState } from 'react';
 import './index.css';
-
 
 function Sync() {
     let navigate = useNavigate()
+    const api = new APIUtil()
+    const [syncValues, setSyncValues] = useState({
+        userName: "",
+        IP: "",
+        Pass: "",
+        projectName: "",
+        type: "json",
+
+    })
     
+
     const onCancel = ()=> {
         const path = '../'
         navigate(path)
@@ -14,7 +25,12 @@ function Sync() {
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        
+        api.syncProject(syncValues)
+        .catch((error) => {
+            console.log(error)
+        })
+
+        console.log(syncValues)
     }
 
     return (
@@ -26,7 +42,8 @@ function Sync() {
                         <Form.Control
                             type='text'
                             name='Un'
-                            
+                            value={syncValues.userName}
+                            onChange={(e)=>setSyncValues({...syncValues, userName: e.target.value})}
                             placeholder='username'
                             required
                         />
@@ -36,7 +53,8 @@ function Sync() {
                         <Form.Control
                             type='text'
                             name='Ip'
-                            
+                            value={syncValues.IP}
+                            onChange={(e)=>setSyncValues({...syncValues, IP: e.target.value})}
                             placeholder='IP'
                             required
                         />
@@ -47,12 +65,41 @@ function Sync() {
                             type='password'
                             name='Pw'
                             placeholder='password'
-                            
+                            value={syncValues.Pass}
+                            onChange={(e)=>setSyncValues({...syncValues, Pass: e.target.value})}
                             required
-                            min='1'
+                            
                         />
                     </Form.Group>
                     
+                    <Form.Group className='mb-3'>
+                        <Form.Label>Project Name</Form.Label>
+                        <Form.Control
+                            
+                            name='projectName'
+                            placeholder='project name'
+                            value={syncValues.projectName}
+                            onChange={(e)=>setSyncValues({...syncValues, projectName: e.target.value})}
+                            required
+                            
+                        />
+                    </Form.Group>
+
+                    <Form.Group className='mb-3'>
+                        <Form.Label>File type</Form.Label>
+                        <Form.Select
+                            name='type'
+                            placeholder='CSV / JSON'
+                            value={syncValues.type}
+                            onChange={(e)=>setSyncValues({...syncValues, type: e.target.value})}
+                            required
+                        >
+                        <option value='json'> json </option>
+                        <option value='csv'> csv </option>
+                        
+                        </Form.Select>
+                        
+                    </Form.Group>
                     
                 </div>
                 <br />

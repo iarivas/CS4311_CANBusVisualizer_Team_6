@@ -18,6 +18,14 @@ class APIUtil {
         )
     }
 
+    syncProject(syncProjectvars: any){
+        return axios.post(
+            this.url + '/projects/sync', syncProjectvars
+            
+
+        )
+    }
+
     gatherTraffic(play: boolean, projectId: string) {
         return axios.put(
             this.url + '/projects/' + projectId + '/play',
